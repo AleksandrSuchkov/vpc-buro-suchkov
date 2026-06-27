@@ -82,6 +82,54 @@ h1{font-size:clamp(24px,3.2vw,38px);margin:0 0 4px;letter-spacing:-1.6px;font-we
 .print button{cursor:pointer;border:0;box-shadow:var(--hair);background:#fff;border-radius:var(--pill);padding:9px 20px;font-size:13.5px;font-weight:500;font-family:var(--font);color:var(--b60);letter-spacing:-.3px;transition:.15s}
 .print button:hover{background:var(--gray)}.print button:active{transform:scale(.97)}
 @media print{.tabs,.print{display:none}.wrap{max-width:100%}}
+
+/* explainer */
+.explain{margin-top:52px}
+.ex-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.ex-h .num{font-size:14px;font-weight:600;color:var(--coral)}
+.ex-h h2{font-size:26px;margin:0;letter-spacing:-1.2px;font-weight:500}
+.ex-intro{color:var(--b60);font-size:15px;max-width:840px;line-height:1.4;margin-bottom:20px}
+.ex-intro b{color:var(--black)}
+.flow{display:grid;grid-template-columns:1fr 54px 1fr;gap:0;align-items:stretch;margin-bottom:22px}
+@media(max-width:760px){.flow{grid-template-columns:1fr;gap:10px}.flow .fm{display:none}}
+.fcard{border-radius:var(--r-xl);padding:18px 20px}
+.fcard.r{background:var(--coral-8)} .fcard.l{background:var(--blue-6)}
+.fcard .ft{font-size:12px;font-weight:600;margin-bottom:6px}
+.fcard.r .ft{color:var(--coral)} .fcard.l .ft{color:var(--blue)}
+.fcard .fb{font-size:13.5px;color:var(--black);line-height:1.4}
+.fcard .fb b{font-weight:600}
+.fm{display:flex;align-items:center;justify-content:center;color:var(--gray-dark);font-size:22px}
+.ex-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.exc{background:var(--gray);border-radius:var(--r-lg);overflow:hidden}
+.exc .eh{display:flex;align-items:center;gap:11px;padding:15px 17px;cursor:pointer;user-select:none}
+.exc .dot{width:12px;height:12px;border-radius:50%;flex:none}
+.exc .en{font-weight:600;font-size:15.5px;letter-spacing:-.4px;flex:1}
+.exc .en small{display:block;font-weight:500;color:var(--b40);font-size:11px;letter-spacing:0}
+.exc .pl{width:22px;height:22px;border-radius:50%;background:var(--black);color:#fff;display:grid;place-items:center;font-size:14px;flex:none;transition:.2s var(--ease)}
+.exc.open .pl{transform:rotate(45deg);background:var(--blue)}
+.exc .ed{max-height:0;overflow:hidden;transition:max-height .28s var(--ease)}
+.exc.open .ed{max-height:460px}
+.exc .ed .in{padding:0 17px 16px}
+.exc .ed .row{font-size:13px;line-height:1.42;margin-bottom:7px;color:var(--b60)}
+.exc .ed .row b{color:var(--black);font-weight:600}
+.exc .ed .ex{background:#fff;box-shadow:var(--hair);border-radius:var(--r-sm);padding:8px 10px;font-size:12.5px;color:var(--black)}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:760px){.two2{grid-template-columns:1fr}}
+.bx{border-radius:var(--r-xl);padding:18px 20px}
+.bx.blue{background:var(--blue);color:#fff}
+.bx.gray{background:var(--gray)}
+.bx h3{margin:0 0 12px;font-size:17px;letter-spacing:-.5px;font-weight:600}
+.bx ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.bx ol li{font-size:13.5px;line-height:1.4}
+.bx.blue ol li{color:#fff}
+.bx ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.bx ul li{font-size:13.5px;line-height:1.4;padding-left:20px;position:relative;color:var(--b60)}
+.bx ul li::before{content:"✕";position:absolute;left:0;color:var(--coral);font-weight:600}
+.fitlevels{margin-top:18px;background:var(--black);color:#fff;border-radius:var(--r-xl);padding:20px 22px}
+.fitlevels h3{margin:0 0 12px;font-size:17px;font-weight:600;letter-spacing:-.5px}
+.fitlevels .lv{display:flex;gap:12px;align-items:flex-start;margin-bottom:9px;font-size:13.5px;color:rgba(255,255,255,.85);line-height:1.38}
+.fitlevels .lv b{color:#fff}
+.fitlevels .lv .nn{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.14);box-shadow:var(--hair-d);display:grid;place-items:center;font-size:12px;font-weight:600;flex:none;color:#fff}
 </style>
 </head>
 <body>
@@ -130,10 +178,10 @@ h1{font-size:clamp(24px,3.2vw,38px);margin:0 0 4px;letter-spacing:-1.6px;font-we
       <div class="zone painz">
         <div class="zh"><div class="ic">✚</div><div class="zt">обезболивающие<small>pain relievers</small></div></div>
         <ul>
-          <li>решение на входе проверено данными (продукт/локация/цена)</li>
-          <li>разморозка капитала: аудит точек потерь → распродажа без демпинга</li>
-          <li>«дорогой лид без сделок» → воронка, сайт, каналы, брендформанс</li>
-          <li>раздробленный маркетинг → единый бренд от рекламы до УК</li>
+          <li><b>цена ошибки на входе:</b> продуктовый аудит + исследования рынка/ЦА/конкурентов + best-use → продуктовое задание, цена, финмодель до старта</li>
+          <li><b>остатки не продаются:</b> диагностика воронки (аудит 3+), CJM, тайный покупатель, post-view → карта потерь и план распродажи без демпинга</li>
+          <li><b>дорогой лид без сделок:</b> перенастройка кабинетов/классифайдов/брендформанса, UX-аудит сайта, сквозная аналитика → ниже CPL</li>
+          <li><b>раздробленный маркетинг:</b> коммуникац. стратегия, бренд-платформа, единый ToV, одна команда → бренд от рекламы до УК</li>
         </ul>
       </div>
     </div>
@@ -166,6 +214,103 @@ h1{font-size:clamp(24px,3.2vw,38px);margin:0 0 4px;letter-spacing:-1.6px;font-we
     <span><b>круг</b> — что хочет девелопер (customer) ▶</span>
     <span><b style="color:var(--black)">fit</b> — левое закрывает правое</span>
   </div>
+  <div class="explain">
+    <div class="ex-h"><span class="num">★</span><h2>разбор · как работает этот canvas</h2></div>
+    <p class="ex-intro">Value Proposition Canvas (А. Остервальдер) нужен, чтобы добиться <b>соответствия (fit)</b> между тем, что хочет клиент (круг справа), и тем, что мы предлагаем (квадрат слева). Правило: <b>сначала клиент, потом наше предложение</b> — правую часть берём из данных, левую строим под неё.</p>
+
+    <div class="flow">
+      <div class="fcard r"><div class="ft">круг справа · клиент</div><div class="fb">задачи, боли, выгоды девелопера ← <b>из исследований, интервью ЛПР, данных рынка Q2 2026 и форума «Движение»</b>. Это факты о клиенте, не догадки.</div></div>
+      <div class="fm">→</div>
+      <div class="fcard l"><div class="ft">квадрат слева · мы</div><div class="fb">продукты, обезболивающие, создатели выгод ← <b>из 41 услуги Бюро</b>, собранных так, чтобы попасть в правую часть. Это наши ответы на боли и выгоды.</div></div>
+    </div>
+
+    <div class="ex-cards">
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--black)"></span><span class="en">задачи клиента<small>customer job(s)</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> что девелопер пытается сделать: <b>функциональные</b> (выполнить план, ускорить выборку эскроу), <b>социальные</b> («стать своим» в городе), <b>эмоциональные</b> (уверенность, не ошибиться на входе).</div>
+          <div class="row"><b>откуда берётся:</b> из исследований, интервью с ЛПР, рыночных данных и форума «Движение» — это «голос клиента», а не наши догадки.</div>
+          <div class="ex"><b>пример из нашего canvas:</b> «поднять конверсию воронки лид → сделка»</div>
+        </div></div>
+      </div>
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--coral)"></span><span class="en">боли<small>pains</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> что мешает, злит и пугает: препятствия, риски и плохие исходы до / во время / после. Болей обычно боятся сильнее, чем хотят выгод — поэтому с них и начинают.</div>
+          <div class="row"><b>откуда берётся:</b> реальные формулировки клиентов + цифры рынка (распроданность 69%, лид ×2–3).</div>
+          <div class="ex"><b>пример из нашего canvas:</b> «лиды есть — конверсии нет»</div>
+        </div></div>
+      </div>
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--blue)"></span><span class="en">выгоды<small>gains</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> желаемые результаты и приятные бонусы — не просто «отсутствие боли», а то, что клиент хочет получить и чему обрадуется.</div>
+          <div class="row"><b>откуда берётся:</b> чего клиент хочет достичь; подкрепляем доказательствами (премия за бренд, ускорение продаж).</div>
+          <div class="ex"><b>пример из нашего canvas:</b> «премия к цене за бренд; ускорение распроданности»</div>
+        </div></div>
+      </div>
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--black)"></span><span class="en">продукты и услуги<small>products & services</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> что мы реально продаём — 41 услуга в 9 направлениях. Важно: сам список ещё <b>не</b> ценность. Ценность появляется, только когда услуга закрывает боль или создаёт выгоду.</div>
+          <div class="row"><b>откуда берётся:</b> из каталога услуг Бюро.</div>
+          <div class="ex"><b>пример из нашего canvas:</b> продукт и стратегия · брендинг · перформанс · консалтинг продаж</div>
+        </div></div>
+      </div>
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--coral)"></span><span class="en">обезболивающие<small>pain relievers</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> описывают, <b>что конкретно мы делаем</b>, чтобы убрать или ослабить конкретную боль. Это <b>не про скорость</b>: обезболивающее бывает быстрым (UX-аудит сайта за неделю) и глубоким (продуктовая стратегия за месяц) — важно не «быстро», а точно попасть в боль.</div>
+          <div class="row"><b>откуда берётся:</b> строится как связка «боль → действие Бюро → результат».</div>
+          <div class="ex"><b>пример из нашего canvas:</b> боль «остатки не продаются» → <b>делаем</b> диагностику воронки, CJM, тайного покупателя, post-view-аналитику → <b>отдаём</b> карту точек потерь и план распродажи без демпинга</div>
+        </div></div>
+      </div>
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--blue)"></span><span class="en">создатели выгод<small>gain creators</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> как мы создаём те выгоды, которые клиент действительно хочет (а не те, что нам удобно делать).</div>
+          <div class="row"><b>откуда берётся:</b> строится как связка «услуга ↔ выгода».</div>
+          <div class="ex"><b>пример из нашего canvas:</b> «единое окно: ответственность за лиды → сделки» создаёт «управляемый результат»</div>
+        </div></div>
+      </div>
+      <div class="exc">
+        <div class="eh"><span class="dot" style="background:var(--gold)"></span><span class="en">соответствие<small>fit</small></span><span class="pl">+</span></div>
+        <div class="ed"><div class="in">
+          <div class="row"><b>что это:</b> <b>главное в canvas.</b> Fit достигнут, когда обезболивающие реально бьют в боли, а создатели выгод — в выгоды, и это важно клиенту. Не «совпало на бумаге», а «клиент за это платит».</div>
+          <div class="row"><b>откуда берётся:</b> проверяется на реальных разговорах и сделках, а не в презентации.</div>
+          <div class="ex"><b>пример из нашего canvas:</b> каждая линия слева попадает в конкретный пункт справа</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="two2">
+      <div class="bx blue"><h3>как читать за 5 шагов</h3>
+        <ol>
+          <li><b>Начни справа — с клиента.</b> Сначала задачи, боли, выгоды (из данных, не из головы).</li>
+          <li><b>Приоритизируй.</b> Отметь топ-боли и топ-выгоды; остальное — фон.</li>
+          <li><b>Перейди налево.</b> Под топ-боли подбери обезболивающие, под топ-выгоды — создателей выгод.</li>
+          <li><b>Проверь fit.</b> Каждый пункт слева должен попадать в конкретный пункт справа. Нет пары — лишнее.</li>
+          <li><b>Тестируй на клиенте.</b> Canvas — это гипотезы; подтверждай разговорами и сделками, обновляй.</li>
+        </ol>
+      </div>
+      <div class="bx gray"><h3>частые ошибки</h3>
+        <ul>
+          <li>придумывать боли за клиента вместо исследований;</li>
+          <li>сваливать в «продукты» все услуги без привязки к боли;</li>
+          <li>путать задачи (что делает) и боли (что мешает);</li>
+          <li>писать список «фич», а не «как это снимает боль»;</li>
+          <li>считать canvas разовым — он живой и обновляется.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fitlevels"><h3>3 уровня fit (по Остервальдеру)</h3>
+      <div class="lv"><span class="nn">1</span><div><b>на бумаге</b> (problem–solution fit): боли и выгоды клиента совпадают с тем, что мы умеем. Гипотеза.</div></div>
+      <div class="lv"><span class="nn">2</span><div><b>рынок платит</b> (product–market fit): клиенты реально покупают и возвращаются.</div></div>
+      <div class="lv"><span class="nn">3</span><div><b>масштабируется и прибыльно</b> (business model fit): ценность приносит деньги в устойчивой модели.</div></div>
+    </div>
+  </div>
+
   <div class="foot">данные Q2 2026 · Аналитика ДОМ.РФ, ЦБ РФ, ЕРЗ.РФ, РБК, Sostav, GMK, форум «Движение». развёрнутая интерактивная версия — в файле «Value_Proposition_Canvas.html». <span class="heart">♥</span></div>
   <div class="print"><button onclick="window.print()">печать / PDF</button></div>
 </div>
@@ -174,8 +319,8 @@ h1{font-size:clamp(24px,3.2vw,38px);margin:0 0 4px;letter-spacing:-1.6px;font-we
 const P={
  core:{who:"девелопер · ядро (все ЛПР)",
   g:["премия к цене за бренд и продукт","ускорение распроданности → дешевле ПФ","конверсия вместо бюджета (6,9 → 15,2%)","узнаваемость = предиктор продаж"],
-  j:["выполнить план продаж, держать темп эскроу","верное решение на входе: продукт×локация×цена","поднять конверсию воронки лид → сделка","«стать своим» и узнаваемым в новом городе","снизить CAC и зависимость от агентов"],
-  p:["«2026 — год первых убыточных проектов»","затоваривание: остатки не продаются (69%)","«лиды есть — конверсии нет»","«бюджет растёт, продажи не растут» (CPL ×2–3)","зависимость от агентов 85–90%"]},
+  j:["выполнить план продаж, держать темп эскроу","верное решение на входе: продукт×локация×цена","поднять конверсию воронки лид → сделка","«стать своим» и узнаваемым в новом городе","снизить CAC и выстроить синергию с агентским каналом"],
+  p:["«2026 — год первых убыточных проектов»","затоваривание: остатки не продаются (69%)","«лиды есть — конверсии нет»","«бюджет растёт, продажи не растут» (CPL ×2–3)","85–90% сделок через агентов — каналом сложно управлять"]},
  owner:{who:"собственник / генеральный директор",
   g:["ускорение распроданности → дешевле ПФ","премия к цене за бренд/продукт","уверенность входа: решение по данным","рост прибыли за качество решений (+250 млн ₽)"],
   j:["выполнить план и держать темп выборки эскроу","верное решение на входе (продукт×локация×цена)","защитить маржу 5–10% при дорогом долге","масштабироваться без раздувания штата","управлять «по цифрам, а не тушить пожары»"],
@@ -183,7 +328,7 @@ const P={
  commercial:{who:"коммерческий директор / директор по продажам",
   g:["рост конверсии лид→сделка (6,9 → 15,2%)","динамическое ценообразование +3–19%","сквозная аналитика, матчинг >90%","ИИ-аналитика 100% звонков, скоринг лидов"],
   j:["выполнить план без роста бюджета","поднять конверсию: лид → бронь → сделка","прогреть длинный лид (51 касание, >90 дней)","усилить свой отдел и агентский канал","заместить умирающий «рассрочечный» трафик"],
-  p:["«лиды есть — конверсии нет»","«89% застройщиков не перезвонили»","конверсия в целевой лид 44% → 32%","ипотечная воронка: одобряют ⅓ заявок","зависимость от агентов 85–90%"]},
+  p:["«лиды есть — конверсии нет»","«89% застройщиков не перезвонили»","конверсия в целевой лид 44% → 32%","ипотечная воронка: одобряют ⅓ заявок","85–90% сделок через агентов — каналом сложно управлять"]},
  marketing:{who:"директор по маркетингу",
   g:["узнаваемость = предиктор продаж (4-я продажа)","ToV «+85% к визиту», CTA → 96% записей","брендформанс снижает общий CPL","креатив, «который замечают и обсуждают»"],
   j:["снизить CAC и поднять конверсию","выделиться среди однотипной рекламы","узнаваемость в городе; единый бренд до УК","присутствовать в AI-выдаче (GEO/SEO)","диверсифицировать каналы"],
@@ -203,6 +348,7 @@ function render(){
 }
 T.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{cur=b.dataset.k;render();});
 render();
+document.querySelectorAll('.exc .eh').forEach(e=>e.onclick=()=>e.parentElement.classList.toggle('open'));
 </script>
 </body>
 </html>
