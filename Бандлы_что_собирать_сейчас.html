@@ -429,5 +429,44 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
     <p style="margin-top:12px">страница развивает «Value_Proposition_Canvas.html» (гипотезы бандлов), «Маркетинговая_воронка_и_приоритеты.html» (сезон и годовой цикл) и ревью от 02.07.2026 (кейсы, KPI-модель, ABM). скоринг — рабочая гипотеза: оси и веса обсуждаемы, пересборка — квартальная, следующая — к 1 октября 2026.</p>
   </footer>
 </div>
+<script data-mobile-legibility="3">
+/* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
+(function(){
+  function fix(){
+    if(window.innerWidth>480)return;
+    var els=document.body.querySelectorAll('*');
+    for(var i=0;i<els.length;i++){
+      var el=els[i], cs=getComputedStyle(el);
+      /* тесный многоколоночный grid → одна колонка (иначе текст не влезает и рвёт вёрстку) */
+      if(cs.display==='grid'){
+        var cols=cs.gridTemplateColumns.split(' ').filter(Boolean);
+        if(cols.length>=2){
+          var min=Infinity;
+          for(var c=0;c<cols.length;c++){var v=parseFloat(cols[c]);if(!isNaN(v)&&v<min)min=v;}
+          if(min<150)el.style.setProperty('grid-template-columns','1fr','important');
+        }
+      }
+      /* flex-ряды без переноса → разрешаем перенос */
+      if((cs.display==='flex'||cs.display==='inline-flex')&&cs.flexWrap==='nowrap'){
+        el.style.setProperty('flex-wrap','wrap','important');
+      }
+      /* пол шрифта у элементов с собственным видимым текстом */
+      var own=false;
+      for(var n=0;n<el.childNodes.length;n++){
+        var nd=el.childNodes[n];
+        if(nd.nodeType===3&&nd.textContent.trim()){own=true;break;}
+      }
+      if(!own)continue;
+      var fs=parseFloat(cs.fontSize);
+      if(fs&&fs<14){
+        el.style.setProperty('font-size','14px','important');
+        if(!(parseFloat(cs.lineHeight)/fs>=1.4))el.style.setProperty('line-height','1.45','important');
+      }
+    }
+  }
+  if(document.readyState!=='loading')fix();
+  else document.addEventListener('DOMContentLoaded',fix);
+})();
+</script>
 </body>
 </html>

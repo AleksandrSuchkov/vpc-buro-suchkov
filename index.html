@@ -168,5 +168,44 @@ footer .heart{color:var(--coral)}
     <details open style="margin-top:42px;border-top:1px solid var(--b10);padding-top:18px"><summary style="font-size:19px;font-weight:600;letter-spacing:-.5px;cursor:pointer;color:var(--black)">глоссарий сокращений</summary><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px;margin-top:16px"><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">VPC</b> — Value Proposition Canvas — канвас ценностного предложения (А. Остервальдер): профиль клиента ↔ карта ценности.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">TOFU / MOFU / BOFU</b> — верх / середина / низ воронки (top/middle/bottom of funnel): осознание → интерес → намерение.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">ЛПР</b> — лицо, принимающее решение — собственник, коммерческий или маркетинг-директор.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">CJM</b> — Customer Journey Map — карта пути клиента: где он касается бренда и где теряется.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">CAC</b> — стоимость привлечения клиента/сделки (Customer Acquisition Cost).</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">CPL</b> — стоимость лида/заявки (Cost Per Lead).</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">ToV</b> — Tone of Voice — тон и манера коммуникации бренда.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">UX / UI</b> — опыт и интерфейс взаимодействия — удобство сайта.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">KPI</b> — ключевые показатели эффективности.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">ПФ</b> — проектное финансирование — банковский кредит застройщику под эскроу.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">ДДУ</b> — договор долевого участия — сделка по новостройке.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">ОП / РОП</b> — отдел продаж / руководитель отдела продаж.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">АН</b> — агентство недвижимости — агентский канал продаж.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">УК</b> — управляющая компания — эксплуатация дома после сдачи.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">МОП</b> — места общего пользования — холлы, лобби, дворы.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">ТЭП / ТЭО</b> — технико-экономические показатели / обоснование проекта.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">best-use</b> — сценарий наилучшего использования участка.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">post-view</b> — атрибуция сделки по просмотрам рекламы, не только по кликам.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">B2B2A</b> — «бизнес → бизнесу → агентам»: продаём девелоперу, обучаем его агентов.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">RTB</b> — reasons to believe — доказательства/основания доверять.</div><div style="font-size:13px;line-height:1.42;color:var(--b60)"><b style="color:var(--blue)">GEO / SEO</b> — оптимизация под AI-выдачу и поисковую выдачу.</div></div></details>
   <footer>собрано Бюро Сучкова <span class="heart">♥</span> · все страницы самодостаточны (шрифт TT Travels встроен), относительные ссылки — готовы к публикации на GitHub Pages.</footer>
 </div>
+<script data-mobile-legibility="3">
+/* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
+(function(){
+  function fix(){
+    if(window.innerWidth>480)return;
+    var els=document.body.querySelectorAll('*');
+    for(var i=0;i<els.length;i++){
+      var el=els[i], cs=getComputedStyle(el);
+      /* тесный многоколоночный grid → одна колонка (иначе текст не влезает и рвёт вёрстку) */
+      if(cs.display==='grid'){
+        var cols=cs.gridTemplateColumns.split(' ').filter(Boolean);
+        if(cols.length>=2){
+          var min=Infinity;
+          for(var c=0;c<cols.length;c++){var v=parseFloat(cols[c]);if(!isNaN(v)&&v<min)min=v;}
+          if(min<150)el.style.setProperty('grid-template-columns','1fr','important');
+        }
+      }
+      /* flex-ряды без переноса → разрешаем перенос */
+      if((cs.display==='flex'||cs.display==='inline-flex')&&cs.flexWrap==='nowrap'){
+        el.style.setProperty('flex-wrap','wrap','important');
+      }
+      /* пол шрифта у элементов с собственным видимым текстом */
+      var own=false;
+      for(var n=0;n<el.childNodes.length;n++){
+        var nd=el.childNodes[n];
+        if(nd.nodeType===3&&nd.textContent.trim()){own=true;break;}
+      }
+      if(!own)continue;
+      var fs=parseFloat(cs.fontSize);
+      if(fs&&fs<14){
+        el.style.setProperty('font-size','14px','important');
+        if(!(parseFloat(cs.lineHeight)/fs>=1.4))el.style.setProperty('line-height','1.45','important');
+      }
+    }
+  }
+  if(document.readyState!=='loading')fix();
+  else document.addEventListener('DOMContentLoaded',fix);
+})();
+</script>
 </body>
 </html>
