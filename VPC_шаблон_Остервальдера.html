@@ -353,8 +353,48 @@ T.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{cur=b.dataset.k;render();})
 render();
 document.querySelectorAll('.exc .eh').forEach(e=>e.onclick=()=>e.parentElement.classList.toggle('open'));
 </script>
+<script data-mobile-legibility="4">
+/* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
+(function(){
+  function fix(){
+    if(window.innerWidth>480)return;
+    var els=document.body.querySelectorAll('*');
+    for(var i=0;i<els.length;i++){
+      var el=els[i], cs=getComputedStyle(el);
+      if(el.closest&&el.closest('[data-vpc-menu]'))continue; /* меню управляет своей адаптивностью само */
+      /* тесный многоколоночный grid → одна колонка (иначе текст не влезает и рвёт вёрстку) */
+      if(cs.display==='grid'){
+        var cols=cs.gridTemplateColumns.split(' ').filter(Boolean);
+        if(cols.length>=2){
+          var min=Infinity;
+          for(var c=0;c<cols.length;c++){var v=parseFloat(cols[c]);if(!isNaN(v)&&v<min)min=v;}
+          if(min<150)el.style.setProperty('grid-template-columns','1fr','important');
+        }
+      }
+      /* flex-ряды без переноса → разрешаем перенос */
+      if((cs.display==='flex'||cs.display==='inline-flex')&&cs.flexWrap==='nowrap'){
+        el.style.setProperty('flex-wrap','wrap','important');
+      }
+      /* пол шрифта у элементов с собственным видимым текстом */
+      var own=false;
+      for(var n=0;n<el.childNodes.length;n++){
+        var nd=el.childNodes[n];
+        if(nd.nodeType===3&&nd.textContent.trim()){own=true;break;}
+      }
+      if(!own)continue;
+      var fs=parseFloat(cs.fontSize);
+      if(fs&&fs<14){
+        el.style.setProperty('font-size','14px','important');
+        if(!(parseFloat(cs.lineHeight)/fs>=1.4))el.style.setProperty('line-height','1.45','important');
+      }
+    }
+  }
+  if(document.readyState!=='loading')fix();
+  else document.addEventListener('DOMContentLoaded',fix);
+})();
+</script>
 <!--vpcm:start-->
-<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">VPC × девелоперы</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><a class="vpcm-home" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg><span>всё оглавление</span><span class="vpcm-ha">↗</span></a><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-num">01</span><span class="vpcm-st">канвас и стратегия</span></div><a class="vpcm-item" href="Value_Proposition_Canvas.html"><span class="vpcm-it">Value Proposition Canvas</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="VPC_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D1%8C%D0%B4%D0%B5%D1%80%D0%B0.html"><span class="vpcm-it">шаблон Остервальдера</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="00_%D0%98%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D1%81%D0%B8%D0%BD%D1%82%D0%B5%D0%B7_VPC.md"><span class="vpcm-it">исследование и синтез</span><span class="vpcm-ic">▤</span></a></div><div class="vpcm-sec" style="--s:1"><div class="vpcm-sh"><span class="vpcm-num">02</span><span class="vpcm-st">маркетинг и продажи</span></div><a class="vpcm-item" href="%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B0_%D0%B8_%D0%BF%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B.html"><span class="vpcm-it">маркетинговая воронка &amp; приоритеты</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BA%D0%B0%D1%80%D1%82%D0%B0_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">боевая карта продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%90%D0%B3%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB_%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B_%D0%B8_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F.html"><span class="vpcm-it">агентский канал: проблемы и решения</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B0%D0%BD%D0%B4%D0%BB%D1%8B_%D1%87%D1%82%D0%BE_%D1%81%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%82%D1%8C_%D1%81%D0%B5%D0%B9%D1%87%D0%B0%D1%81.html"><span class="vpcm-it">бандлы: что собирать сейчас</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:2"><div class="vpcm-sh"><span class="vpcm-num">03</span><span class="vpcm-st">лид-магниты · для девелоперов</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B5%D0%BD%D1%87%D0%BC%D0%B0%D1%80%D0%BA_%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C_%D0%BB%D0%B8%D0%B4%D0%B0_%D0%B8_%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B8_2026.html"><span class="vpcm-it">бенчмарк: стоимость лида и сделки 2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9F%D0%BB%D0%B5%D0%B9%D0%B1%D1%83%D0%BA_%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F_2026.html"><span class="vpcm-it">плейбук: возражения-2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:3"><div class="vpcm-sh"><span class="vpcm-num">04</span><span class="vpcm-st">материалы для печати и встреч</span></div><a class="vpcm-item" href="VPC_%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80.pdf"><span class="vpcm-it">VPC-постер</span><span class="vpcm-ic">⤓</span></a><a class="vpcm-item" href="VPC_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx"><span class="vpcm-it">презентация</span><span class="vpcm-ic">⤓</span></a></div><div class="vpcm-sec" style="--s:4"><div class="vpcm-sh"><span class="vpcm-num">05</span><span class="vpcm-st">рынок</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
+<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">VPC × девелоперы</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><a class="vpcm-home" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg><span>всё оглавление</span><span class="vpcm-ha">↗</span></a><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-num">01</span><span class="vpcm-st">канвас и стратегия</span></div><a class="vpcm-item" href="Value_Proposition_Canvas.html"><span class="vpcm-it">Value Proposition Canvas</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="VPC_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D1%8C%D0%B4%D0%B5%D1%80%D0%B0.html"><span class="vpcm-it">шаблон Остервальдера</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="00_%D0%98%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D1%81%D0%B8%D0%BD%D1%82%D0%B5%D0%B7_VPC.md"><span class="vpcm-it">исследование и синтез</span><span class="vpcm-ic">▤</span></a></div><div class="vpcm-sec" style="--s:1"><div class="vpcm-sh"><span class="vpcm-num">02</span><span class="vpcm-st">маркетинг и продажи</span></div><a class="vpcm-item" href="%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B0_%D0%B8_%D0%BF%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B.html"><span class="vpcm-it">маркетинговая воронка &amp; приоритеты</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BA%D0%B0%D1%80%D1%82%D0%B0_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">боевая карта продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%90%D0%B3%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB_%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B_%D0%B8_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F.html"><span class="vpcm-it">агентский канал: проблемы и решения</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B0%D0%BD%D0%B4%D0%BB%D1%8B_%D1%87%D1%82%D0%BE_%D1%81%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%82%D1%8C_%D1%81%D0%B5%D0%B9%D1%87%D0%B0%D1%81.html"><span class="vpcm-it">бандлы: что собирать сейчас</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:2"><div class="vpcm-sh"><span class="vpcm-num">03</span><span class="vpcm-st">лид-магниты · для девелоперов</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B5%D0%BD%D1%87%D0%BC%D0%B0%D1%80%D0%BA_%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C_%D0%BB%D0%B8%D0%B4%D0%B0_%D0%B8_%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B8_2026.html"><span class="vpcm-it">бенчмарк: стоимость лида и сделки 2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9F%D0%BB%D0%B5%D0%B9%D0%B1%D1%83%D0%BA_%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F_2026.html"><span class="vpcm-it">плейбук: возражения-2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:3"><div class="vpcm-sh"><span class="vpcm-num">04</span><span class="vpcm-st">материалы для печати и встреч</span></div><a class="vpcm-item" href="VPC_%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80.pdf"><span class="vpcm-it">VPC-постер</span><span class="vpcm-ic">⤓</span></a><a class="vpcm-item" href="VPC_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx"><span class="vpcm-it">презентация</span><span class="vpcm-ic">⤓</span></a></div><div class="vpcm-sec" style="--s:4"><div class="vpcm-sh"><span class="vpcm-num">05</span><span class="vpcm-st">рынок</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
 <style>
 .vpcm,.vpcm *{box-sizing:border-box;font-family:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
 .vpcm-trigger{position:fixed;left:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:99998;display:inline-flex;align-items:center;gap:8px;background:#171AD9;color:#fff;font-size:14px;font-weight:600;letter-spacing:-.2px;line-height:1;border:0;cursor:pointer;padding:11px 16px 11px 13px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.20);-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,opacity .2s}
@@ -452,45 +492,5 @@ document.querySelectorAll('.exc .eh').forEach(e=>e.onclick=()=>e.parentElement.c
 })();
 </script>
 <!--vpcm:end-->
-<script data-mobile-legibility="4">
-/* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
-(function(){
-  function fix(){
-    if(window.innerWidth>480)return;
-    var els=document.body.querySelectorAll('*');
-    for(var i=0;i<els.length;i++){
-      var el=els[i], cs=getComputedStyle(el);
-      if(el.closest&&el.closest('[data-vpc-menu]'))continue; /* меню управляет своей адаптивностью само */
-      /* тесный многоколоночный grid → одна колонка (иначе текст не влезает и рвёт вёрстку) */
-      if(cs.display==='grid'){
-        var cols=cs.gridTemplateColumns.split(' ').filter(Boolean);
-        if(cols.length>=2){
-          var min=Infinity;
-          for(var c=0;c<cols.length;c++){var v=parseFloat(cols[c]);if(!isNaN(v)&&v<min)min=v;}
-          if(min<150)el.style.setProperty('grid-template-columns','1fr','important');
-        }
-      }
-      /* flex-ряды без переноса → разрешаем перенос */
-      if((cs.display==='flex'||cs.display==='inline-flex')&&cs.flexWrap==='nowrap'){
-        el.style.setProperty('flex-wrap','wrap','important');
-      }
-      /* пол шрифта у элементов с собственным видимым текстом */
-      var own=false;
-      for(var n=0;n<el.childNodes.length;n++){
-        var nd=el.childNodes[n];
-        if(nd.nodeType===3&&nd.textContent.trim()){own=true;break;}
-      }
-      if(!own)continue;
-      var fs=parseFloat(cs.fontSize);
-      if(fs&&fs<14){
-        el.style.setProperty('font-size','14px','important');
-        if(!(parseFloat(cs.lineHeight)/fs>=1.4))el.style.setProperty('line-height','1.45','important');
-      }
-    }
-  }
-  if(document.readyState!=='loading')fix();
-  else document.addEventListener('DOMContentLoaded',fix);
-})();
-</script>
 </body>
 </html>

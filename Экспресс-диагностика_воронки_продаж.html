@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23FC5741%22%20d%3D%22M16%2027.6C15%2026.8%204.5%2019.9%204.5%2012.2%204.5%208.5%207.4%205.6%2011%205.6c2.3%200%204.4%201.2%205.6%203.1C17.6%206.8%2019.7%205.6%2022%205.6c3.6%200%206.5%202.9%206.5%206.6%200%207.7-10.5%2014.6-11.5%2015.4-.15.12-.35.12-.5%200z%22%2F%3E%3C%2Fsvg%3E" data-vpc-favicon="1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Экспресс-диагностика воронки продаж девелопера · 2026 · Бюро Сучкова</title>
+<style>
+:root{
+  --blue:#171AD9;--blue-hover:#2F32F2;--blue-6:rgba(23,26,217,.06);--blue-12:rgba(23,26,217,.12);
+  --coral:#FC5741;--coral-hover:#FF7967;--coral-9:rgba(252,87,65,.09);--coral-16:rgba(252,87,65,.16);
+  --green:#1B9E5A;--green-9:rgba(27,158,90,.10);--amber:#E39A00;--amber-9:rgba(227,154,0,.12);
+  --black:#000;--white:#fff;--gray:#F0F0F0;--gray-hover:#E3E3E3;--gray-dark:#A6A6A6;
+  --b10:rgba(0,0,0,.1);--b20:rgba(0,0,0,.2);--b40:rgba(0,0,0,.4);--b60:rgba(0,0,0,.6);
+  --r-sm:12px;--r-md:16px;--r-lg:20px;--r-xl:24px;--pill:999px;
+  --sh-card:0 8px 24px rgba(0,0,0,.06);--hair:inset 0 0 0 1px var(--b20);
+  --font:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--black);background:var(--gray);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 90px}
+a{color:var(--blue);text-decoration:none}a:hover{color:var(--blue-hover)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--blue);background:var(--white);border-radius:var(--pill);padding:7px 14px;box-shadow:var(--hair);text-transform:lowercase}
+h1{font-size:clamp(27px,4.3vw,42px);line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:16px 0 12px;text-transform:lowercase}
+.dek{font-size:clamp(16px,2vw,19px);color:var(--b60);max-width:760px;margin:0}
+.tag2min{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--coral);background:var(--coral-9);border-radius:var(--pill);padding:6px 13px}
+.strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0 8px}
+@media(max-width:760px){.strip{grid-template-columns:1fr 1fr}}
+.stat{background:var(--white);border-radius:var(--r-md);box-shadow:var(--hair);padding:13px 14px}
+.stat .n{font-size:20px;font-weight:800;letter-spacing:-.01em}
+.stat .l{font-size:12px;color:var(--b60);margin-top:3px}
+.sec{margin-top:30px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin:0 0 14px}
+.sec-n{font-size:13px;font-weight:700;color:var(--white);background:var(--blue);border-radius:var(--pill);padding:3px 10px}
+.sec-t{font-size:clamp(19px,2.6vw,24px);font-weight:800;margin:0;text-transform:lowercase}
+.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-card),var(--hair);padding:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}}
+.blk-t{grid-column:1/-1;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin:8px 0 -2px;display:flex;align-items:center;gap:8px}
+.blk-t::before{content:"";width:16px;height:2px;background:var(--blue);border-radius:2px}
+.field label{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:600;margin-bottom:6px;gap:10px}
+.field .val{font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums;white-space:nowrap}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:var(--pill);background:var(--gray-hover);outline:none;margin:4px 0 2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);border:3px solid #fff}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--blue);cursor:pointer;border:3px solid #fff}
+.hint{font-size:12px;color:var(--b40);margin-top:2px}
+select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;border-radius:var(--r-sm);border:none;box-shadow:var(--hair);background:var(--white);cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-size:16px;font-weight:700;padding:14px 24px;border-radius:var(--pill);border:none;cursor:pointer;transition:background .15s}
+.btn-primary{background:var(--coral);color:#fff}.btn-primary:hover{background:var(--coral-hover)}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-hover)}
+.btn-ghost{background:var(--white);color:var(--black);box-shadow:var(--hair)}.btn-ghost:hover{background:var(--gray)}
+.center{text-align:center;margin-top:18px}
+/* results */
+#results{scroll-margin-top:16px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+@media(max-width:620px){.hero{grid-template-columns:1fr;text-align:center;justify-items:center}}
+.gauge{--p:0;width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--gc,var(--coral)) calc(var(--p)*1deg),var(--gray) 0);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.gauge .inner{width:114px;height:114px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge .gv{font-size:34px;font-weight:800;line-height:1}
+.gauge .gl{font-size:11px;color:var(--b60);text-transform:lowercase;margin-top:3px}
+.hero .big{font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.hero .big .u{color:var(--coral)}
+.hero .sub{font-size:15px;color:var(--b60);margin-top:8px}
+.hero .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;font-weight:600;background:var(--gray);border-radius:var(--pill);padding:6px 12px}
+.chip b{color:var(--black)}
+.row{display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid var(--gray)}
+.row:last-child{border-bottom:none}
+.dot{width:14px;height:14px;border-radius:50%;margin-top:4px}
+.dot.g{background:var(--green)}.dot.a{background:var(--amber)}.dot.r{background:var(--coral)}
+.row .name{font-weight:700;font-size:15px}
+.row .desc{font-size:13.5px;color:var(--b60);margin-top:2px}
+.row .desc b{color:var(--black)}
+.row .rt{text-align:right;white-space:nowrap}
+.row .yours{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.row .bench{font-size:12px;color:var(--b40)}
+.verdict.g{color:var(--green)}.verdict.a{color:var(--amber)}.verdict.r{color:var(--coral)}
+.fixes{counter-reset:f;list-style:none;padding:0;margin:0}
+.fixes li{position:relative;padding:12px 14px 12px 46px;background:var(--gray);border-radius:var(--r-sm);margin-bottom:8px;font-size:14.5px}
+.fixes li::before{counter-increment:f;content:counter(f);position:absolute;left:12px;top:11px;width:24px;height:24px;border-radius:50%;background:var(--coral);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.fixes li b{font-weight:700}
+.waste{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:4px}
+@media(max-width:680px){.waste{grid-template-columns:1fr}}
+.wcard{background:var(--coral-9);border-radius:var(--r-md);padding:14px}
+.wcard .wn{font-size:20px;font-weight:800;color:var(--coral);letter-spacing:-.01em}
+.wcard .wl{font-size:12.5px;color:var(--b60);margin-top:4px}
+.capture{background:linear-gradient(180deg,var(--blue-6),transparent);border:2px dashed var(--blue-12);border-radius:var(--r-lg);padding:20px;margin-top:16px}
+.cap-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;margin-top:12px}
+@media(max-width:680px){.cap-grid{grid-template-columns:1fr}}
+.cap-grid input[type=text]{font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:var(--r-sm);border:none;box-shadow:var(--hair);background:#fff}
+.muted{font-size:12px;color:var(--b40);margin-top:8px}
+.hidden{display:none}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--b10);font-size:12.5px;color:var(--b60)}
+.wm{font-weight:800;letter-spacing:-.01em}
+@media print{
+  body{background:#fff}.wrap{max-width:100%;padding:0}
+  .form-card,.center,.capture,.eyebrow,.tag2min,#calcBtn,.no-print{display:none!important}
+  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  .row{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">● Бюро Сучкова · экспресс-диагностика · 2026</span>
+    <h1>где ваша воронка продаж теряет деньги</h1>
+    <p class="dek">2 минуты по вашим цифрам — и вы видите карту потерь по стадиям лид → разговор → бронь → сделка, в рублях и в сравнении со средними по рынку девелопмента 2026. поля заполнены рыночными средними — замените на свои.</p>
+    <span class="tag2min">⚡ мгновенный результат · без регистрации · считается у вас в браузере</span>
+  </header>
+
+  <div class="strip">
+    <div class="stat"><div class="n">×2–3</div><div class="l">рост стоимости лида к 2023</div></div>
+    <div class="stat"><div class="n">44→32%</div><div class="l">конверсия в целевой лид за год</div></div>
+    <div class="stat"><div class="n">89%</div><div class="l">не перезвонили по пропущенному</div></div>
+    <div class="stat"><div class="n">85–90%</div><div class="l">сделок через агентов (норма 45–55)</div></div>
+    <div class="stat"><div class="n">65,5→56%</div><div class="l">доля ипотеки в ДДУ</div></div>
+  </div>
+
+  <!-- FORM -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">01</span><h2 class="sec-t">введите свои цифры</h2></div>
+    <div class="card form-card">
+      <div class="form-grid">
+
+        <div class="blk-t">экономика проекта</div>
+        <div class="field"><label>средняя цена лота <span class="val"><span id="vPrice">12</span> млн ₽</span></label><input type="range" id="price" min="3" max="80" step="1" value="12"><div class="hint">средний чек сделки</div></div>
+        <div class="field"><label>обращений (лидов) в месяц <span class="val"><span id="vLeads">800</span></span></label><input type="range" id="leads" min="100" max="5000" step="50" value="800"><div class="hint">все входящие обращения по всем каналам</div></div>
+        <div class="field"><label>маркетинговый бюджет в месяц <span class="val"><span id="vBudget">3</span> млн ₽</span></label><input type="range" id="budget" min="0.5" max="30" step="0.5" value="3"><div class="hint">digital + классифайды + прочее</div></div>
+
+        <div class="blk-t">трафик и лиды</div>
+        <div class="field"><label>стоимость целевого лида <span class="val"><span id="vCpl">18</span> тыс ₽</span></label><input type="range" id="cpl" min="3" max="80" step="1" value="18"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
+        <div class="field"><label>доля ботов и фрода в бюджете <span class="val"><span id="vBots">30</span>%</span></label><input type="range" id="bots" min="0" max="60" step="1" value="30"><div class="hint">на рынке — до 50% digital-бюджета</div></div>
+
+        <div class="blk-t">квалификация и обработка</div>
+        <div class="field"><label>конверсия обращение → целевой лид <span class="val"><span id="vQual">32</span>%</span></label><input type="range" id="qual" min="10" max="60" step="1" value="32"><div class="hint">рынок 32%, норма ≥ 35–40%</div></div>
+        <div class="field"><label>доходимость лид → разговор <span class="val"><span id="vReach">47</span>%</span></label><input type="range" id="reach" min="20" max="100" step="1" value="47"><div class="hint">до разговора доходит ~47% обратных звонков</div></div>
+        <div class="field"><label>скорость первого перезвона</label><select id="callback"><option value="15">в течение 15 минут</option><option value="day" selected>в тот же день</option><option value="later">на следующий день и позже</option><option value="never">часто не перезваниваем</option></select><div class="hint">только 11% перезвонили по пропущенному — самая дешёвая починка</div></div>
+
+        <div class="blk-t">сделки и каналы</div>
+        <div class="field"><label>сквозная конверсия лид → сделка <span class="val"><span id="vThrough">6</span>%</span></label><input type="range" id="through" min="1" max="20" step="0.5" value="6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
+        <div class="field"><label>доля сделок через агентов <span class="val"><span id="vAgent">80</span>%</span></label><input type="range" id="agent" min="20" max="100" step="1" value="80"><div class="hint">норма здорового баланса 45–55%</div></div>
+        <div class="field"><label>комиссия агентам <span class="val"><span id="vComm">3,5</span>%</span></label><input type="range" id="comm" min="2" max="6" step="0.1" value="3.5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
+        <div class="field"><label>доля ипотеки в сделках <span class="val"><span id="vMort">56</span>%</span></label><input type="range" id="mort" min="20" max="90" step="1" value="56"><div class="hint">упала 65,5 → 56%; отказ по рыночной ипотеке ~60%</div></div>
+
+      </div>
+      <div class="center"><button class="btn btn-primary" id="calcBtn">показать карту потерь ↓</button></div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="sec" id="results">
+    <div class="sec-h"><span class="sec-n">02</span><h2 class="sec-t">ваша карта потерь</h2></div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="hero">
+        <div class="gauge" id="gauge"><div class="inner"><div class="gv" id="healthVal">—</div><div class="gl">индекс воронки</div></div></div>
+        <div>
+          <div class="big">воронка недобирает <span class="u" id="heroMoney">—</span> в год</div>
+          <div class="sub" id="heroSub">— грубая оценка сверху по рыночным бенчмаркам; точная цифра — на диагностике.</div>
+          <div class="chips">
+            <span class="chip">доп. сделок в год: <b id="heroDeals">—</b></span>
+            <span class="chip">это <b id="heroPct">—</b> к текущим продажам</span>
+            <span class="chip">переплаты бюджета: <b id="heroWaste">—</b>/год</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <p style="margin:0 0 6px;font-weight:700">по стадиям — где и сколько утекает</p>
+      <div id="rows"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <p style="margin:0 0 10px;font-weight:700">3 самые дешёвые починки — начать с них</p>
+      <ol class="fixes" id="fixes"></ol>
+    </div>
+
+    <div class="card">
+      <p style="margin:0 0 10px;font-weight:700">прямые потери бюджета (считаются отдельно от недобора выручки)</p>
+      <div class="waste">
+        <div class="wcard"><div class="wn" id="wOverpay">—</div><div class="wl">переплата за лид выше нормы 20 тыс ₽</div></div>
+        <div class="wcard"><div class="wn" id="wBots">—</div><div class="wl">бюджет, сожжённый ботами и фродом</div></div>
+        <div class="wcard"><div class="wn" id="wDouble">—</div><div class="wl">потенциальная двойная оплата: 36% «агентских» сделок начались с вашей рекламы</div></div>
+      </div>
+    </div>
+
+    <!-- SOFT CAPTURE -->
+    <div class="capture no-print">
+      <p style="margin:0;font-weight:800;font-size:17px">получить расширенный отчёт с вашими цифрами и планом починки</p>
+      <p style="margin:6px 0 0;color:var(--b60);font-size:14px">PDF на 1 страницу: ваша карта потерь + приоритеты + benchmark-таблица 2026. результат выше уже доступен — контакты по желанию, если хотите разбор от Бюро.</p>
+      <form id="capForm">
+        <div class="cap-grid">
+          <input type="text" id="cName" placeholder="имя" autocomplete="name">
+          <input type="text" id="cPhone" placeholder="телефон или @telegram" autocomplete="tel">
+          <input type="text" id="cCompany" placeholder="компания / проект" autocomplete="organization">
+          <button class="btn btn-blue" type="submit">получить PDF →</button>
+        </div>
+      </form>
+      <div id="capThanks" class="hidden" style="margin-top:12px;font-weight:600;color:var(--green)"></div>
+      <p class="muted">контакты никуда не отправляются автоматически — форма подключается к вашей CRM/почте на стороне сайта. кнопка «получить PDF» открывает печать → «сохранить как PDF».</p>
+      <div class="center" style="margin-top:14px">
+        <button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику воронки (шаг 1) →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p style="margin:0 0 6px"><span class="wm">Бюро Сучкова</span> — продукт, бренд, маркетинг и продажи девелопера в единой системе с ответственностью за сделки, а не за клики.</p>
+    <p style="margin:0"><b>методика.</b> оценка грубая, по рыночным бенчмаркам Q2–Q3 2026 (форум «Движение», 209 докладов, датасеты до 1,6 млн лидов; Циан × Smartis, Profitbase, Яндекс Недвижимость, Sostav, ДОМ.РФ). целевой лид 12–20 тыс ₽ · квалификация норма ≥35–40% · доходимость до разговора ~47% · сквозная 5–9%, цель 12%+ · агентский баланс 45–55% · двойная оплата 36%. точные цифры и причины — на платной диагностике воронки. расчёт выполняется локально в браузере.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id);};
+  var rub=new Intl.NumberFormat('ru-RU');
+  function money(n){
+    n=Math.max(0,Math.round(n));
+    if(n>=1e9)return (n/1e9).toFixed(n>=1e10?0:1).replace('.',',')+' млрд ₽';
+    if(n>=1e6)return (n/1e6).toFixed(n>=1e8?0:1).replace('.',',')+' млн ₽';
+    if(n>=1e3)return Math.round(n/1e3)+' тыс ₽';
+    return rub.format(n)+' ₽';
+  }
+  function num(n){return rub.format(Math.round(n));}
+  // inputs
+  var ID=['price','leads','budget','cpl','bots','qual','reach','through','agent','comm','mort'];
+  var LBL={price:'vPrice',leads:'vLeads',budget:'vBudget',cpl:'vCpl',bots:'vBots',qual:'vQual',reach:'vReach',through:'vThrough',agent:'vAgent',comm:'vComm',mort:'vMort'};
+  function v(id){return parseFloat($(id).value);}
+  function syncLabels(){
+    $('vPrice').textContent=v('price');
+    $('vLeads').textContent=num(v('leads'));
+    $('vBudget').textContent=String(v('budget')).replace('.',',');
+    $('vCpl').textContent=v('cpl');
+    $('vBots').textContent=v('bots');
+    $('vQual').textContent=v('qual');
+    $('vReach').textContent=v('reach');
+    $('vThrough').textContent=String(v('through')).replace('.',',');
+    $('vAgent').textContent=v('agent');
+    $('vComm').textContent=String(v('comm')).replace('.',',');
+    $('vMort').textContent=v('mort');
+  }
+  // scoring band: returns {c:'g|a|r', t:'text'}
+  function band(val, greenOk, amberOk){ // greenOk(val)->bool, amberOk(val)->bool
+    if(greenOk(val))return 'g'; if(amberOk(val))return 'a'; return 'r';
+  }
+  var VERD={g:'норма',a:'зона риска',r:'утечка'};
+  function compute(){
+    var D=v('price')*1e6, L=v('leads'), B=v('budget')*1e6,
+        cpl=v('cpl')*1000, bots=v('bots'), qual=v('qual')/100,
+        reach=v('reach'), through=v('through')/100,
+        agent=v('agent')/100, comm=v('comm')/100, mort=v('mort'),
+        cb=$('callback').value;
+    var TLOW=0.08, THIGH=0.10; // консервативный диапазон цели (рынок: агент 9%, кейс 6,9→15,2%)
+    var qLeads=L*qual;                       // целевые лиды/мес
+    var deals=L*through;                     // сделки/мес
+    var lostDealsLow=Math.max(0,L*TLOW-deals);
+    var lostDealsHigh=Math.max(0,L*THIGH-deals);
+    var lostRevLow=lostDealsLow*D*12;
+    var lostRevHigh=lostDealsHigh*D*12;
+    var lostDeals=lostDealsHigh;             // для строки стадии — верхняя оценка
+    var lostRevYear=lostRevHigh;
+    var pctLow = deals>0 ? (lostDealsLow/deals*100) : 0;
+    var pctHigh = deals>0 ? (lostDealsHigh/deals*100) : 0;
+    // direct waste
+    var overpay=Math.max(0,(cpl-20000))*qLeads*12;
+    var botBurn=B*Math.max(0,bots-15)/100*12;
+    var agentDeals=deals*agent;
+    var doublePay=agentDeals*0.36*comm*D*12;
+    var waste=overpay+botBurn+doublePay;
+    // per-stage rows
+    var rows=[];
+    rows.push({key:'cpl',name:'стоимость целевого лида',yours:v('cpl')+' тыс ₽',bench:'норма 12–20 тыс',
+      c: v('cpl')<=15?'g':(v('cpl')<=25?'a':'r'),
+      desc: v('cpl')>25?'лид дороже верхней нормы — переплата <b>'+money(overpay)+'</b>/год на целевых лидах':(v('cpl')>15?'у верхней границы нормы; следите за качеством трафика':'в норме масс-сегмента')});
+    rows.push({key:'bots',name:'боты и фрод в бюджете',yours:v('bots')+'%',bench:'норма ≤15% · рынок до 50%',
+      c: bots<=15?'g':(bots<=30?'a':'r'),
+      desc: bots>15?'сверх нормы сожжено <b>'+money(botBurn)+'</b>/год маркетингового бюджета':'фрод под контролем'});
+    rows.push({key:'qual',name:'обращение → целевой лид',yours:v('qual')+'%',bench:'норма ≥35–40% · рынок 32%',
+      c: v('qual')>=38?'g':(v('qual')>=30?'a':'r'),
+      desc: v('qual')<38?'ниже нормы: теряете <b>~'+num(Math.max(0,(0.38-qual)*L))+'</b> целевых лидов в месяц на квалификации':'квалификация в норме'});
+    rows.push({key:'reach',name:'лид → разговор (дозвон)',yours:v('reach')+'%',bench:'цель ≥80% · рынок ~47%',
+      c: v('reach')>=80?'g':(v('reach')>=60?'a':'r'),
+      desc: v('reach')<80?'до разговора не доходит <b>'+num(Math.max(0,(1-reach)*qLeads))+'</b> целевых лидов/мес — самая дешёвая починка воронки':'доходимость сильная'});
+    var cbC = cb==='15'?'g':(cb==='day'?'a':'r');
+    rows.push({key:'callback',name:'скорость первого перезвона',yours:({'15':'≤15 мин','day':'в тот же день','later':'позже','never':'часто нет'})[cb],bench:'цель ≤15 мин',
+      c:cbC, desc: cbC==='g'?'скорость на уровне лучших':'89% девелоперов теряют клиента здесь; каждый час снижает дозвон в разы'});
+    rows.push({key:'through',name:'сквозная лид → сделка',yours:v('through')+'%',bench:'рынок 5–9% · цель 12%+',
+      c: v('through')>=10?'g':(v('through')>=6?'a':'r'),
+      desc: v('through')<10?'главный разрыв: недобор до <b>'+num(lostDeals)+'</b> сделок/мес ≈ <b>'+money(lostRevYear)+'</b>/год выручки':'сильная сквозная конверсия'});
+    rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'норма 45–55% · рынок 85–90%',
+      c: (v('agent')>=45&&v('agent')<=55)?'g':((v('agent')<=70&&v('agent')>=35)?'a':'r'),
+      desc: v('agent')>55?'зависимость от канала: до <b>'+money(doublePay)+'</b>/год двойной оплаты (реклама + комиссия за одну сделку)':'баланс своего отдела и агентов здоровый'});
+    rows.push({key:'mort',name:'структура сделки: доля ипотеки',yours:v('mort')+'%',bench:'ипотека в ДДУ 56% · кэш+рассрочка растёт',
+      c: mort>=55?'a':'r',
+      desc: mort<55?'больше половины сделок вне ипотеки: собрана ли воронка под клиента с наличкой и рассрочкой?':'ипотека ещё несёт воронку — но доля падает, готовьте кэш-сценарий'});
+    return {rows:rows,lostRevLow:lostRevLow,lostRevHigh:lostRevHigh,
+            lostDealsLow:lostDealsLow,lostDealsHigh:lostDealsHigh,pctLow:pctLow,pctHigh:pctHigh,
+            waste:waste,overpay:overpay,botBurn:botBurn,doublePay:doublePay};
+  }
+  function render(){
+    syncLabels();
+    var r=compute();
+    // health = weighted avg of stage scores
+    var w={cpl:1,bots:1,qual:1.3,reach:1.3,callback:1,through:1.6,agent:1.1,mort:0.7};
+    var sc={g:100,a:60,r:22}, tot=0, wsum=0;
+    r.rows.forEach(function(x){var ww=w[x.key]||1;tot+=sc[x.c]*ww;wsum+=ww;});
+    var health=Math.round(tot/wsum);
+    var gc = health>=70?'var(--green)':(health>=45?'var(--amber)':'var(--coral)');
+    var g=$('gauge'); g.style.setProperty('--p',health*3.6); g.style.setProperty('--gc',gc);
+    $('healthVal').textContent=health; $('healthVal').style.color=gc;
+    var hb=document.querySelector('.hero .big');
+    if(r.lostRevHigh<=0){
+      hb.innerHTML='по сквозной конверсии крупных потерь не видно';
+      $('heroSub').textContent='воронка близка к норме сильного игрока — точечные утечки смотрите ниже по стадиям.';
+      $('heroDeals').textContent='0'; $('heroPct').textContent='0%';
+    } else {
+      var mstr=r.lostRevLow>0?(money(r.lostRevLow)+' – '+money(r.lostRevHigh)):('до '+money(r.lostRevHigh));
+      hb.innerHTML='воронка недобирает <span class="u">'+mstr+'</span> в год';
+      $('heroDeals').textContent=(r.lostDealsLow>0?(num(r.lostDealsLow*12)+'–'+num(r.lostDealsHigh*12)):('до '+num(r.lostDealsHigh*12)))+' шт';
+      $('heroPct').textContent=(r.pctLow>0?('+'+Math.round(r.pctLow)+'–'+Math.round(r.pctHigh)+'%'):('до +'+Math.round(r.pctHigh)+'%'));
+      $('heroSub').textContent='грубая оценка сверху при доведении сквозной до 8–10% (агентский бенчмарк 9%, рыночный кейс 6,9→15,2%). точная цифра — на диагностике.';
+    }
+    $('heroWaste').textContent=money(r.waste);
+    // rows
+    var html='';
+    r.rows.forEach(function(x){
+      html+='<div class="row"><div class="dot '+x.c+'"></div>'+
+        '<div><div class="name">'+x.name+'</div><div class="desc">'+x.desc+'</div></div>'+
+        '<div class="rt"><div class="yours">'+x.yours+'</div><div class="bench">'+x.bench+'</div>'+
+        '<div class="verdict '+x.c+'" style="font-size:12px;font-weight:700">'+VERD[x.c]+'</div></div></div>';
+    });
+    $('rows').innerHTML=html;
+    // top-3 fixes: prioritize red, by cheapness order
+    var order=['callback','reach','qual','through','bots','agent','cpl','mort'];
+    var fixText={
+      callback:'<b>наладить перезвон в 15 минут</b> по каждому пропущенному — автораспределение и дисциплина ОП. самый дешёвый рычаг: возвращает клиентов, за которых уже заплачено.',
+      reach:'<b>поднять доходимость лид → разговор</b> — скорость и число касаний, реанимация «недозвонов». норма ≥80%.',
+      qual:'<b>усилить квалификацию обращение → целевой лид</b> — отсев ботов и нецелевых до отдела продаж, чтобы не платить за мусор.',
+      through:'<b>пересобрать воронку под сквозную 10%+</b> — узкие места лид→бронь→сделка; рыночный кейс: 6,9 → 15,2% на тех же лидах.',
+      bots:'<b>вычистить фрод из бюджета</b> — антибот, сквозная аналитика и post-view вместо last-click.',
+      agent:'<b>вернуть баланс канала к 45–55%</b> — управление агентами и защита от двойной оплаты.',
+      cpl:'<b>снизить стоимость целевого лида</b> — перераспределение каналов и качество трафика.',
+      mort:'<b>собрать воронку под кэш и рассрочку</b> — оффер, скрипты и скоринг рассрочки.'
+    };
+    var reds=r.rows.filter(function(x){return x.c==='r';});
+    var ambers=r.rows.filter(function(x){return x.c==='a';});
+    var pool=reds.concat(ambers);
+    pool.sort(function(a,b){return order.indexOf(a.key)-order.indexOf(b.key);});
+    var top=pool.slice(0,3);
+    if(top.length===0){top=r.rows.slice(0,1);}
+    $('fixes').innerHTML=top.map(function(x){return '<li>'+fixText[x.key]+'</li>';}).join('');
+    // waste cards
+    $('wOverpay').textContent=money(r.overpay);
+    $('wBots').textContent=money(r.botBurn);
+    $('wDouble').textContent=money(r.doublePay);
+  }
+  // wire
+  ID.forEach(function(id){$(id).addEventListener('input',render);});
+  $('callback').addEventListener('change',render);
+  $('calcBtn').addEventListener('click',function(){$('results').scrollIntoView({behavior:'smooth'});});
+  $('capForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=$('cName').value.trim();
+    $('capThanks').classList.remove('hidden');
+    $('capThanks').textContent=(name?name+', ':'')+'спасибо! открываю печатную версию отчёта — сохраните её как PDF (Cmd/Ctrl+P → сохранить как PDF).';
+    setTimeout(function(){window.print();},400);
+  });
+  $('ctaBtn').addEventListener('click',function(){
+    window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Экспресс-диагностика воронки продаж')+'&body='+encodeURIComponent('Здравствуйте! Хотим экспресс-диагностику воронки продаж. Наш проект: ');
+  });
+  render();
+})();
+</script>
+<script data-mobile-legibility="4">
+/* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
+(function(){
+  function fix(){
+    if(window.innerWidth>480)return;
+    var els=document.body.querySelectorAll('*');
+    for(var i=0;i<els.length;i++){
+      var el=els[i], cs=getComputedStyle(el);
+      if(el.closest&&el.closest('[data-vpc-menu]'))continue; /* меню управляет своей адаптивностью само */
+      /* тесный многоколоночный grid → одна колонка (иначе текст не влезает и рвёт вёрстку) */
+      if(cs.display==='grid'){
+        var cols=cs.gridTemplateColumns.split(' ').filter(Boolean);
+        if(cols.length>=2){
+          var min=Infinity;
+          for(var c=0;c<cols.length;c++){var v=parseFloat(cols[c]);if(!isNaN(v)&&v<min)min=v;}
+          if(min<150)el.style.setProperty('grid-template-columns','1fr','important');
+        }
+      }
+      /* flex-ряды без переноса → разрешаем перенос */
+      if((cs.display==='flex'||cs.display==='inline-flex')&&cs.flexWrap==='nowrap'){
+        el.style.setProperty('flex-wrap','wrap','important');
+      }
+      /* пол шрифта у элементов с собственным видимым текстом */
+      var own=false;
+      for(var n=0;n<el.childNodes.length;n++){
+        var nd=el.childNodes[n];
+        if(nd.nodeType===3&&nd.textContent.trim()){own=true;break;}
+      }
+      if(!own)continue;
+      var fs=parseFloat(cs.fontSize);
+      if(fs&&fs<14){
+        el.style.setProperty('font-size','14px','important');
+        if(!(parseFloat(cs.lineHeight)/fs>=1.4))el.style.setProperty('line-height','1.45','important');
+      }
+    }
+  }
+  if(document.readyState!=='loading')fix();
+  else document.addEventListener('DOMContentLoaded',fix);
+})();
+</script>
+<!--vpcm:start-->
+<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">VPC × девелоперы</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><a class="vpcm-home" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg><span>всё оглавление</span><span class="vpcm-ha">↗</span></a><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-num">01</span><span class="vpcm-st">канвас и стратегия</span></div><a class="vpcm-item" href="Value_Proposition_Canvas.html"><span class="vpcm-it">Value Proposition Canvas</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="VPC_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D1%8C%D0%B4%D0%B5%D1%80%D0%B0.html"><span class="vpcm-it">шаблон Остервальдера</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="00_%D0%98%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D1%81%D0%B8%D0%BD%D1%82%D0%B5%D0%B7_VPC.md"><span class="vpcm-it">исследование и синтез</span><span class="vpcm-ic">▤</span></a></div><div class="vpcm-sec" style="--s:1"><div class="vpcm-sh"><span class="vpcm-num">02</span><span class="vpcm-st">маркетинг и продажи</span></div><a class="vpcm-item" href="%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B0_%D0%B8_%D0%BF%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B.html"><span class="vpcm-it">маркетинговая воронка &amp; приоритеты</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BA%D0%B0%D1%80%D1%82%D0%B0_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">боевая карта продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%90%D0%B3%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB_%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B_%D0%B8_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F.html"><span class="vpcm-it">агентский канал: проблемы и решения</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B0%D0%BD%D0%B4%D0%BB%D1%8B_%D1%87%D1%82%D0%BE_%D1%81%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%82%D1%8C_%D1%81%D0%B5%D0%B9%D1%87%D0%B0%D1%81.html"><span class="vpcm-it">бандлы: что собирать сейчас</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:2"><div class="vpcm-sh"><span class="vpcm-num">03</span><span class="vpcm-st">лид-магниты · для девелоперов</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B5%D0%BD%D1%87%D0%BC%D0%B0%D1%80%D0%BA_%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C_%D0%BB%D0%B8%D0%B4%D0%B0_%D0%B8_%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B8_2026.html"><span class="vpcm-it">бенчмарк: стоимость лида и сделки 2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9F%D0%BB%D0%B5%D0%B9%D0%B1%D1%83%D0%BA_%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F_2026.html"><span class="vpcm-it">плейбук: возражения-2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:3"><div class="vpcm-sh"><span class="vpcm-num">04</span><span class="vpcm-st">материалы для печати и встреч</span></div><a class="vpcm-item" href="VPC_%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80.pdf"><span class="vpcm-it">VPC-постер</span><span class="vpcm-ic">⤓</span></a><a class="vpcm-item" href="VPC_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx"><span class="vpcm-it">презентация</span><span class="vpcm-ic">⤓</span></a></div><div class="vpcm-sec" style="--s:4"><div class="vpcm-sh"><span class="vpcm-num">05</span><span class="vpcm-st">рынок</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
+<style>
+.vpcm,.vpcm *{box-sizing:border-box;font-family:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+.vpcm-trigger{position:fixed;left:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:99998;display:inline-flex;align-items:center;gap:8px;background:#171AD9;color:#fff;font-size:14px;font-weight:600;letter-spacing:-.2px;line-height:1;border:0;cursor:pointer;padding:11px 16px 11px 13px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.20);-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,opacity .2s}
+.vpcm-trigger:hover{background:#2F32F2;transform:translateY(-1px)}
+.vpcm-trigger:active{transform:translateY(0)}
+.vpcm-trigger svg{display:block}
+.vpcm-trigger:focus-visible{outline:2px solid #171AD9;outline-offset:3px}
+.vpcm[data-open] .vpcm-trigger{opacity:0;pointer-events:none;transform:translateY(8px)}
+.vpcm-scrim{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .24s cubic-bezier(.4,0,.2,1),visibility .24s}
+.vpcm[data-open] .vpcm-scrim{opacity:1;visibility:visible}
+.vpcm-panel{position:fixed;top:0;left:0;z-index:99999;height:100%;height:100dvh;width:min(87vw,384px);background:#fff;box-shadow:0 8px 46px rgba(0,0,0,.24);display:flex;flex-direction:column;color:#000;letter-spacing:-.3px;transform:translateX(-102%);transition:transform .3s cubic-bezier(.4,0,.2,1);will-change:transform}
+.vpcm[data-open] .vpcm-panel{transform:translateX(0)}
+.vpcm-hd{display:flex;align-items:center;gap:11px;padding:calc(20px + env(safe-area-inset-top,0px)) 18px 14px}
+.vpcm-mk{width:32px;height:32px;border-radius:9px;background:#171AD9;flex:none;display:flex;align-items:center;justify-content:center;position:relative}
+.vpcm-mk::after{content:"";position:absolute;right:-2px;bottom:-2px;width:9px;height:9px;border-radius:50%;background:#FC5741;box-shadow:0 0 0 2px #fff}
+.vpcm-ttl{min-width:0}
+.vpcm-wm{font-size:16px;font-weight:600;letter-spacing:-.5px;line-height:1}
+.vpcm-sub{font-size:12px;color:rgba(0,0,0,.42);margin-top:3px;line-height:1}
+.vpcm-close{margin-left:auto;width:38px;height:38px;border-radius:999px;border:0;background:#F0F0F0;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;transition:background .15s,transform .15s}
+.vpcm-close:hover{background:#E3E3E3;transform:rotate(90deg)}
+.vpcm-close:focus-visible{outline:2px solid #171AD9;outline-offset:2px}
+.vpcm-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 12px calc(24px + env(safe-area-inset-bottom,0px));flex:1}
+.vpcm-home{display:flex;align-items:center;gap:10px;margin:4px 4px 6px;padding:13px 15px;border-radius:14px;background:rgba(23,26,217,.08);color:#171AD9;text-decoration:none;font-size:14.5px;font-weight:600;transition:background .16s cubic-bezier(.4,0,.2,1),transform .16s}
+.vpcm-home:hover{background:rgba(23,26,217,.15);transform:translateX(2px)}
+.vpcm-home:focus-visible{outline:2px solid #171AD9;outline-offset:2px}
+.vpcm-home svg{flex:none}
+.vpcm-home .vpcm-ha{margin-left:auto;font-size:15px}
+.vpcm-sec{padding:0 4px;margin-top:14px}
+.vpcm-sec + .vpcm-sec{border-top:1px solid rgba(0,0,0,.07);padding-top:12px}
+.vpcm-sh{display:flex;align-items:baseline;gap:9px;padding:0 11px 5px}
+.vpcm-num{font-size:12px;font-weight:600;color:#FC5741;letter-spacing:0}
+.vpcm-st{font-size:12.5px;font-weight:600;color:rgba(0,0,0,.46);letter-spacing:-.1px}
+.vpcm-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;text-decoration:none;color:#000;transition:background .15s cubic-bezier(.4,0,.2,1),transform .15s}
+.vpcm-item:hover{background:#F0F0F0;transform:translateX(2px)}
+.vpcm-item:focus-visible{outline:2px solid #171AD9;outline-offset:-2px}
+.vpcm-it{flex:1 1 auto;min-width:0;font-size:14.5px;font-weight:500;line-height:1.25}
+.vpcm-ic{flex:none;margin-left:auto;color:#A6A6A6;font-size:15px}
+.vpcm-item.vpcm-active{background:rgba(23,26,217,.07);color:#171AD9;box-shadow:inset 3px 0 0 #FC5741}
+.vpcm-item.vpcm-active .vpcm-it{font-weight:600}
+.vpcm-item.vpcm-active .vpcm-ic{color:#171AD9}
+.vpcm-ft{margin:20px 8px 4px;font-size:12px;color:rgba(0,0,0,.36)}
+.vpcm-ft span{color:#FC5741}
+.vpcm-body .vpcm-home,.vpcm-body .vpcm-sec{opacity:0;transform:translateY(10px);transition:opacity .34s cubic-bezier(.4,0,.2,1),transform .34s cubic-bezier(.4,0,.2,1)}
+.vpcm[data-open] .vpcm-body .vpcm-home{opacity:1;transform:none;transition-delay:.10s}
+.vpcm[data-open] .vpcm-body .vpcm-sec{opacity:1;transform:none;transition-delay:calc(.14s + var(--s) * .05s)}
+@media print{.vpcm{display:none!important}}
+@media (prefers-reduced-motion:reduce){
+ .vpcm-trigger,.vpcm-scrim,.vpcm-panel,.vpcm-body .vpcm-home,.vpcm-body .vpcm-sec,.vpcm-item,.vpcm-home,.vpcm-close{transition-duration:.001ms!important;transition-delay:0!important}
+}
+</style>
+<script>
+(function(){
+  var w=document.querySelector('.vpcm[data-vpc-menu]');
+  if(!w)return;
+  var trigger=w.querySelector('.vpcm-trigger'),panel=w.querySelector('.vpcm-panel'),
+      scrim=w.querySelector('.vpcm-scrim'),closeBtn=w.querySelector('.vpcm-close'),last=null;
+  function setOpen(o){
+    if(o){
+      last=document.activeElement;
+      w.setAttribute('data-open','');
+      trigger.setAttribute('aria-expanded','true');
+      panel.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow='hidden';
+      setTimeout(function(){closeBtn.focus();},30);
+    }else{
+      w.removeAttribute('data-open');
+      trigger.setAttribute('aria-expanded','false');
+      panel.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow='';
+      if(last&&last.focus){last.focus();}else{trigger.focus();}
+    }
+  }
+  trigger.addEventListener('click',function(){setOpen(true);});
+  closeBtn.addEventListener('click',function(){setOpen(false);});
+  scrim.addEventListener('click',function(){setOpen(false);});
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.keyCode===27)&&w.hasAttribute('data-open'))setOpen(false);
+  });
+  panel.addEventListener('keydown',function(e){
+    if(e.key!=='Tab'&&e.keyCode!==9)return;
+    var f=panel.querySelectorAll('a[href],button');
+    if(!f.length)return;
+    var first=f[0],lf=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();lf.focus();}
+    else if(!e.shiftKey&&document.activeElement===lf){e.preventDefault();first.focus();}
+  });
+  try{
+    var cur=decodeURIComponent((location.pathname.split('/').pop()||''));
+    var it=panel.querySelectorAll('.vpcm-item');
+    for(var i=0;i<it.length;i++){
+      var href=decodeURIComponent(it[i].getAttribute('href')||'');
+      if(href&&href===cur){it[i].classList.add('vpcm-active');it[i].setAttribute('aria-current','page');}
+    }
+  }catch(e){}
+})();
+</script>
+<!--vpcm:end-->
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23FC5741%22%20d%3D%22M16%2027.6C15%2026.8%204.5%2019.9%204.5%2012.2%204.5%208.5%207.4%205.6%2011%205.6c2.3%200%204.4%201.2%205.6%203.1C17.6%206.8%2019.7%205.6%2022%205.6c3.6%200%206.5%202.9%206.5%206.6%200%207.7-10.5%2014.6-11.5%2015.4-.15.12-.35.12-.5%200z%22%2F%3E%3C%2Fsvg%3E" data-vpc-favicon="1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>продукт для девелопмента: бандлы tier-1 через AJTBD · Бюро Сучкова</title>
+<style>
+:root{
+  --blue:#171AD9;--blue-hover:#2F32F2;--blue-6:rgba(23,26,217,.06);--blue-12:rgba(23,26,217,.12);
+  --coral:#FC5741;--coral-hover:#FF7967;--coral-9:rgba(252,87,65,.09);--coral-16:rgba(252,87,65,.16);
+  --black:#000;--white:#fff;--gray:#F0F0F0;--gray-hover:#E3E3E3;--gray-dark:#A6A6A6;
+  --b10:rgba(0,0,0,.1);--b20:rgba(0,0,0,.2);--b40:rgba(0,0,0,.4);--b60:rgba(0,0,0,.6);
+  --r-sm:12px;--r-md:16px;--r-lg:20px;--r-xl:24px;--pill:999px;
+  --sh-card:0 8px 24px rgba(0,0,0,.06);--hair:inset 0 0 0 1px var(--b20);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --font:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font);color:var(--black);background:var(--gray);line-height:1.5;-webkit-font-smoothing:antialiased;font-feature-settings:"ss01","cv01";}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 20px 80px;}
+a{color:var(--blue);text-decoration:none}
+a:hover{color:var(--blue-hover)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--blue);background:var(--white);border-radius:var(--pill);padding:7px 14px;box-shadow:var(--hair);text-transform:lowercase}
+h1{font-size:clamp(28px,4.4vw,44px);line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:18px 0 14px;text-transform:lowercase}
+.dek{font-size:clamp(16px,2vw,19px);color:var(--b60);max-width:820px;margin:0}
+.meta{margin-top:14px;font-size:13px;color:var(--b40)}
+.sec{margin-top:34px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin:0 0 14px}
+.sec-n{font-size:13px;font-weight:700;color:var(--white);background:var(--blue);border-radius:var(--pill);padding:3px 10px;letter-spacing:.02em}
+.sec-t{font-size:clamp(19px,2.6vw,25px);font-weight:800;letter-spacing:-.01em;margin:0;text-transform:lowercase}
+.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-card),var(--hair);padding:22px 22px;margin-bottom:14px}
+.callout{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-card);border-left:5px solid var(--coral);padding:20px 22px}
+.callout .was{color:var(--b40);text-decoration:line-through;text-decoration-color:var(--b20)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+.mini-t{font-size:14px;font-weight:700;margin:0 0 6px;text-transform:lowercase}
+.mini-p{font-size:14.5px;color:var(--b60);margin:0}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:4px 10px;border-radius:var(--pill);background:var(--blue-12);color:var(--blue);letter-spacing:.01em}
+.pill.coral{background:var(--coral-16);color:var(--coral)}
+.pill.gray{background:var(--gray);color:var(--b60)}
+/* bundle cards */
+.bundle{background:var(--white);border-radius:var(--r-xl);box-shadow:var(--sh-card),var(--hair);padding:0;margin-bottom:16px;overflow:hidden}
+.bundle-hd{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--gray)}
+.bundle-num{font-size:22px;font-weight:800;color:var(--white);background:var(--blue);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.bundle.lead .bundle-num{background:var(--coral)}
+.bundle-name{font-size:19px;font-weight:800;letter-spacing:-.01em;text-transform:lowercase;flex:1 1 auto}
+.badge{font-size:12px;font-weight:700;padding:5px 11px;border-radius:var(--pill);background:var(--blue-12);color:var(--blue);white-space:nowrap}
+.badge.lead{background:var(--coral);color:var(--white)}
+.sig{font-size:12px;color:var(--b40);font-weight:600;white-space:nowrap}
+.bundle-body{padding:8px 22px 20px}
+.row{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--gray)}
+.row:last-child{border-bottom:none}
+.row .k{font-size:12.5px;font-weight:700;color:var(--b40);text-transform:lowercase;padding-top:1px}
+.row .v{font-size:14.5px;color:var(--black)}
+.row .v .num{font-weight:700}
+@media(max-width:640px){.row{grid-template-columns:1fr;gap:3px}}
+.job-box{background:var(--blue-6);border-radius:var(--r-sm);padding:12px 14px;margin:2px 0}
+.job-box .lbl{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em}
+.hook{font-style:italic;color:var(--coral)}
+.mech{background:var(--gray)}
+.risk .v{color:var(--b60)}
+.win .v{color:var(--black)}
+/* market map */
+.map{display:grid;grid-template-columns:120px 1fr 1fr 1fr;gap:6px;margin-top:6px}
+.map .hd{font-size:11.5px;font-weight:700;color:var(--b40);text-transform:lowercase;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px}
+.map .yl{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11.5px;font-weight:700;color:var(--b40);display:flex;align-items:center;justify-content:center}
+.cell{background:var(--gray);border-radius:10px;padding:9px 10px;font-size:12.5px;color:var(--b60);min-height:56px}
+.cell.you{background:var(--coral-9);box-shadow:inset 0 0 0 2px var(--coral);color:var(--black);font-weight:600}
+.cell.empty{background:repeating-linear-gradient(45deg,var(--gray),var(--gray) 6px,#e9e9e9 6px,#e9e9e9 12px);color:var(--b40);font-style:italic}
+/* ladder */
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+@media(max-width:760px){.ladder{grid-template-columns:1fr 1fr}}
+.step{background:var(--white);border-radius:var(--r-md);box-shadow:var(--hair);padding:14px}
+.step .s{font-size:11px;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.03em}
+.step .st{font-size:14.5px;font-weight:700;margin:6px 0 4px}
+.step .sd{font-size:13px;color:var(--b60)}
+/* RAT */
+.rat{list-style:none;counter-reset:r;padding:0;margin:0}
+.rat li{position:relative;padding:12px 14px 12px 44px;border-radius:var(--r-sm);background:var(--gray);margin-bottom:8px;font-size:14.5px}
+.rat li::before{counter-increment:r;content:counter(r);position:absolute;left:12px;top:12px;width:22px;height:22px;border-radius:6px;background:var(--blue);color:var(--white);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.rat li.kill{background:var(--coral-9);box-shadow:inset 0 0 0 2px var(--coral)}
+.rat li.kill::before{background:var(--coral);content:"★"}
+.rlvl{font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--pill);margin-left:6px;vertical-align:middle}
+.rlvl.lo{background:#e5f4ea;color:#1b7a43}.rlvl.mid{background:#fdf1d8;color:#9a6b00}.rlvl.hi{background:var(--coral-16);color:var(--coral)}
+.foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--b10);font-size:13.5px;color:var(--b60)}
+.foot a{font-weight:600}
+.navrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.navrow a{font-size:13px;background:var(--white);box-shadow:var(--hair);border-radius:var(--pill);padding:7px 13px;color:var(--black)}
+.navrow a:hover{background:var(--gray)}
+.note{font-size:12.5px;color:var(--b40);background:var(--white);box-shadow:var(--hair);border-radius:var(--r-sm);padding:10px 13px;margin-top:8px}
+strong{font-weight:700}
+.lead-in{font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">● бюро сучкова · переупаковка портфеля по AJTBD · Q3 2026</span>
+    <h1>продукт для девелопмента: четыре бандла tier-1 через призму AJTBD</h1>
+    <p class="dek">тот же скоринг, что и в «бандлы: что собирать сейчас», но поднятый с уровня «набор услуг» на уровень <strong>сегмент × Core&nbsp;Job × механика</strong>. каждый бандл — одна пара сегмент+Job, один диагностический зонд, один критерий успеха в деньгах клиента и один риск, который его убивает.</p>
+    <p class="meta">канон: Next Move Theory (AJTBD v3.4 · ABCDX · RAT · «Алгоритм»). развивает «Бандлы_что_собирать_сейчас.html», «Value_Proposition_Canvas.html» и ревью 02.07.2026. Consideration Set — по внутреннему тайному покупателю (19 агентств).</p>
+  </header>
+
+  <!-- 00 -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">00</span><h2 class="sec-t">сначала — переформулировка вопроса</h2></div>
+    <div class="callout">
+      <p style="margin:0 0 10px"><span class="pill gray">было</span> &nbsp;<span class="was">«какой продукт собрать для девелопмента?»</span></p>
+      <p style="margin:0 0 12px"><span class="pill coral">стало</span> &nbsp;<strong>«за какую одну пару сегмент × Core&nbsp;Job беремся первой — где Job самый дорогой в деньгах клиента, сегмент большой и досягаем, ценность измерима быстрее всех, маржа ~5–6&nbsp;млн&nbsp;₽/чел — и какой самый дешёвый зонд одновременно проверяет ставку и даёт первый собственный кейс?»</strong></p>
+      <p class="mini-p" style="margin:0"><span class="lead-in">почему так (AJTBD §2, §13).</span> Solution — это лишь ярлык для Job&nbsp;Graph, который клиент проходит под ним. Пока бандл описан списком услуг, не видно, <em>за какой Job</em> вас нанимают, — а именно выбор Job×сегмент решает TAM, цену, CAC и маржу. «Самая дорогая ошибка в продукте — выбрать не тот Job не того сегмента».</p>
+    </div>
+  </section>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">01</span><h2 class="sec-t">две линзы, которых не хватало в матрице 6 осей</h2></div>
+    <p class="mini-p" style="margin:0 0 12px;max-width:820px">твои 6 осей (боль · охват · деньги · скорость · ценность-Бюро · сезон) — сильная <strong>коммерческая</strong> приоритизация. по канону в неё нужно добавить ещё одну ось и один гейт:</p>
+    <div class="grid2">
+      <div class="card">
+        <span class="pill">+ ось</span>
+        <p class="mini-t" style="margin-top:10px">почему выигрываем у альтернатив</p>
+        <p class="mini-p">дифференциация против Consideration&nbsp;Set (DIY-инхаус · брендинговые агентства · «Этажи» · proptech). не была оценена — а именно она даёт право на цену. заполняется данными тайного покупателя (раздел&nbsp;02).</p>
+      </div>
+      <div class="card">
+        <span class="pill coral">гейт</span>
+        <p class="mini-t" style="margin-top:10px">самое рискованное допущение (пруф)</p>
+        <p class="mini-p">оно одно и уже названо в ревью 02.07: обещаете измеримый результат <strong>без собственного кейса</strong>. по RAT это верхний узел цепочки — должен гейтить весь портфель, а не лежать в прозе (раздел&nbsp;05).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">02</span><h2 class="sec-t">против кого на самом деле — Consideration Set (тайный покупатель, 19 агентств)</h2></div>
+    <div class="card">
+      <p class="mini-p" style="margin:0 0 14px">карта «цена × глубина проработки» из исследования внешней среды. <strong>весь набор из 19 агентств конкурирует в брендинге</strong> (исследования → бренд-платформа → нейминг → айдентика → коммуникации). продукт девелопера просчитали лишь двое (GMK 5,2&nbsp;млн, Devision 21&nbsp;млн); продажи / канал / воронку с ответственностью за сделки — <strong>практически никто</strong>.</p>
+      <div class="map">
+        <div class="hd"></div><div class="hd">доступнее Бюро</div><div class="hd">сопоставимо с Бюро</div><div class="hd">дороже Бюро</div>
+        <div class="yl">сильная проработка</div>
+        <div class="cell empty">пусто: дешевле + глубоко — таких на рынке нет</div>
+        <div class="cell you">Бюро Сучкова · Soda · Moslab · Бунов&nbsp;и&nbsp;Устинов</div>
+        <div class="cell">The&nbsp;Clients · GMK · Devision</div>
+        <div class="yl">средняя</div>
+        <div class="cell">Восход</div>
+        <div class="cell">Штольцман&nbsp;и&nbsp;Кац</div>
+        <div class="cell">Студия&nbsp;Лебедева · Дуга · Decoders · Exalter · Умное&nbsp;сердце</div>
+        <div class="yl">слабая</div>
+        <div class="cell">Горилла · Be&nbsp;Brand&nbsp;People · Drivers · Marten</div>
+        <div class="cell">Paradox&nbsp;Box · Креативный&nbsp;класс</div>
+        <div class="cell empty">пусто: дороже + поверхностно — таких нет</div>
+      </div>
+      <div class="grid2" style="margin-top:16px">
+        <div>
+          <p class="mini-t">что это значит для позиционирования</p>
+          <p class="mini-p">на брендинге Бюро — <strong>сегмент 4 из 6</strong>: сопоставимая цена + сильная проработка, в плотном соседстве с The&nbsp;Clients, GMK, Devision, Soda. на КП услуги выглядят одинаково (вывод самого исследования) — «лучше брендить» плохо продаётся как отличие. это красный океан.</p>
+        </div>
+        <div>
+          <p class="mini-t">где белое поле → ход «выход из прямой конкуренции»</p>
+          <p class="mini-p">четыре бандла tier-1 — это <strong>Jobs про продажи и результат</strong>, а не про брендинг. в них 19 агентств не играют. значит, портфель tier-1 не конкурирует с ними ценой на айдентику — он уводит разговор туда, где у Бюро нет прямых аналогов. это и есть дифференциатор (ось из раздела&nbsp;01).</p>
+        </div>
+      </div>
+      <div class="note">внутренний слой. по дисклеймеру самого исследования его факт и результаты держим внутри Бюро и не выносим наружу.</div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">03</span><h2 class="sec-t">четыре бандла tier-1 как one-pagers</h2></div>
+
+    <!-- Bundle 1 -->
+    <article class="bundle lead">
+      <div class="bundle-hd">
+        <div class="bundle-num">1</div>
+        <div class="bundle-name">разморозка капитала</div>
+        <span class="sig">Σ 27/30</span>
+        <span class="badge lead">клин · строим первым</span>
+      </div>
+      <div class="bundle-body">
+        <div class="row"><div class="k">сегмент (ABCDX)</div><div class="v">затоваренный девелопер, распроданность &lt;60–69%, остатки в высокой готовности. ЛПР — <strong>собственник</strong> (эконом. покупатель) + коммерческий. по ABCDX — сегмент&nbsp;A: острая боль + высокая маржа сделки для Бюро.</div></div>
+        <div class="row"><div class="k">Core Job</div><div class="v"><div class="job-box"><span class="lbl">i want to → in order to</span><br>«распродать зависшие остатки и вернуть темп выборки эскроу — <strong>чтобы ставка ПФ падала к ~1%</strong>, а не капали проценты». <span style="color:var(--b60)">критерии успеха: срок продажи остатков ↓ (с 3,2&nbsp;года к норме), доля непроданного к вводу ↓, эффективная ставка ПФ ↓.</span></div></div></div>
+        <div class="row mech"><div class="k">механика канона</div><div class="v"><span class="pill">repair critical-chain break</span> <span class="pill">take the job off the customer</span> — находим, где рвётся цепочка «остаток → показ → бронь → сделка» (теория ограничений), и берём распродажу остатков на себя как услугу.</div></div>
+        <div class="row"><div class="k">состав (доставка)</div><div class="v">диагностика/аудит 3+ (1,6&nbsp;млн) + CJM + UX-аудит + перенастройка перформанса + ценовые решения без демпинга.</div></div>
+        <div class="row"><div class="k">критерий успеха</div><div class="v">в договоре: <span class="num">+X п.п. распроданности за квартал</span> от базовой линии диагностики; срок продажи остатков ↓.</div></div>
+        <div class="row"><div class="k">пруф · ROI-якорь</div><div class="v"><span class="num">2 млрд остатков × ~14% ≈ 23 млн ₽/мес</span> процентов → Job стоит ~280 млн ₽/год. диагностика 1,6&nbsp;млн = два дня такого простоя. <em>самый оцифрованный Job портфеля.</em></div></div>
+        <div class="row"><div class="k">вход · зонд</div><div class="v">калькулятор простоя (бесплатно) → экспресс-аудит остатков (2 недели) → диагностика 3+. <br><span class="hook">«остатки на 3,2 года — это не склад, это счётчик процентов, который тикает каждый день».</span></div></div>
+        <div class="row win"><div class="k">против кого</div><div class="v">белое поле: ни одно из 19 брендинговых агентств не пакует «распродажу остатков». альтернатива клиента — DIY-инхаус, скидки на классифайдах, «ждать отскок ставки». прямых аналогов нет.</div></div>
+        <div class="row risk"><div class="k">риск (RAT)</div><div class="v">собственник верит в отскок ставки → контраргумент: пока эскроу не наполнен, ПФ не дешевеет. custom-risk: сможем ли реально сдвинуть распроданность — <strong>пруфа пока нет</strong> (см. раздел 05).</div></div>
+      </div>
+    </article>
+
+    <!-- Bundle 2 -->
+    <article class="bundle">
+      <div class="bundle-hd">
+        <div class="bundle-num">2</div>
+        <div class="bundle-name">активация агентского канала</div>
+        <span class="sig">Σ 26/30</span>
+        <span class="badge">ров · дифференциатор</span>
+      </div>
+      <div class="bundle-body">
+        <div class="row"><div class="k">сегмент</div><div class="v">девелопер с зависимостью от агентов 60–90% (норма 45–55%), любой сегмент. ЛПР — собственник (экономика канала) + коммерческий.</div></div>
+        <div class="row"><div class="k">Core Job</div><div class="v"><div class="job-box"><span class="lbl">i want to → in order to</span><br>«управлять агентским каналом как системой — вернуть баланс свой↔агент к 45–55% и перестать платить дважды», <strong>чтобы держать маржу при дорогом лиде</strong>. <span style="color:var(--b60)">критерии: доля прямых сделок ↑, двойная оплата (post-view) ↓.</span></div></div></div>
+        <div class="row mech"><div class="k">механика канона</div><div class="v"><span class="pill">kill a job</span> (убрать скрытую двойную оплату) <span class="pill">exit direct competition</span> — никто это не пакует, значит защитимая позиция и право на цену.</div></div>
+        <div class="row"><div class="k">состав</div><div class="v">диагностика канала (post-view + тайный покупатель) + баланс 45–55% + программа партнёров + обучение и возражения-2026 + кабинет агента.</div></div>
+        <div class="row"><div class="k">критерий успеха</div><div class="v">доля прямых сделок <span class="num">+X п.п.</span>; выявленная двойная оплата в ₽; конверсия свой↔агент.</div></div>
+        <div class="row"><div class="k">пруф · ROI-якорь</div><div class="v"><span class="num">100 сделок × 12 млн × 3,5% = 42 млн ₽/год</span> комиссии. если 36% «агентских» прогреты вашей же рекламой — до <span class="num">15 млн ₽</span> платится дважды. диагностика окупается на одном этом.</div></div>
+        <div class="row"><div class="k">вход · зонд</div><div class="v">диагностика канала (доля/конверсия свой↔агент + проверка двойной оплаты), 3–4 недели. <br><span class="hook">«вы платите дважды: 36% "агентских" сделок начались с вашей же рекламы».</span></div></div>
+        <div class="row win"><div class="k">против кого</div><div class="v">подтверждено данными: стратеги дают советы, «Этажи» — конфликт интересов, proptech — только данные; 19 агентств из тайного покупателя канал не трогают. чистое белое поле.</div></div>
+        <div class="row risk"><div class="k">риск (RAT)</div><div class="v">коммерческий воспримет как ревизию своей работы → заход через собственника (экономика канала) или как «усиление». custom-risk: доступ к данным атрибуции.</div></div>
+      </div>
+    </article>
+
+    <!-- Bundle 3 -->
+    <article class="bundle">
+      <div class="bundle-hd">
+        <div class="bundle-num">3</div>
+        <div class="bundle-name">конверсия вместо бюджета</div>
+        <span class="sig">Σ 26/30</span>
+        <span class="badge">широкий вход</span>
+      </div>
+      <div class="bundle-body">
+        <div class="row"><div class="k">сегмент</div><div class="v">девелопер с растущим CPL и стоящими продажами. ЛПР — маркетинг + коммерческий. по ABCDX — широкий B: лёгкий вход через перераспределение существующего бюджета.</div></div>
+        <div class="row"><div class="k">Core Job</div><div class="v"><div class="job-box"><span class="lbl">i want to → in order to</span><br>«поднять конверсию воронки лид→сделка на тех же деньгах», <strong>чтобы выполнить план без нового бюджета</strong>. <span style="color:var(--b60)">критерии: конверсия в целевой лид ↑ (32→44%+), стоимость сделки ↓, доля ботов ↓.</span></div></div></div>
+        <div class="row mech"><div class="k">механика канона</div><div class="v"><span class="pill">repair critical-chain break</span> (47% обратных звонков не доходят до разговора) <span class="pill">kill a job</span> (убрать трение сайта: «47 секунд», 4+ клика до лота).</div></div>
+        <div class="row"><div class="k">состав</div><div class="v">диагностика 3+ (воронка) + CJM + UX-аудит + сквозная аналитика + брендформанс.</div></div>
+        <div class="row"><div class="k">критерий успеха</div><div class="v">конверсия сайта/воронки <span class="num">+X%</span> от базовой; стоимость сделки ↓ на тех же лидах.</div></div>
+        <div class="row"><div class="k">пруф · ROI-якорь</div><div class="v">рыночный кейс: <span class="num">6,9 → 15,2%</span> на тех же лидах = удвоение бюджета без удвоения бюджета (честно маркируем: кейс рынка, не наш).</div></div>
+        <div class="row"><div class="k">вход · зонд</div><div class="v">UX-аудит сайта (180к, неделя) или аудит воронки — быстрый видимый результат. <br><span class="hook">«бюджет вырос, заявки подорожали, продажи стоят? дело не в бюджете — в воронке».</span></div></div>
+        <div class="row win"><div class="k">против кого</div><div class="v">брендинговые агентства делают «коммуникации», но не воронку/UX с ответственностью за конверсию. пересечение — с диджитал-подрядчиками, а не с 19 из исследования.</div></div>
+        <div class="row risk"><div class="k">риск (RAT)</div><div class="v">низкий чек на входе → лечится лестницей UX-аудит → диагностика → ретейнер на перформанс+брендформанс. custom-risk: доступ к CRM для сквозной аналитики.</div></div>
+      </div>
+    </article>
+
+    <!-- Bundle 4 -->
+    <article class="bundle">
+      <div class="bundle-hd">
+        <div class="bundle-num">4</div>
+        <div class="bundle-name">сделка без ипотеки</div>
+        <span class="sig">Σ 24/30 · новый</span>
+        <span class="badge">закрывает дыру канваса</span>
+      </div>
+      <div class="bundle-body">
+        <div class="row"><div class="k">сегмент</div><div class="v">девелопер, у кого сломалась ипотечная воронка (доля ипотеки в ДДУ 65,5→56%), высокая доля кэш и рассрочки. ЛПР — коммерческий + собственник.</div></div>
+        <div class="row"><div class="k">Core Job</div><div class="v"><div class="job-box"><span class="lbl">i want to → in order to</span><br>«собрать воронку под клиента с наличкой и рассрочкой — заместить умирающий рассрочечный/ипотечный трафик», <strong>чтобы держать план при сломанной ипотеке</strong>. <span style="color:var(--b60)">критерии: конверсия кэш/рассрочка-клиента ↑; расторжения по рассрочке ↓.</span></div></div></div>
+        <div class="row mech"><div class="k">механика канона</div><div class="v"><span class="pill">move to previous job</span> (перехват клиента на этапе выбора инструмента) <span class="pill">repair critical-chain break</span> (скоринг рассрочки против расторжений).</div></div>
+        <div class="row"><div class="k">состав</div><div class="v">аудит структуры сделок и финансовых инструментов + переупаковка оффера/прайса под кэш и рассрочку + скрипты и обучение ОП и агентов + лендинг «как купить без ипотеки» + риск-контроль рассрочки (скоринг клиента, защита от расторжений).</div></div>
+        <div class="row"><div class="k">критерий успеха</div><div class="v">доля сделок кэш/рассрочка <span class="num">↑</span>; расторжения <span class="num">↓</span>; маржа рассрочки под контролем скоринга.</div></div>
+        <div class="row"><div class="k">пруф · ROI-якорь</div><div class="v">70% клиентов смотрят только на стартовый платёж, 50%+ не считают финальную модель → рассрочка без скоринга = расторжения (кейсы возврата комиссии 624 и 206 тыс.&nbsp;₽). управляемая рассрочка = и продажи, и защита.</div></div>
+        <div class="row"><div class="k">вход · зонд</div><div class="v">аудит структуры сделок проекта, 2–3 недели: где теряете клиента с наличкой и рассрочкой. <br><span class="hook">«ипотечная воронка одобряет треть заявок. а под клиента с наличкой ваша воронка вообще собрана?»</span></div></div>
+        <div class="row win"><div class="k">против кого</div><div class="v">чистая продажно-финансовая тема — нулевое покрытие в Consideration Set из 19 агентств. единственная крупная боль канваса, под которую не было бандла.</div></div>
+        <div class="row risk"><div class="k">риск (RAT)</div><div class="v"><strong>самый высокий delivery-риск из четырёх:</strong> нужна финэкспертиза (траншевая, эскроу-графики) → усилить партнёрством/наймом; юр.рамка рассрочки быстро меняется → закладывать правовой апдейт в каждый проект.</div></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">04</span><h2 class="sec-t">настоящий продукт — это зонтик, а диагностики — зонды</h2></div>
+    <div class="card">
+      <p class="mini-p" style="margin:0 0 6px"><span class="lead-in">продукт-зонтик = флагман «выполнение плана продаж»</span> (2,5–10 млн/квартал), собранный вокруг Core&nbsp;Job собственника «распродать портфель и держать темп выборки эскроу». четыре бандла tier-1 — его грани, а не самостоятельные продукты.</p>
+      <p class="mini-p" style="margin:0"><span class="lead-in">по RAT диагностики tier-1 — не продукт, а зонды</span> (MVP = probe; критерий «риск проявился», а не «продалось»): дёшево проверяют флагман и генерят кейсы к окну Q4. твоя «лестница входа» уже методологически совпала с каноном:</p>
+      <div class="ladder">
+        <div class="step"><div class="s">шаг 0 · бесплатно</div><div class="st">калькулятор простоя</div><div class="sd">«сколько теряете на процентах за месяц». критический путь: ещё не собран.</div></div>
+        <div class="step"><div class="s">шаг 1 · 180к–1,6 млн</div><div class="st">диагностика · зонд</div><div class="sd">UX / воронка / канал / структура сделок. выход — карта потерь с цифрами и базовая линия.</div></div>
+        <div class="step"><div class="s">шаг 2 · квартал</div><div class="st">бандл tier-1</div><div class="sd">разморозка · канал · конверсия · без ипотеки. KPI фиксируем от базовой линии.</div></div>
+        <div class="step"><div class="s">шаг 3 · год</div><div class="st">флагман / ретейнер</div><div class="sd">выполнение плана продаж — продаётся в Q4 на кейсах шага 2.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-h"><span class="sec-n">05</span><h2 class="sec-t">RAT-лист лида «разморозка капитала» — что убить первым</h2></div>
+    <div class="card">
+      <p class="mini-p" style="margin:0 0 14px">положительно сформулированные допущения; цепочка причин-следствий от сегмента+Job; каждое падает от одного эксперимента. приоритет = <strong>P(риск сбудется) × цена, если сбудется ÷ цена проверки</strong>. проверяем то, что вверху.</p>
+      <ol class="rat">
+        <li>рынок затоваренных проектов существует и велик <span class="rlvl lo">риск низкий</span><br><span class="mini-p">&gt;30 млн м² с распроданностью ниже нормы, 34 региона дефицита — подтверждено данными.</span></li>
+        <li>собственники считают распродажу остатков приоритетом №1 и готовы платить за ускорение <span class="rlvl mid">риск средний</span><br><span class="mini-p">27% выполнили план — боль универсальна; но часть будет ждать «отскок ставки».</span></li>
+        <li>они купят диагностику Бюро под эту задачу (а не сделают инхаус / со стратегом) <span class="rlvl mid">риск средний</span></li>
+        <li>юнит-экономика: чек диагностики + ретейнер даёт целевую маржу 5–6 млн ₽/чел <span class="rlvl lo">риск низкий</span></li>
+        <li>есть повторяемый канал захода: ABM по данным ЕИСЖС/ДОМ.РФ «кому больно» + повод «сверим карту рынка» <span class="rlvl mid">риск средний</span></li>
+        <li class="kill">Бюро реально сдвигает распроданность на измеримую величину (<span class="num">+X п.п./квартал</span>) от базовой линии — и это фиксируется в договоре <span class="rlvl hi">убивающий · пруфа нет</span><br><span class="mini-p">на этом допущении висит весь портфель, а собственного кейса пока нет. исследование внешней среды прямо показало: на КП услуги выглядят одинаково, глубина видна только на кейсах — значит результат надо <strong>показать</strong>, а не заявить.</span></li>
+      </ol>
+      <div class="callout" style="border-left-color:var(--coral);margin-top:6px">
+        <p style="margin:0"><span class="pill coral">зонд</span> &nbsp;<strong>довести 1–2 tier-1 диагностики до цифрового результата на реальном клиенте до 1 октября.</strong> критерий зонда — «риск проявился» (сдвинули / не сдвинули), а не «продалось». это и есть «сделать продукт» в исходном смысле — не собрать ещё один бандл, а получить первую строку пруфа.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="foot">
+    <p style="margin:0 0 4px"><strong>источники (файлы в папке).</strong> VPC&nbsp;Бюро&nbsp;Сучкова/Бандлы_что_собирать_сейчас.html · 00_Исследование_и_синтез_VPC.md · Ревью_VPC_и_маркетинга_2026-07-02.md · исследования/конкуренты/Внешняя&nbsp;среда&nbsp;–&nbsp;итоги.pdf (19 агентств) · канон Next-Move-Theory-Canon (AJTBD · ABCDX · RAT · Алгоритм).</p>
+    <div class="navrow">
+      <a href="index.html">← всё оглавление</a>
+      <a href="Бандлы_что_собирать_сейчас.html">бандлы: скоринг 6 осей</a>
+      <a href="Value_Proposition_Canvas.html">Value Proposition Canvas</a>
+      <a href="Маркетинговая_воронка_и_приоритеты.html">воронка и приоритеты</a>
+    </div>
+    <div class="note">переупаковка — рабочая гипотеза к обсуждению: сегменты, Jobs и механики уточняются на интервью с реальными плательщиками. слой Consideration Set — внутренний (по дисклеймеру исследования). пересборка — квартальная, к 1 октября 2026.</div>
+  </footer>
+
+</div>
+<script data-mobile-legibility="4">
+/* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
+(function(){
+  function fix(){
+    if(window.innerWidth>480)return;
+    var els=document.body.querySelectorAll('*');
+    for(var i=0;i<els.length;i++){
+      var el=els[i], cs=getComputedStyle(el);
+      if(el.closest&&el.closest('[data-vpc-menu]'))continue; /* меню управляет своей адаптивностью само */
+      /* тесный многоколоночный grid → одна колонка (иначе текст не влезает и рвёт вёрстку) */
+      if(cs.display==='grid'){
+        var cols=cs.gridTemplateColumns.split(' ').filter(Boolean);
+        if(cols.length>=2){
+          var min=Infinity;
+          for(var c=0;c<cols.length;c++){var v=parseFloat(cols[c]);if(!isNaN(v)&&v<min)min=v;}
+          if(min<150)el.style.setProperty('grid-template-columns','1fr','important');
+        }
+      }
+      /* flex-ряды без переноса → разрешаем перенос */
+      if((cs.display==='flex'||cs.display==='inline-flex')&&cs.flexWrap==='nowrap'){
+        el.style.setProperty('flex-wrap','wrap','important');
+      }
+      /* пол шрифта у элементов с собственным видимым текстом */
+      var own=false;
+      for(var n=0;n<el.childNodes.length;n++){
+        var nd=el.childNodes[n];
+        if(nd.nodeType===3&&nd.textContent.trim()){own=true;break;}
+      }
+      if(!own)continue;
+      var fs=parseFloat(cs.fontSize);
+      if(fs&&fs<14){
+        el.style.setProperty('font-size','14px','important');
+        if(!(parseFloat(cs.lineHeight)/fs>=1.4))el.style.setProperty('line-height','1.45','important');
+      }
+    }
+  }
+  if(document.readyState!=='loading')fix();
+  else document.addEventListener('DOMContentLoaded',fix);
+})();
+</script>
+<!--vpcm:start-->
+<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">VPC × девелоперы</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><a class="vpcm-home" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg><span>всё оглавление</span><span class="vpcm-ha">↗</span></a><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-num">01</span><span class="vpcm-st">канвас и стратегия</span></div><a class="vpcm-item" href="Value_Proposition_Canvas.html"><span class="vpcm-it">Value Proposition Canvas</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="VPC_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D1%8C%D0%B4%D0%B5%D1%80%D0%B0.html"><span class="vpcm-it">шаблон Остервальдера</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="00_%D0%98%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D1%81%D0%B8%D0%BD%D1%82%D0%B5%D0%B7_VPC.md"><span class="vpcm-it">исследование и синтез</span><span class="vpcm-ic">▤</span></a></div><div class="vpcm-sec" style="--s:1"><div class="vpcm-sh"><span class="vpcm-num">02</span><span class="vpcm-st">маркетинг и продажи</span></div><a class="vpcm-item" href="%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B0_%D0%B8_%D0%BF%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B.html"><span class="vpcm-it">маркетинговая воронка &amp; приоритеты</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BA%D0%B0%D1%80%D1%82%D0%B0_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">боевая карта продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%90%D0%B3%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB_%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B_%D0%B8_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F.html"><span class="vpcm-it">агентский канал: проблемы и решения</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B0%D0%BD%D0%B4%D0%BB%D1%8B_%D1%87%D1%82%D0%BE_%D1%81%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%82%D1%8C_%D1%81%D0%B5%D0%B9%D1%87%D0%B0%D1%81.html"><span class="vpcm-it">бандлы: что собирать сейчас</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:2"><div class="vpcm-sh"><span class="vpcm-num">03</span><span class="vpcm-st">лид-магниты · для девелоперов</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B5%D0%BD%D1%87%D0%BC%D0%B0%D1%80%D0%BA_%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C_%D0%BB%D0%B8%D0%B4%D0%B0_%D0%B8_%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B8_2026.html"><span class="vpcm-it">бенчмарк: стоимость лида и сделки 2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9F%D0%BB%D0%B5%D0%B9%D0%B1%D1%83%D0%BA_%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F_2026.html"><span class="vpcm-it">плейбук: возражения-2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:3"><div class="vpcm-sh"><span class="vpcm-num">04</span><span class="vpcm-st">материалы для печати и встреч</span></div><a class="vpcm-item" href="VPC_%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80.pdf"><span class="vpcm-it">VPC-постер</span><span class="vpcm-ic">⤓</span></a><a class="vpcm-item" href="VPC_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx"><span class="vpcm-it">презентация</span><span class="vpcm-ic">⤓</span></a></div><div class="vpcm-sec" style="--s:4"><div class="vpcm-sh"><span class="vpcm-num">05</span><span class="vpcm-st">рынок</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
+<style>
+.vpcm,.vpcm *{box-sizing:border-box;font-family:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+.vpcm-trigger{position:fixed;left:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:99998;display:inline-flex;align-items:center;gap:8px;background:#171AD9;color:#fff;font-size:14px;font-weight:600;letter-spacing:-.2px;line-height:1;border:0;cursor:pointer;padding:11px 16px 11px 13px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.20);-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,opacity .2s}
+.vpcm-trigger:hover{background:#2F32F2;transform:translateY(-1px)}
+.vpcm-trigger:active{transform:translateY(0)}
+.vpcm-trigger svg{display:block}
+.vpcm-trigger:focus-visible{outline:2px solid #171AD9;outline-offset:3px}
+.vpcm[data-open] .vpcm-trigger{opacity:0;pointer-events:none;transform:translateY(8px)}
+.vpcm-scrim{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .24s cubic-bezier(.4,0,.2,1),visibility .24s}
+.vpcm[data-open] .vpcm-scrim{opacity:1;visibility:visible}
+.vpcm-panel{position:fixed;top:0;left:0;z-index:99999;height:100%;height:100dvh;width:min(87vw,384px);background:#fff;box-shadow:0 8px 46px rgba(0,0,0,.24);display:flex;flex-direction:column;color:#000;letter-spacing:-.3px;transform:translateX(-102%);transition:transform .3s cubic-bezier(.4,0,.2,1);will-change:transform}
+.vpcm[data-open] .vpcm-panel{transform:translateX(0)}
+.vpcm-hd{display:flex;align-items:center;gap:11px;padding:calc(20px + env(safe-area-inset-top,0px)) 18px 14px}
+.vpcm-mk{width:32px;height:32px;border-radius:9px;background:#171AD9;flex:none;display:flex;align-items:center;justify-content:center;position:relative}
+.vpcm-mk::after{content:"";position:absolute;right:-2px;bottom:-2px;width:9px;height:9px;border-radius:50%;background:#FC5741;box-shadow:0 0 0 2px #fff}
+.vpcm-ttl{min-width:0}
+.vpcm-wm{font-size:16px;font-weight:600;letter-spacing:-.5px;line-height:1}
+.vpcm-sub{font-size:12px;color:rgba(0,0,0,.42);margin-top:3px;line-height:1}
+.vpcm-close{margin-left:auto;width:38px;height:38px;border-radius:999px;border:0;background:#F0F0F0;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;transition:background .15s,transform .15s}
+.vpcm-close:hover{background:#E3E3E3;transform:rotate(90deg)}
+.vpcm-close:focus-visible{outline:2px solid #171AD9;outline-offset:2px}
+.vpcm-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 12px calc(24px + env(safe-area-inset-bottom,0px));flex:1}
+.vpcm-home{display:flex;align-items:center;gap:10px;margin:4px 4px 6px;padding:13px 15px;border-radius:14px;background:rgba(23,26,217,.08);color:#171AD9;text-decoration:none;font-size:14.5px;font-weight:600;transition:background .16s cubic-bezier(.4,0,.2,1),transform .16s}
+.vpcm-home:hover{background:rgba(23,26,217,.15);transform:translateX(2px)}
+.vpcm-home:focus-visible{outline:2px solid #171AD9;outline-offset:2px}
+.vpcm-home svg{flex:none}
+.vpcm-home .vpcm-ha{margin-left:auto;font-size:15px}
+.vpcm-sec{padding:0 4px;margin-top:14px}
+.vpcm-sec + .vpcm-sec{border-top:1px solid rgba(0,0,0,.07);padding-top:12px}
+.vpcm-sh{display:flex;align-items:baseline;gap:9px;padding:0 11px 5px}
+.vpcm-num{font-size:12px;font-weight:600;color:#FC5741;letter-spacing:0}
+.vpcm-st{font-size:12.5px;font-weight:600;color:rgba(0,0,0,.46);letter-spacing:-.1px}
+.vpcm-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;text-decoration:none;color:#000;transition:background .15s cubic-bezier(.4,0,.2,1),transform .15s}
+.vpcm-item:hover{background:#F0F0F0;transform:translateX(2px)}
+.vpcm-item:focus-visible{outline:2px solid #171AD9;outline-offset:-2px}
+.vpcm-it{flex:1 1 auto;min-width:0;font-size:14.5px;font-weight:500;line-height:1.25}
+.vpcm-ic{flex:none;margin-left:auto;color:#A6A6A6;font-size:15px}
+.vpcm-item.vpcm-active{background:rgba(23,26,217,.07);color:#171AD9;box-shadow:inset 3px 0 0 #FC5741}
+.vpcm-item.vpcm-active .vpcm-it{font-weight:600}
+.vpcm-item.vpcm-active .vpcm-ic{color:#171AD9}
+.vpcm-ft{margin:20px 8px 4px;font-size:12px;color:rgba(0,0,0,.36)}
+.vpcm-ft span{color:#FC5741}
+.vpcm-body .vpcm-home,.vpcm-body .vpcm-sec{opacity:0;transform:translateY(10px);transition:opacity .34s cubic-bezier(.4,0,.2,1),transform .34s cubic-bezier(.4,0,.2,1)}
+.vpcm[data-open] .vpcm-body .vpcm-home{opacity:1;transform:none;transition-delay:.10s}
+.vpcm[data-open] .vpcm-body .vpcm-sec{opacity:1;transform:none;transition-delay:calc(.14s + var(--s) * .05s)}
+@media print{.vpcm{display:none!important}}
+@media (prefers-reduced-motion:reduce){
+ .vpcm-trigger,.vpcm-scrim,.vpcm-panel,.vpcm-body .vpcm-home,.vpcm-body .vpcm-sec,.vpcm-item,.vpcm-home,.vpcm-close{transition-duration:.001ms!important;transition-delay:0!important}
+}
+</style>
+<script>
+(function(){
+  var w=document.querySelector('.vpcm[data-vpc-menu]');
+  if(!w)return;
+  var trigger=w.querySelector('.vpcm-trigger'),panel=w.querySelector('.vpcm-panel'),
+      scrim=w.querySelector('.vpcm-scrim'),closeBtn=w.querySelector('.vpcm-close'),last=null;
+  function setOpen(o){
+    if(o){
+      last=document.activeElement;
+      w.setAttribute('data-open','');
+      trigger.setAttribute('aria-expanded','true');
+      panel.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow='hidden';
+      setTimeout(function(){closeBtn.focus();},30);
+    }else{
+      w.removeAttribute('data-open');
+      trigger.setAttribute('aria-expanded','false');
+      panel.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow='';
+      if(last&&last.focus){last.focus();}else{trigger.focus();}
+    }
+  }
+  trigger.addEventListener('click',function(){setOpen(true);});
+  closeBtn.addEventListener('click',function(){setOpen(false);});
+  scrim.addEventListener('click',function(){setOpen(false);});
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.keyCode===27)&&w.hasAttribute('data-open'))setOpen(false);
+  });
+  panel.addEventListener('keydown',function(e){
+    if(e.key!=='Tab'&&e.keyCode!==9)return;
+    var f=panel.querySelectorAll('a[href],button');
+    if(!f.length)return;
+    var first=f[0],lf=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();lf.focus();}
+    else if(!e.shiftKey&&document.activeElement===lf){e.preventDefault();first.focus();}
+  });
+  try{
+    var cur=decodeURIComponent((location.pathname.split('/').pop()||''));
+    var it=panel.querySelectorAll('.vpcm-item');
+    for(var i=0;i<it.length;i++){
+      var href=decodeURIComponent(it[i].getAttribute('href')||'');
+      if(href&&href===cur){it[i].classList.add('vpcm-active');it[i].setAttribute('aria-current','page');}
+    }
+  }catch(e){}
+})();
+</script>
+<!--vpcm:end-->
+</body>
+</html>
