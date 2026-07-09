@@ -121,6 +121,9 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .glock-card{position:sticky;top:24px;background:#fff;border-radius:20px;padding:24px 26px;max-width:500px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 0 0 1px rgba(0,0,0,.07)}
 .glock-t{margin:6px 0;font-weight:800;font-size:17px}
 .glock-d{margin:0 0 14px;font-size:13.5px;color:var(--b60);line-height:1.5}
+.cap-what{display:grid;gap:7px;margin-top:10px}
+.cw{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--b60);line-height:1.45}
+.cw-k{flex:none;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);background:var(--blue-6);border-radius:var(--pill);padding:3px 9px}
 .cap-f{display:flex;flex-direction:column;gap:5px;min-width:0}
 .cap-f label{font-size:12px;font-weight:700;color:var(--b60)}
 .cap-grid{align-items:end}
@@ -246,8 +249,11 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     <!-- SOFT CAPTURE -->
     <div class="capture no-print">
       <div id="capStage1">
-        <p style="margin:0;font-weight:800;font-size:17px">полная карта потерь — за контакт</p>
-        <p style="margin:6px 0 0;color:var(--b60);font-size:14px">оставьте контакт — полный разбор откроется сразу, а Бюро вернётся с коротким комментарием по вашей карте потерь.</p>
+        <p style="margin:0;font-weight:800;font-size:18px" id="capTitle">полная карта воронки по 8 стадиям — что в норме, а что тянет вниз</p>
+        <div class="cap-what">
+          <div class="cw"><span class="cw-k">сразу</span><span>полная карта по 8 стадиям — что в норме, где риск и где утечка, в цифрах</span></div>
+          <div class="cw"><span class="cw-k">дальше</span><span>Бюро смотрит ваши цифры и возвращается с коротким комментарием по точкам роста</span></div>
+        </div>
         <form id="capForm">
           <div class="cap-grid">
             <div class="cap-f"><label for="cName">имя</label><input type="text" id="cName" placeholder="Александр" autocomplete="name"></div>
@@ -256,7 +262,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
             <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
           </div>
         </form>
-        <p class="muted">жмёте кнопку — полный разбор открывается сразу. без рассылок и подтверждений; расчёт остаётся у вас в браузере.</p>
+        <p class="muted">без рассылок и спама. расчёт остаётся у вас в браузере.</p>
       </div>
       <div id="capStage2" class="hidden">
         <div id="capThanks" style="font-weight:600;color:var(--green)"></div>
@@ -418,6 +424,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       $('heroSub').textContent='воронка близка к норме сильного игрока — точечные утечки смотрите ниже по стадиям.';
       $('heroDeals').textContent='0'; $('heroPctChip').innerHTML='разрыв до сильной воронки: <b>нет</b>';
       last.moneyStr='крупных потерь по сквозной не видно';
+      last.moneyShort=null;
     } else {
       var deals=v('leads')*v('through')/100;
       var curRev=deals*v('price')*12;
@@ -431,6 +438,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
         $('heroPctChip').innerHTML='разрыв до сильной воронки: <b>'+xStr+'</b>';
         $('heroSub').textContent='консервативная оценка (+60% к текущим продажам). полный разрыв до рыночной нормы — '+xStr+': это уже не донастройка, а пересборка воронки. реальный потолок считаем на диагностике.';
         last.moneyStr=money(capRev)+'+ в год (консервативная оценка)';
+        last.moneyShort=money(capRev)+'+';
       } else {
         var mstr=r.lostRevLow>0?(money(r.lostRevLow)+' – '+money(r.lostRevHigh)):('до '+money(r.lostRevHigh));
         hb.innerHTML='воронка недобирает <span class="u">'+mstr+'</span> в год';
@@ -438,6 +446,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
         $('heroPctChip').innerHTML='это <b>'+(r.pctLow>0?('+'+Math.round(r.pctLow)+'–'+Math.round(r.pctHigh)+'%'):('до +'+Math.round(r.pctHigh)+'%'))+'</b> к текущим продажам';
         $('heroSub').textContent='грубая оценка сверху при доведении сквозной до 8–10% (агентский бенчмарк 9%, рыночный кейс 6,9→15,2%). точная цифра — на диагностике.';
         last.moneyStr=mstr+' в год';
+        last.moneyShort='до '+money(r.lostRevHigh);
       }
     }
     $('heroWaste').textContent=money(r.waste);
@@ -450,6 +459,11 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     var miss=TOTAL-filledCount();
     if(miss>0)an+=' <span style="color:var(--coral)">'+miss+' из '+TOTAL+' полей посчитаны по рыночным средним — внесите свои цифры, оценка станет точнее.</span>';
     $('annot').innerHTML=an;
+    var ct=$('capTitle');
+    if(ct){
+      if(last.moneyShort)ct.innerHTML='где именно утекают <span style="color:var(--coral)">'+last.moneyShort+' в год</span> — покажет полная карта';
+      else ct.textContent='полная карта воронки по 8 стадиям — что в норме, а что тянет вниз';
+    }
     // строки по стадиям
     var html='';
     r.rows.forEach(function(x){
