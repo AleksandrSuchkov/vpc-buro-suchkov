@@ -90,6 +90,33 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .cap-grid input[type=text]{font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:var(--r-sm);border:none;box-shadow:var(--hair);background:#fff}
 .muted{font-size:12px;color:var(--b40);margin-top:8px}
 .hidden{display:none}
+/* — интерактив: ввод, гейт, реакции — */
+.field .inp{width:100%;font-family:var(--font);font-size:16px;font-weight:600;letter-spacing:-.2px;color:#000;background:#fff;border:1.5px solid rgba(0,0,0,.16);border-radius:12px;padding:12px 14px;outline:none;transition:border-color .15s,box-shadow .15s;box-sizing:border-box}
+.field .inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,26,217,.12)}
+.field .inp::placeholder{color:rgba(0,0,0,.32);font-weight:500}
+.field label .unit{color:var(--b60);font-weight:500;font-size:12.5px}
+.calc-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:18px}
+#fillProgress{font-size:13px;color:var(--b60);text-align:center}
+.btn-ghost{background:none;border:none;font-family:var(--font);font-size:13.5px;font-weight:600;color:var(--blue);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;padding:4px 8px}
+.btn-ghost:hover{color:var(--blue-hover,#2F32F2)}
+.veiled{display:none}
+.reveal{animation:vpcup .5s cubic-bezier(.4,0,.2,1)}
+@keyframes vpcup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.annot{margin-top:12px;font-size:14px;line-height:1.5;color:rgba(0,0,0,.72);background:var(--gray);border-radius:12px;padding:11px 14px}
+.gated{position:relative;margin-bottom:14px}
+.gated .gwrap{filter:blur(8px);pointer-events:none;user-select:none}
+.gated.open .gwrap{filter:none;pointer-events:auto;user-select:auto}
+.glock{position:absolute;inset:0;z-index:2;display:flex;align-items:flex-start;justify-content:center;padding:34px 18px}
+.gated.open .glock{display:none}
+.glock-card{position:sticky;top:24px;background:#fff;border-radius:20px;padding:24px 26px;max-width:500px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 0 0 1px rgba(0,0,0,.07)}
+.glock-t{margin:6px 0;font-weight:800;font-size:17px}
+.glock-d{margin:0 0 14px;font-size:13.5px;color:var(--b60);line-height:1.5}
+.shake{animation:vpcshake .28s ease 2}
+@keyframes vpcshake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(max-width:640px){
+  .row{grid-template-columns:26px 1fr}
+  .row .rt{grid-column:2;text-align:left;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+}
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--b10);font-size:12.5px;color:var(--b60)}
 .wm{font-weight:800;letter-spacing:-.01em}
 @media print{
@@ -106,7 +133,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   <header>
     <span class="eyebrow">● Бюро Сучкова · экспресс-диагностика · 2026</span>
     <h1>где ваша воронка продаж теряет деньги</h1>
-    <p class="dek">2 минуты по вашим цифрам — и вы видите карту потерь по стадиям лид → разговор → бронь → сделка, в рублях и в сравнении со средними по рынку девелопмента 2026. поля заполнены рыночными средними — замените на свои.</p>
+    <p class="dek">2 минуты по вашим цифрам — и вы видите, сколько воронка недобирает в год. внесите свои данные (пустые поля посчитаем по рыночным средним 2026) и нажмите «получить оценку»: скоринг, аннотация и 3 первые рекомендации — сразу. полная карта по стадиям и остальные рекомендации — за контакт.</p>
     <span class="tag2min">⚡ мгновенный результат · без регистрации · считается у вас в браузере</span>
   </header>
 
@@ -125,32 +152,36 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       <div class="form-grid">
 
         <div class="blk-t">экономика проекта</div>
-        <div class="field"><label>средняя цена лота <span class="val"><span id="vPrice">12</span> млн ₽</span></label><input type="range" id="price" min="3" max="80" step="1" value="12"><div class="hint">средний чек сделки</div></div>
-        <div class="field"><label>обращений (лидов) в месяц <span class="val"><span id="vLeads">800</span></span></label><input type="range" id="leads" min="100" max="5000" step="50" value="800"><div class="hint">все входящие обращения по всем каналам</div></div>
-        <div class="field"><label>маркетинговый бюджет в месяц <span class="val"><span id="vBudget">3</span> млн ₽</span></label><input type="range" id="budget" min="0.5" max="30" step="0.5" value="3"><div class="hint">digital + классифайды + прочее</div></div>
+        <div class="field"><label for="price">средняя цена лота <span class="unit">млн ₽</span></label><input type="text" class="inp" id="price" inputmode="decimal" placeholder="рынок: 12"><div class="hint">средний чек сделки</div></div>
+        <div class="field"><label for="leads">обращений (лидов) в месяц</label><input type="text" class="inp" id="leads" inputmode="numeric" placeholder="рынок: 800"><div class="hint">все входящие обращения по всем каналам</div></div>
+        <div class="field"><label for="budget">маркетинговый бюджет в месяц <span class="unit">млн ₽</span></label><input type="text" class="inp" id="budget" inputmode="decimal" placeholder="рынок: 3"><div class="hint">digital + классифайды + прочее</div></div>
 
         <div class="blk-t">трафик и лиды</div>
-        <div class="field"><label>стоимость целевого лида <span class="val"><span id="vCpl">18</span> тыс ₽</span></label><input type="range" id="cpl" min="3" max="80" step="1" value="18"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
-        <div class="field"><label>доля ботов и фрода в бюджете <span class="val"><span id="vBots">30</span>%</span></label><input type="range" id="bots" min="0" max="60" step="1" value="30"><div class="hint">на рынке — до 50% digital-бюджета</div></div>
+        <div class="field"><label for="cpl">стоимость целевого лида <span class="unit">тыс ₽</span></label><input type="text" class="inp" id="cpl" inputmode="decimal" placeholder="рынок: 18"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
+        <div class="field"><label for="bots">доля ботов и фрода в бюджете <span class="unit">%</span></label><input type="text" class="inp" id="bots" inputmode="decimal" placeholder="рынок: 30"><div class="hint">на рынке — до 50% digital-бюджета</div></div>
 
         <div class="blk-t">квалификация и обработка</div>
-        <div class="field"><label>конверсия обращение → целевой лид <span class="val"><span id="vQual">32</span>%</span></label><input type="range" id="qual" min="10" max="60" step="1" value="32"><div class="hint">рынок 32%, норма ≥ 35–40%</div></div>
-        <div class="field"><label>доходимость лид → разговор <span class="val"><span id="vReach">47</span>%</span></label><input type="range" id="reach" min="20" max="100" step="1" value="47"><div class="hint">до разговора доходит ~47% обратных звонков</div></div>
-        <div class="field"><label>скорость первого перезвона</label><select id="callback"><option value="15">в течение 15 минут</option><option value="day" selected>в тот же день</option><option value="later">на следующий день и позже</option><option value="never">часто не перезваниваем</option></select><div class="hint">только 11% перезвонили по пропущенному — самая дешёвая починка</div></div>
+        <div class="field"><label for="qual">конверсия обращение → целевой лид <span class="unit">%</span></label><input type="text" class="inp" id="qual" inputmode="decimal" placeholder="рынок: 32"><div class="hint">рынок 32%, норма ≥ 35–40%</div></div>
+        <div class="field"><label for="reach">доходимость лид → разговор <span class="unit">%</span></label><input type="text" class="inp" id="reach" inputmode="decimal" placeholder="рынок: 47"><div class="hint">до разговора доходит ~47% обратных звонков</div></div>
+        <div class="field"><label>скорость первого перезвона</label><select id="callback"><option value="" selected>— выберите —</option><option value="15">в течение 15 минут</option><option value="day">в тот же день</option><option value="later">на следующий день и позже</option><option value="never">часто не перезваниваем</option></select><div class="hint">только 11% перезвонили по пропущенному — самая дешёвая починка</div></div>
 
         <div class="blk-t">сделки и каналы</div>
-        <div class="field"><label>сквозная конверсия лид → сделка <span class="val"><span id="vThrough">6</span>%</span></label><input type="range" id="through" min="1" max="20" step="0.5" value="6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
-        <div class="field"><label>доля сделок через агентов <span class="val"><span id="vAgent">80</span>%</span></label><input type="range" id="agent" min="20" max="100" step="1" value="80"><div class="hint">норма здорового баланса 45–55%</div></div>
-        <div class="field"><label>комиссия агентам <span class="val"><span id="vComm">3,5</span>%</span></label><input type="range" id="comm" min="2" max="6" step="0.1" value="3.5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
-        <div class="field"><label>доля ипотеки в сделках <span class="val"><span id="vMort">56</span>%</span></label><input type="range" id="mort" min="20" max="90" step="1" value="56"><div class="hint">упала 65,5 → 56%; отказ по рыночной ипотеке ~60%</div></div>
+        <div class="field"><label for="through">сквозная конверсия лид → сделка <span class="unit">%</span></label><input type="text" class="inp" id="through" inputmode="decimal" placeholder="рынок: 6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
+        <div class="field"><label for="agent">доля сделок через агентов <span class="unit">%</span></label><input type="text" class="inp" id="agent" inputmode="decimal" placeholder="рынок: 80"><div class="hint">норма здорового баланса 45–55%</div></div>
+        <div class="field"><label for="comm">комиссия агентам <span class="unit">%</span></label><input type="text" class="inp" id="comm" inputmode="decimal" placeholder="рынок: 3,5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
+        <div class="field"><label for="mort">доля ипотеки в сделках <span class="unit">%</span></label><input type="text" class="inp" id="mort" inputmode="decimal" placeholder="рынок: 56"><div class="hint">упала 65,5 → 56%; отказ по рыночной ипотеке ~60%</div></div>
 
       </div>
-      <div class="center"><button class="btn btn-primary" id="calcBtn">показать карту потерь ↓</button></div>
+      <div class="center calc-zone">
+        <div id="fillProgress">заполнено 0 из 12 — пустые поля посчитаем по рыночным средним</div>
+        <button class="btn btn-primary" id="calcBtn">получить оценку воронки →</button>
+        <button class="btn-ghost" type="button" id="fillAvg">заполнить всё рыночными средними</button>
+      </div>
     </div>
   </section>
 
   <!-- RESULTS -->
-  <section class="sec" id="results">
+  <section class="sec veiled" id="results">
     <div class="sec-h"><span class="sec-n">02</span><h2 class="sec-t">ваша карта потерь</h2></div>
 
     <div class="card" style="margin-bottom:14px">
@@ -164,43 +195,60 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
             <span class="chip">это <b id="heroPct">—</b> к текущим продажам</span>
             <span class="chip">переплаты бюджета: <b id="heroWaste">—</b>/год</span>
           </div>
+          <div class="annot" id="annot"></div>
         </div>
       </div>
-    </div>
-
-    <div class="card" style="margin-bottom:14px">
-      <p style="margin:0 0 6px;font-weight:700">по стадиям — где и сколько утекает</p>
-      <div id="rows"></div>
     </div>
 
     <div class="card" style="margin-bottom:14px">
       <p style="margin:0 0 10px;font-weight:700">3 самые дешёвые починки — начать с них</p>
       <ol class="fixes" id="fixes"></ol>
+      <p class="muted" style="margin:10px 0 0">это 3 из 8 рекомендаций — остальные и полная карта по стадиям открываются ниже</p>
     </div>
 
-    <div class="card">
-      <p style="margin:0 0 10px;font-weight:700">прямые потери бюджета (считаются отдельно от недобора выручки)</p>
-      <div class="waste">
-        <div class="wcard"><div class="wn" id="wOverpay">—</div><div class="wl">переплата за лид выше нормы 20 тыс ₽</div></div>
-        <div class="wcard"><div class="wn" id="wBots">—</div><div class="wl">бюджет, сожжённый ботами и фродом</div></div>
-        <div class="wcard"><div class="wn" id="wDouble">—</div><div class="wl">потенциальная двойная оплата: 36% «агентских» сделок начались с вашей рекламы</div></div>
+    <div class="gated" id="gated">
+      <div class="gwrap">
+        <div class="card" style="margin-bottom:14px">
+          <p style="margin:0 0 6px;font-weight:700">по стадиям — где и сколько утекает</p>
+          <div id="rows"></div>
+        </div>
+        <div class="card" style="margin-bottom:14px">
+          <p style="margin:0 0 10px;font-weight:700">остальные рекомендации — под вашу карту потерь</p>
+          <ol class="fixes" id="fixesMore" style="counter-reset:f 3"></ol>
+        </div>
+        <div class="card">
+          <p style="margin:0 0 10px;font-weight:700">прямые потери бюджета (считаются отдельно от недобора выручки)</p>
+          <div class="waste">
+            <div class="wcard"><div class="wn" id="wOverpay">—</div><div class="wl">переплата за лид выше нормы 20 тыс ₽</div></div>
+            <div class="wcard"><div class="wn" id="wBots">—</div><div class="wl">бюджет, сожжённый ботами и фродом</div></div>
+            <div class="wcard"><div class="wn" id="wDouble">—</div><div class="wl">потенциальная двойная оплата: 36% «агентских» сделок начались с вашей рекламы</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="glock no-print">
+        <div class="glock-card">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#171AD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+          <p class="glock-t">полный разбор закрыт</p>
+          <p class="glock-d">внутри — карта потерь по 8 стадиям с вердиктами, прямые потери бюджета (фрод · переплата за лид · двойная оплата агентов) и ещё 5 рекомендаций под ваши цифры</p>
+          <button class="btn btn-blue" id="unlockBtn">получить полный разбор →</button>
+        </div>
       </div>
     </div>
 
     <!-- SOFT CAPTURE -->
     <div class="capture no-print">
-      <p style="margin:0;font-weight:800;font-size:17px">получить расширенный отчёт с вашими цифрами и планом починки</p>
-      <p style="margin:6px 0 0;color:var(--b60);font-size:14px">PDF на 1 страницу: ваша карта потерь + приоритеты + benchmark-таблица 2026. результат выше уже доступен — контакты по желанию, если хотите разбор от Бюро.</p>
+      <p style="margin:0;font-weight:800;font-size:17px">полный разбор + все рекомендации — за контакт</p>
+      <p style="margin:6px 0 0;color:var(--b60);font-size:14px">оставьте контакт — полный разбор откроется сразу, а Бюро вернётся с коротким комментарием по вашей карте потерь. дальше по желанию — экспресс-диагностика воронки (шаг 1).</p>
       <form id="capForm">
         <div class="cap-grid">
           <input type="text" id="cName" placeholder="имя" autocomplete="name">
           <input type="text" id="cPhone" placeholder="телефон или @telegram" autocomplete="tel">
           <input type="text" id="cCompany" placeholder="компания / проект" autocomplete="organization">
-          <button class="btn btn-blue" type="submit">получить PDF →</button>
+          <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
         </div>
       </form>
       <div id="capThanks" class="hidden" style="margin-top:12px;font-weight:600;color:var(--green)"></div>
-      <p class="muted">контакты никуда не отправляются автоматически — форма подключается к вашей CRM/почте на стороне сайта. кнопка «получить PDF» открывает печать → «сохранить как PDF».</p>
+      <p class="muted">жмёте кнопку — полный разбор открывается сразу, а в вашей почте появляется готовое письмо-заявка с вашими цифрами: отправить его — одно нажатие. сам расчёт остаётся у вас в браузере. PDF-версия: Cmd/Ctrl+P.</p>
       <div class="center" style="margin-top:14px">
         <button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику воронки (шаг 1) →</button>
       </div>
@@ -227,54 +275,61 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     return rub.format(n)+' ₽';
   }
   function num(n){return rub.format(Math.round(n));}
-  // inputs
-  var ID=['price','leads','budget','cpl','bots','qual','reach','through','agent','comm','mort'];
-  var LBL={price:'vPrice',leads:'vLeads',budget:'vBudget',cpl:'vCpl',bots:'vBots',qual:'vQual',reach:'vReach',through:'vThrough',agent:'vAgent',comm:'vComm',mort:'vMort'};
-  function v(id){return parseFloat($(id).value);}
-  function syncLabels(){
-    $('vPrice').textContent=v('price');
-    $('vLeads').textContent=num(v('leads'));
-    $('vBudget').textContent=String(v('budget')).replace('.',',');
-    $('vCpl').textContent=v('cpl');
-    $('vBots').textContent=v('bots');
-    $('vQual').textContent=v('qual');
-    $('vReach').textContent=v('reach');
-    $('vThrough').textContent=String(v('through')).replace('.',',');
-    $('vAgent').textContent=v('agent');
-    $('vComm').textContent=String(v('comm')).replace('.',',');
-    $('vMort').textContent=v('mort');
+  // поля: d = рыночное среднее (плейсхолдер), mn/mx = клампы
+  var FLD=[
+    {id:'price',d:12,mn:1,mx:200},{id:'leads',d:800,mn:10,mx:20000},{id:'budget',d:3,mn:0.1,mx:100},
+    {id:'cpl',d:18,mn:1,mx:150},{id:'bots',d:30,mn:0,mx:80},{id:'qual',d:32,mn:5,mx:90},
+    {id:'reach',d:47,mn:10,mx:100},{id:'through',d:6,mn:0.5,mx:25},{id:'agent',d:80,mn:0,mx:100},
+    {id:'comm',d:3.5,mn:1,mx:8},{id:'mort',d:56,mn:10,mx:95}
+  ];
+  var F={}; FLD.forEach(function(f){F[f.id]=f;});
+  var TOTAL=FLD.length+1; // + скорость перезвона
+  function raw(id){
+    var s=($(id).value||'').trim().replace(/\s+/g,'').replace(',','.');
+    if(s==='')return null;
+    var n=parseFloat(s);
+    return isNaN(n)?null:n;
   }
-  // scoring band: returns {c:'g|a|r', t:'text'}
-  function band(val, greenOk, amberOk){ // greenOk(val)->bool, amberOk(val)->bool
-    if(greenOk(val))return 'g'; if(amberOk(val))return 'a'; return 'r';
+  function v(id){
+    var f=F[id], n=raw(id);
+    if(n===null)n=f.d;
+    return Math.min(f.mx,Math.max(f.mn,n));
+  }
+  function filledCount(){
+    var c=0;
+    FLD.forEach(function(f){if(raw(f.id)!==null)c++;});
+    if($('callback').value)c++;
+    return c;
+  }
+  function updProgress(msg){
+    var c=filledCount();
+    $('fillProgress').textContent=msg||('заполнено '+c+' из '+TOTAL+(c===TOTAL?' — отлично, оценка будет точной':' — пустые посчитаем по рыночным средним'));
   }
   var VERD={g:'норма',a:'зона риска',r:'утечка'};
   function compute(){
     var D=v('price')*1e6, L=v('leads'), B=v('budget')*1e6,
         cpl=v('cpl')*1000, bots=v('bots'), qual=v('qual')/100,
-        reach=v('reach'), through=v('through')/100,
+        reach=v('reach')/100, through=v('through')/100,
         agent=v('agent')/100, comm=v('comm')/100, mort=v('mort'),
-        cb=$('callback').value;
-    var TLOW=0.08, THIGH=0.10; // консервативный диапазон цели (рынок: агент 9%, кейс 6,9→15,2%)
-    var qLeads=L*qual;                       // целевые лиды/мес
-    var deals=L*through;                     // сделки/мес
+        cb=$('callback').value||'day';
+    var TLOW=0.08, THIGH=0.10;
+    var qLeads=L*qual;
+    var deals=L*through;
     var lostDealsLow=Math.max(0,L*TLOW-deals);
     var lostDealsHigh=Math.max(0,L*THIGH-deals);
     var lostRevLow=lostDealsLow*D*12;
     var lostRevHigh=lostDealsHigh*D*12;
-    var lostDeals=lostDealsHigh;             // для строки стадии — верхняя оценка
+    var lostDeals=lostDealsHigh;
     var lostRevYear=lostRevHigh;
     var pctLow = deals>0 ? (lostDealsLow/deals*100) : 0;
     var pctHigh = deals>0 ? (lostDealsHigh/deals*100) : 0;
-    // direct waste
     var overpay=Math.max(0,(cpl-20000))*qLeads*12;
     var botBurn=B*Math.max(0,bots-15)/100*12;
     var agentDeals=deals*agent;
     var doublePay=agentDeals*0.36*comm*D*12;
     var waste=overpay+botBurn+doublePay;
-    // per-stage rows
     var rows=[];
-    rows.push({key:'cpl',name:'стоимость целевого лида',yours:v('cpl')+' тыс ₽',bench:'норма 12–20 тыс',
+    rows.push({key:'cpl',name:'стоимость целевого лида',yours:String(v('cpl')).replace('.',',')+' тыс ₽',bench:'норма 12–20 тыс',
       c: v('cpl')<=15?'g':(v('cpl')<=25?'a':'r'),
       desc: v('cpl')>25?'лид дороже верхней нормы — переплата <b>'+money(overpay)+'</b>/год на целевых лидах':(v('cpl')>15?'у верхней границы нормы; следите за качеством трафика':'в норме масс-сегмента')});
     rows.push({key:'bots',name:'боты и фрод в бюджете',yours:v('bots')+'%',bench:'норма ≤15% · рынок до 50%',
@@ -289,7 +344,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     var cbC = cb==='15'?'g':(cb==='day'?'a':'r');
     rows.push({key:'callback',name:'скорость первого перезвона',yours:({'15':'≤15 мин','day':'в тот же день','later':'позже','never':'часто нет'})[cb],bench:'цель ≤15 мин',
       c:cbC, desc: cbC==='g'?'скорость на уровне лучших':'89% девелоперов теряют клиента здесь; каждый час снижает дозвон в разы'});
-    rows.push({key:'through',name:'сквозная лид → сделка',yours:v('through')+'%',bench:'рынок 5–9% · цель 12%+',
+    rows.push({key:'through',name:'сквозная лид → сделка',yours:String(v('through')).replace('.',',')+'%',bench:'рынок 5–9% · цель 12%+',
       c: v('through')>=10?'g':(v('through')>=6?'a':'r'),
       desc: v('through')<10?'главный разрыв: недобор до <b>'+num(lostDeals)+'</b> сделок/мес ≈ <b>'+money(lostRevYear)+'</b>/год выручки':'сильная сквозная конверсия'});
     rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'норма 45–55% · рынок 85–90%',
@@ -302,31 +357,67 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
             lostDealsLow:lostDealsLow,lostDealsHigh:lostDealsHigh,pctLow:pctLow,pctHigh:pctHigh,
             waste:waste,overpay:overpay,botBurn:botBurn,doublePay:doublePay};
   }
+  var revealed=false, unlocked=false, gaugeRAF=null;
+  var last={health:0,moneyStr:'—',wasteStr:'—'};
+  function setGauge(pDeg,gc){
+    var g=$('gauge');
+    g.style.setProperty('--gc',gc);
+    if(gaugeRAF)cancelAnimationFrame(gaugeRAF);
+    var from=parseFloat(g.style.getPropertyValue('--p'))||0, t0=null;
+    function step(ts){
+      if(t0===null)t0=ts;
+      var k=Math.min(1,(ts-t0)/700);
+      k=1-Math.pow(1-k,3);
+      g.style.setProperty('--p',from+(pDeg-from)*k);
+      if(k<1)gaugeRAF=requestAnimationFrame(step);
+    }
+    gaugeRAF=requestAnimationFrame(step);
+  }
+  var order=['callback','reach','qual','through','bots','agent','cpl','mort'];
+  var fixText={
+    callback:'<b>наладить перезвон в 15 минут</b> по каждому пропущенному — автораспределение и дисциплина ОП. самый дешёвый рычаг: возвращает клиентов, за которых уже заплачено.',
+    reach:'<b>поднять доходимость лид → разговор</b> — скорость и число касаний, реанимация «недозвонов». норма ≥80%.',
+    qual:'<b>усилить квалификацию обращение → целевой лид</b> — отсев ботов и нецелевых до отдела продаж, чтобы не платить за мусор.',
+    through:'<b>пересобрать воронку под сквозную 10%+</b> — узкие места лид→бронь→сделка; рыночный кейс: 6,9 → 15,2% на тех же лидах.',
+    bots:'<b>вычистить фрод из бюджета</b> — антибот, сквозная аналитика и post-view вместо last-click.',
+    agent:'<b>вернуть баланс канала к 45–55%</b> — управление агентами и защита от двойной оплаты.',
+    cpl:'<b>снизить стоимость целевого лида</b> — перераспределение каналов и качество трафика.',
+    mort:'<b>собрать воронку под кэш и рассрочку</b> — оффер, скрипты и скоринг рассрочки.'
+  };
   function render(){
-    syncLabels();
     var r=compute();
-    // health = weighted avg of stage scores
     var w={cpl:1,bots:1,qual:1.3,reach:1.3,callback:1,through:1.6,agent:1.1,mort:0.7};
     var sc={g:100,a:60,r:22}, tot=0, wsum=0;
     r.rows.forEach(function(x){var ww=w[x.key]||1;tot+=sc[x.c]*ww;wsum+=ww;});
     var health=Math.round(tot/wsum);
     var gc = health>=70?'var(--green)':(health>=45?'var(--amber)':'var(--coral)');
-    var g=$('gauge'); g.style.setProperty('--p',health*3.6); g.style.setProperty('--gc',gc);
+    setGauge(health*3.6,gc);
     $('healthVal').textContent=health; $('healthVal').style.color=gc;
     var hb=document.querySelector('.hero .big');
     if(r.lostRevHigh<=0){
       hb.innerHTML='по сквозной конверсии крупных потерь не видно';
       $('heroSub').textContent='воронка близка к норме сильного игрока — точечные утечки смотрите ниже по стадиям.';
       $('heroDeals').textContent='0'; $('heroPct').textContent='0%';
+      last.moneyStr='крупных потерь по сквозной не видно';
     } else {
       var mstr=r.lostRevLow>0?(money(r.lostRevLow)+' – '+money(r.lostRevHigh)):('до '+money(r.lostRevHigh));
       hb.innerHTML='воронка недобирает <span class="u">'+mstr+'</span> в год';
       $('heroDeals').textContent=(r.lostDealsLow>0?(num(r.lostDealsLow*12)+'–'+num(r.lostDealsHigh*12)):('до '+num(r.lostDealsHigh*12)))+' шт';
       $('heroPct').textContent=(r.pctLow>0?('+'+Math.round(r.pctLow)+'–'+Math.round(r.pctHigh)+'%'):('до +'+Math.round(r.pctHigh)+'%'));
       $('heroSub').textContent='грубая оценка сверху при доведении сквозной до 8–10% (агентский бенчмарк 9%, рыночный кейс 6,9→15,2%). точная цифра — на диагностике.';
+      last.moneyStr=mstr+' в год';
     }
     $('heroWaste').textContent=money(r.waste);
-    // rows
+    last.health=health; last.wasteStr=money(r.waste)+'/год';
+    // аннотация «что это значит»
+    var an;
+    if(health>=70)an='<b>что это значит.</b> воронка в хорошей форме: система работает, деньги теряются точечно. ниже — 3 рычага, которые дадут прирост быстрее всего.';
+    else if(health>=45)an='<b>что это значит.</b> воронка работает, но недобирает: несколько стадий теряют больше нормы, и это складывается в цифру выше. начните с трёх самых дешёвых починок.';
+    else an='<b>что это значит.</b> воронка в красной зоне: утечки идут сразу на нескольких стадиях. хорошая новость — первые рычаги дешёвые и быстрые, эффект виден за недели.';
+    var miss=TOTAL-filledCount();
+    if(miss>0)an+=' <span style="color:var(--coral)">'+miss+' из '+TOTAL+' полей посчитаны по рыночным средним — внесите свои цифры, оценка станет точнее.</span>';
+    $('annot').innerHTML=an;
+    // строки по стадиям
     var html='';
     r.rows.forEach(function(x){
       html+='<div class="row"><div class="dot '+x.c+'"></div>'+
@@ -335,18 +426,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
         '<div class="verdict '+x.c+'" style="font-size:12px;font-weight:700">'+VERD[x.c]+'</div></div></div>';
     });
     $('rows').innerHTML=html;
-    // top-3 fixes: prioritize red, by cheapness order
-    var order=['callback','reach','qual','through','bots','agent','cpl','mort'];
-    var fixText={
-      callback:'<b>наладить перезвон в 15 минут</b> по каждому пропущенному — автораспределение и дисциплина ОП. самый дешёвый рычаг: возвращает клиентов, за которых уже заплачено.',
-      reach:'<b>поднять доходимость лид → разговор</b> — скорость и число касаний, реанимация «недозвонов». норма ≥80%.',
-      qual:'<b>усилить квалификацию обращение → целевой лид</b> — отсев ботов и нецелевых до отдела продаж, чтобы не платить за мусор.',
-      through:'<b>пересобрать воронку под сквозную 10%+</b> — узкие места лид→бронь→сделка; рыночный кейс: 6,9 → 15,2% на тех же лидах.',
-      bots:'<b>вычистить фрод из бюджета</b> — антибот, сквозная аналитика и post-view вместо last-click.',
-      agent:'<b>вернуть баланс канала к 45–55%</b> — управление агентами и защита от двойной оплаты.',
-      cpl:'<b>снизить стоимость целевого лида</b> — перераспределение каналов и качество трафика.',
-      mort:'<b>собрать воронку под кэш и рассрочку</b> — оффер, скрипты и скоринг рассрочки.'
-    };
+    // топ-3 рекомендации (бесплатная часть)
     var reds=r.rows.filter(function(x){return x.c==='r';});
     var ambers=r.rows.filter(function(x){return x.c==='a';});
     var pool=reds.concat(ambers);
@@ -354,26 +434,84 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     var top=pool.slice(0,3);
     if(top.length===0){top=r.rows.slice(0,1);}
     $('fixes').innerHTML=top.map(function(x){return '<li>'+fixText[x.key]+'</li>';}).join('');
-    // waste cards
+    // остальные — в полном разборе
+    var topKeys={}; top.forEach(function(x){topKeys[x.key]=1;});
+    var rest=order.filter(function(k){return !topKeys[k];});
+    $('fixesMore').innerHTML=rest.map(function(k){return '<li>'+fixText[k]+'</li>';}).join('');
+    // прямые потери
     $('wOverpay').textContent=money(r.overpay);
     $('wBots').textContent=money(r.botBurn);
     $('wDouble').textContent=money(r.doublePay);
   }
-  // wire
-  ID.forEach(function(id){$(id).addEventListener('input',render);});
-  $('callback').addEventListener('change',render);
-  $('calcBtn').addEventListener('click',function(){$('results').scrollIntoView({behavior:'smooth'});});
+  function reveal(){
+    render();
+    if(!revealed){
+      revealed=true;
+      var rs=$('results');
+      rs.classList.remove('veiled');
+      rs.classList.add('reveal');
+      $('calcBtn').textContent='обновить оценку ↻';
+    }
+    setTimeout(function(){$('results').scrollIntoView({behavior:'smooth'});},60);
+  }
+  function unlock(){
+    if(unlocked)return;
+    unlocked=true;
+    $('gated').classList.add('open');
+  }
+  function shake(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
+  // связка
+  FLD.forEach(function(f){
+    $(f.id).addEventListener('input',function(){updProgress();if(revealed)render();});
+  });
+  $('callback').addEventListener('change',function(){updProgress();if(revealed)render();});
+  $('fillAvg').addEventListener('click',function(){
+    FLD.forEach(function(f){$(f.id).value=String(f.d).replace('.',',');});
+    if(!$('callback').value)$('callback').value='day';
+    updProgress();
+    if(revealed)render();
+  });
+  $('calcBtn').addEventListener('click',function(){
+    if(filledCount()===0){
+      updProgress('внесите хотя бы пару своих цифр — или нажмите «заполнить всё рыночными средними»');
+      shake(document.querySelector('.form-card'));
+      return;
+    }
+    reveal();
+  });
+  $('unlockBtn').addEventListener('click',function(){
+    document.querySelector('.capture').scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(function(){$('cPhone').focus();},450);
+  });
+  var CBTXT={'':'не указана','15':'≤15 минут','day':'в тот же день','later':'на следующий день и позже','never':'часто не перезваниваем'};
+  var FLBL={price:'средняя цена лота, млн ₽',leads:'обращений в месяц',budget:'бюджет, млн ₽/мес',cpl:'CPL целевого, тыс ₽',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная лид→сделка, %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
   $('capForm').addEventListener('submit',function(e){
     e.preventDefault();
-    var name=$('cName').value.trim();
+    var name=$('cName').value.trim(), phone=$('cPhone').value.trim(), comp=$('cCompany').value.trim();
+    if(!phone){shake($('cPhone'));$('cPhone').focus();return;}
+    if(!revealed)reveal();
+    unlock();
+    var lines=['Заявка: полный разбор воронки (экспресс-диагностика)','',
+      'Имя: '+(name||'—'),'Контакт: '+phone,'Компания: '+(comp||'—'),'',
+      'Индекс воронки: '+last.health+'/100',
+      'Недобор выручки: '+last.moneyStr,
+      'Прямые потери бюджета: '+last.wasteStr,'','Цифры:'];
+    FLD.forEach(function(f){
+      var byMarket=raw(f.id)===null;
+      lines.push('· '+FLBL[f.id]+': '+String(v(f.id)).replace('.',',')+(byMarket?' (по рынку)':''));
+    });
+    lines.push('· скорость перезвона: '+CBTXT[$('callback').value||'']);
     $('capThanks').classList.remove('hidden');
-    $('capThanks').textContent=(name?name+', ':'')+'спасибо! открываю печатную версию отчёта — сохраните её как PDF (Cmd/Ctrl+P → сохранить как PDF).';
-    setTimeout(function(){window.print();},400);
+    $('capThanks').innerHTML=(name?name+', ':'')+'полный разбор открыт выше ↑, а в почте — готовое письмо-заявка: просто отправьте его. PDF-версия: Cmd/Ctrl+P.';
+    setTimeout(function(){$('gated').scrollIntoView({behavior:'smooth',block:'start'});},250);
+    setTimeout(function(){
+      try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Экспресс-диагностика: полный разбор воронки')+'&body='+encodeURIComponent(lines.join('\n'));}catch(err){}
+    },900);
   });
   $('ctaBtn').addEventListener('click',function(){
     window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Экспресс-диагностика воронки продаж')+'&body='+encodeURIComponent('Здравствуйте! Хотим экспресс-диагностику воронки продаж. Наш проект: ');
   });
-  render();
+  updProgress();
 })();
 </script>
 <script data-mobile-legibility="4">
