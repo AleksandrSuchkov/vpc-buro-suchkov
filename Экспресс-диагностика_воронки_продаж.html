@@ -256,7 +256,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
             <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
           </div>
         </form>
-        <p class="muted">жмёте кнопку — полный разбор открывается сразу, а в вашей почте появляется готовое письмо-заявка с вашими цифрами: отправить его — одно нажатие. без рассылок и спама; сам расчёт остаётся у вас в браузере.</p>
+        <p class="muted">жмёте кнопку — полный разбор открывается сразу. без рассылок и подтверждений; расчёт остаётся у вас в браузере.</p>
       </div>
       <div id="capStage2" class="hidden">
         <div id="capThanks" style="font-weight:600;color:var(--green)"></div>
@@ -268,7 +268,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
           <li>приоритетный план починки по стадиям</li>
         </ul>
         <div class="center"><button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику →</button></div>
-        <p class="muted" style="text-align:center">PDF-версия расчёта: Cmd/Ctrl+P</p>
+        <p class="muted" style="text-align:center">кнопка откроет в вашей почте готовое письмо-заявку — в нём уже ваши контакты и цифры расчёта, останется нажать «отправить». PDF-версия расчёта: Cmd/Ctrl+P.</p>
       </div>
     </div>
   </section>
@@ -377,7 +377,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
             lostDealsLow:lostDealsLow,lostDealsHigh:lostDealsHigh,pctLow:pctLow,pctHigh:pctHigh,
             waste:waste,overpay:overpay,botBurn:botBurn,doublePay:doublePay};
   }
-  var revealed=false, unlocked=false, gaugeRAF=null;
+  var revealed=false, unlocked=false, gaugeRAF=null, lead=null;
   var last={health:0,moneyStr:'—',wasteStr:'—'};
   function setGauge(pDeg,gc){
     var g=$('gauge');
@@ -518,28 +518,31 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     if(!phone){shake($('cPhone'));$('cPhone').focus();return;}
     if(!revealed)reveal();
     unlock();
-    var lines=['Заявка: полный разбор воронки (экспресс-диагностика)','',
-      'Имя: '+(name||'—'),'Контакт: '+phone,'Компания: '+(comp||'—'),'',
+    lead={name:name,phone:phone,comp:comp};
+    $('capStage1').classList.add('hidden');
+    var s2=$('capStage2');
+    s2.classList.remove('hidden');
+    s2.classList.add('reveal');
+    $('capThanks').innerHTML=(name?name+', ':'')+'готово — полный разбор открыт выше ↑.';
+  });
+  function buildLetter(){
+    var lines=['Здравствуйте! Записываемся на экспресс-диагностику воронки.','',
+      'Имя: '+((lead&&lead.name)||'—'),
+      'Контакт: '+((lead&&lead.phone)||'—'),
+      'Компания: '+((lead&&lead.comp)||'—'),'',
       'Индекс воронки: '+last.health+'/100',
       'Недобор выручки: '+last.moneyStr,
-      'Прямые потери бюджета: '+last.wasteStr,'','Цифры:'];
+      'Прямые потери бюджета (оценка): '+last.wasteStr,'','Цифры из расчёта:'];
     FLD.forEach(function(f){
       var byMarket=raw(f.id)===null;
       var val=(f.kind==='mln'||f.kind==='k')?money(v(f.id)):String(v(f.id)).replace('.',',');
       lines.push('· '+FLBL[f.id]+': '+val+(byMarket?' (по рынку)':''));
     });
     lines.push('· скорость перезвона: '+CBTXT[$('callback').value||'']);
-    $('capStage1').classList.add('hidden');
-    var s2=$('capStage2');
-    s2.classList.remove('hidden');
-    s2.classList.add('reveal');
-    $('capThanks').innerHTML=(name?name+', ':'')+'готово: полный разбор открыт выше ↑, а в почте — письмо-заявка, просто отправьте его.';
-    setTimeout(function(){
-      try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Экспресс-диагностика: полный разбор воронки')+'&body='+encodeURIComponent(lines.join('\n'));}catch(err){}
-    },900);
-  });
+    return lines.join('\n');
+  }
   $('ctaBtn').addEventListener('click',function(){
-    window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Экспресс-диагностика воронки продаж')+'&body='+encodeURIComponent('Здравствуйте! Хотим экспресс-диагностику воронки продаж. Наш проект: ');
+    try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Заявка на экспресс-диагностику воронки')+'&body='+encodeURIComponent(buildLetter());}catch(err){}
   });
   updProgress();
 })();
