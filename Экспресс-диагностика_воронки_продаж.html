@@ -294,6 +294,27 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
 (function(){
   "use strict";
   var $=function(id){return document.getElementById(id);};
+  // === логирование в Google Sheets (через Apps Script Web App) ===
+  var LOG_ENDPOINT=''; // ← сюда вставить URL деплоя Apps Script (/exec)
+  function snap(event){
+    var d={event:event,page:location.href,
+      developer:$('devName').value.trim(),
+      name:(lead&&lead.name)||$('cName').value.trim(),
+      contact:(lead&&lead.phone)||$('cPhone').value.trim(),
+      company:(lead&&lead.comp)||$('cCompany').value.trim(),
+      score:last.health||'',loss:last.moneyStr||'',waste:last.wasteStr||'',
+      callback:CBTXT[$('callback').value||'']||''};
+    var mkt=[];
+    FLD.forEach(function(f){d[f.id]=v(f.id);if(raw(f.id)===null)mkt.push(FLBL[f.id]||f.id);});
+    d.defaults=mkt.join(', ');
+    return d;
+  }
+  var logged={};
+  function logLead(event){
+    if(!LOG_ENDPOINT)return;
+    if(event==='расчёт'){if(logged.calc)return;logged.calc=1;}
+    try{fetch(LOG_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,body:JSON.stringify(snap(event))});}catch(e){}
+  }
   var rub=new Intl.NumberFormat('ru-RU');
   function money(n){
     n=Math.max(0,Math.round(n));
@@ -539,6 +560,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     if(!$('cCompany').value)$('cCompany').value=$('devName').value.trim();
     if(!revealed){
       revealed=true;
+      logLead('расчёт');
       var rs=$('results');
       rs.classList.remove('veiled');
       rs.classList.add('reveal');
@@ -600,6 +622,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     if(!revealed)reveal();
     unlock();
     lead={name:name,phone:phone,comp:comp};
+    logLead('контакт');
     $('capStage1').classList.add('hidden');
     var s2=$('capStage2');
     s2.classList.remove('hidden');
@@ -624,6 +647,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     return lines.join('\n');
   }
   $('ctaBtn').addEventListener('click',function(){
+    logLead('запись');
     try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Заявка на экспресс-диагностику воронки')+'&body='+encodeURIComponent(buildLetter());}catch(err){}
   });
   updProgress();
