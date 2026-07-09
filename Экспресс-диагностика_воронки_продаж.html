@@ -152,24 +152,24 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       <div class="form-grid">
 
         <div class="blk-t">экономика проекта</div>
-        <div class="field"><label for="price">средняя цена лота <span class="unit">млн ₽</span></label><input type="text" class="inp" id="price" inputmode="decimal" placeholder="рынок: 12"><div class="hint">средний чек сделки</div></div>
-        <div class="field"><label for="leads">обращений (лидов) в месяц</label><input type="text" class="inp" id="leads" inputmode="numeric" placeholder="рынок: 800"><div class="hint">все входящие обращения по всем каналам</div></div>
-        <div class="field"><label for="budget">маркетинговый бюджет в месяц <span class="unit">млн ₽</span></label><input type="text" class="inp" id="budget" inputmode="decimal" placeholder="рынок: 3"><div class="hint">digital + классифайды + прочее</div></div>
+        <div class="field"><label for="price">средняя цена лота <span class="unit">млн ₽</span></label><input type="text" class="inp" id="price" inputmode="decimal" placeholder="8,5"><div class="hint">средний чек сделки · в среднем по РФ ≈ 8–9 млн ₽, миллионники выше</div></div>
+        <div class="field"><label for="leads">обращений (лидов) в месяц</label><input type="text" class="inp" id="leads" inputmode="numeric" placeholder="800"><div class="hint">все входящие обращения по всем каналам</div></div>
+        <div class="field"><label for="budget">маркетинговый бюджет в месяц <span class="unit">млн ₽</span></label><input type="text" class="inp" id="budget" inputmode="decimal" placeholder="4"><div class="hint">digital + классифайды + прочее</div></div>
 
         <div class="blk-t">трафик и лиды</div>
-        <div class="field"><label for="cpl">стоимость целевого лида <span class="unit">тыс ₽</span></label><input type="text" class="inp" id="cpl" inputmode="decimal" placeholder="рынок: 18"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
-        <div class="field"><label for="bots">доля ботов и фрода в бюджете <span class="unit">%</span></label><input type="text" class="inp" id="bots" inputmode="decimal" placeholder="рынок: 30"><div class="hint">на рынке — до 50% digital-бюджета</div></div>
+        <div class="field"><label for="cpl">стоимость целевого лида <span class="unit">тыс ₽</span></label><input type="text" class="inp" id="cpl" inputmode="decimal" placeholder="16"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
+        <div class="field"><label for="bots">доля ботов и фрода в бюджете <span class="unit">%</span></label><input type="text" class="inp" id="bots" inputmode="decimal" placeholder="30"><div class="hint">на рынке — до 50% digital-бюджета</div></div>
 
         <div class="blk-t">квалификация и обработка</div>
-        <div class="field"><label for="qual">конверсия обращение → целевой лид <span class="unit">%</span></label><input type="text" class="inp" id="qual" inputmode="decimal" placeholder="рынок: 32"><div class="hint">рынок 32%, норма ≥ 35–40%</div></div>
-        <div class="field"><label for="reach">доходимость лид → разговор <span class="unit">%</span></label><input type="text" class="inp" id="reach" inputmode="decimal" placeholder="рынок: 47"><div class="hint">до разговора доходит ~47% обратных звонков</div></div>
+        <div class="field"><label for="qual">конверсия обращение → целевой лид <span class="unit">%</span></label><input type="text" class="inp" id="qual" inputmode="decimal" placeholder="32"><div class="hint">рынок 32%, норма ≥ 35–40%</div></div>
+        <div class="field"><label for="reach">доходимость лид → разговор <span class="unit">%</span></label><input type="text" class="inp" id="reach" inputmode="decimal" placeholder="47"><div class="hint">до разговора доходит ~47% обратных звонков</div></div>
         <div class="field"><label>скорость первого перезвона</label><select id="callback"><option value="" selected>— выберите —</option><option value="15">в течение 15 минут</option><option value="day">в тот же день</option><option value="later">на следующий день и позже</option><option value="never">часто не перезваниваем</option></select><div class="hint">только 11% перезвонили по пропущенному — самая дешёвая починка</div></div>
 
         <div class="blk-t">сделки и каналы</div>
-        <div class="field"><label for="through">сквозная конверсия лид → сделка <span class="unit">%</span></label><input type="text" class="inp" id="through" inputmode="decimal" placeholder="рынок: 6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
-        <div class="field"><label for="agent">доля сделок через агентов <span class="unit">%</span></label><input type="text" class="inp" id="agent" inputmode="decimal" placeholder="рынок: 80"><div class="hint">норма здорового баланса 45–55%</div></div>
-        <div class="field"><label for="comm">комиссия агентам <span class="unit">%</span></label><input type="text" class="inp" id="comm" inputmode="decimal" placeholder="рынок: 3,5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
-        <div class="field"><label for="mort">доля ипотеки в сделках <span class="unit">%</span></label><input type="text" class="inp" id="mort" inputmode="decimal" placeholder="рынок: 56"><div class="hint">упала 65,5 → 56%; отказ по рыночной ипотеке ~60%</div></div>
+        <div class="field"><label for="through">сквозная конверсия лид → сделка <span class="unit">%</span></label><input type="text" class="inp" id="through" inputmode="decimal" placeholder="6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
+        <div class="field"><label for="agent">доля сделок через агентов <span class="unit">%</span></label><input type="text" class="inp" id="agent" inputmode="decimal" placeholder="87"><div class="hint">норма здорового баланса 45–55%</div></div>
+        <div class="field"><label for="comm">комиссия агентам <span class="unit">%</span></label><input type="text" class="inp" id="comm" inputmode="decimal" placeholder="3,5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
+        <div class="field"><label for="mort">доля ипотеки в сделках <span class="unit">%</span></label><input type="text" class="inp" id="mort" inputmode="decimal" placeholder="56"><div class="hint">упала 65,5 → 56%; отказ по рыночной ипотеке ~60%</div></div>
 
       </div>
       <div class="center calc-zone">
@@ -277,9 +277,9 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   function num(n){return rub.format(Math.round(n));}
   // поля: d = рыночное среднее (плейсхолдер), mn/mx = клампы
   var FLD=[
-    {id:'price',d:12,mn:1,mx:200},{id:'leads',d:800,mn:10,mx:20000},{id:'budget',d:3,mn:0.1,mx:100},
-    {id:'cpl',d:18,mn:1,mx:150},{id:'bots',d:30,mn:0,mx:80},{id:'qual',d:32,mn:5,mx:90},
-    {id:'reach',d:47,mn:10,mx:100},{id:'through',d:6,mn:0.5,mx:25},{id:'agent',d:80,mn:0,mx:100},
+    {id:'price',d:8.5,mn:1,mx:200},{id:'leads',d:800,mn:10,mx:20000},{id:'budget',d:4,mn:0.1,mx:100},
+    {id:'cpl',d:16,mn:1,mx:150},{id:'bots',d:30,mn:0,mx:80},{id:'qual',d:32,mn:5,mx:90},
+    {id:'reach',d:47,mn:10,mx:100},{id:'through',d:6,mn:0.5,mx:25},{id:'agent',d:87,mn:0,mx:100},
     {id:'comm',d:3.5,mn:1,mx:8},{id:'mort',d:56,mn:10,mx:95}
   ];
   var F={}; FLD.forEach(function(f){F[f.id]=f;});
