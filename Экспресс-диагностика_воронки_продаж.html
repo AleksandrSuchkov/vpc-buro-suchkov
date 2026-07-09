@@ -121,6 +121,9 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .glock-card{position:sticky;top:24px;background:#fff;border-radius:20px;padding:24px 26px;max-width:500px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 0 0 1px rgba(0,0,0,.07)}
 .glock-t{margin:6px 0;font-weight:800;font-size:17px}
 .glock-d{margin:0 0 14px;font-size:13.5px;color:var(--b60);line-height:1.5}
+.inp-err{border-color:var(--coral)!important;box-shadow:0 0 0 3px rgba(252,87,65,.14)!important}
+select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
+.ferr{font-size:12px;color:var(--coral);font-weight:700;margin-top:4px}
 .cap-what{display:grid;gap:7px;margin-top:10px}
 .cw{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--b60);line-height:1.45}
 .cw-k{flex:none;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);background:var(--blue-6);border-radius:var(--pill);padding:3px 9px}
@@ -155,7 +158,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   <header>
     <span class="eyebrow">● Бюро Сучкова · экспресс-диагностика · 2026</span>
     <h1>где ваша воронка продаж теряет деньги</h1>
-    <p class="dek">2 минуты по вашим цифрам — и вы видите, сколько воронка недобирает в год. внесите свои данные (пустые поля посчитаем по рыночным средним 2026) и нажмите «получить оценку»: скоринг, аннотация и 3 первые рекомендации — сразу. полная карта по стадиям и остальные рекомендации — за контакт.</p>
+    <p class="dek">2 минуты по вашим цифрам — и вы видите, сколько воронка недобирает в год. внесите данные проекта — все поля обязательны (не знаете точную цифру — нажмите «заполнить рыночными средними» и поправьте под себя). дальше «получить оценку»: скоринг, аннотация и 3 первые рекомендации — сразу; полная карта по стадиям — за контакт.</p>
     <span class="tag2min">⚡ 2 минуты · ваши цифры против бенчмарков 2026 · первые 3 рекомендации — сразу</span>
   </header>
 
@@ -173,6 +176,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     <div class="card form-card">
       <div class="form-grid">
 
+        <div class="blk-t">о проекте</div>
+        <div class="field" style="grid-column:1/-1"><label for="devName">название девелопера / застройщика</label><input type="text" class="inp" id="devName" placeholder="ГК «Пример»" autocomplete="organization"><div class="hint">чтобы разбор был адресным</div></div>
         <div class="blk-t">экономика проекта</div>
         <div class="field"><label for="price">средняя цена лота <span class="unit">₽</span></label><input type="text" class="inp" id="price" inputmode="decimal" placeholder="8 500 000 ₽"><div class="hint">средний чек сделки · в среднем по РФ ≈ 8–9 млн ₽, миллионники выше</div></div>
         <div class="field"><label for="leads">обращений (лидов) в месяц</label><input type="text" class="inp" id="leads" inputmode="numeric" placeholder="800"><div class="hint">все входящие обращения по всем каналам</div></div>
@@ -195,7 +200,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 
       </div>
       <div class="center calc-zone">
-        <div id="fillProgress">заполнено 0 из 12 — пустые поля посчитаем по рыночным средним</div>
+        <div id="fillProgress">заполнено 0 из 13 — все поля обязательны</div>
         <button class="btn btn-primary" id="calcBtn">получить оценку воронки →</button>
         <button class="btn-ghost" type="button" id="fillAvg">заполнить всё рыночными средними</button>
       </div>
@@ -306,31 +311,77 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     {id:'comm',d:3.5,mn:1,mx:8},{id:'mort',d:56,mn:10,mx:95}
   ];
   var F={}; FLD.forEach(function(f){F[f.id]=f;});
-  var TOTAL=FLD.length+1; // + скорость перезвона
+  var TOTAL=FLD.length+2; // + скорость перезвона + название девелопера
   function raw(id){
     var s=($(id).value||'').trim().replace(/\s+/g,'').replace(',','.');
     if(s==='')return null;
     var n=parseFloat(s);
     return isNaN(n)?null:n;
   }
+  function norm(f,n){
+    if(f.kind==='mln'){ if(n<1000)n*=1e6; else if(n<100000)n*=1000; }
+    else if(f.kind==='k'){ if(n<1000)n*=1000; }
+    return n;
+  }
   function v(id){
     var f=F[id], n=raw(id);
-    if(n===null)n=f.d;
-    else if(f.kind==='mln'){ if(n<1000)n*=1e6; else if(n<100000)n*=1000; }
-    else if(f.kind==='k'){ if(n<1000)n*=1000; }
+    if(n===null)n=f.d; else n=norm(f,n);
     return Math.min(f.mx,Math.max(f.mn,n));
   }
   function filledCount(){
     var c=0;
     FLD.forEach(function(f){if(raw(f.id)!==null)c++;});
     if($('callback').value)c++;
+    if($('devName').value.trim())c++;
     return c;
   }
   function updProgress(msg){
     var c=filledCount();
-    $('fillProgress').textContent=msg||('заполнено '+c+' из '+TOTAL+(c===TOTAL?' — отлично, оценка будет точной':' — пустые посчитаем по рыночным средним'));
+    $('fillProgress').textContent=msg||('заполнено '+c+' из '+TOTAL+(c===TOTAL?' — отлично, можно получать оценку':' — все поля обязательны'));
   }
   var VERD={g:'норма',a:'зона риска',r:'утечка'};
+  function letters(s){return (String(s).match(/[a-zа-яё]/gi)||[]).length;}
+  function validName(s){s=String(s).trim();return s.length>=2&&letters(s)>=2;}
+  function validContact(s){
+    s=String(s).trim();
+    if(/^@[a-z0-9_]{4,32}$/i.test(s))return true;
+    if(/(^|\.|\/)t\.me\//i.test(s)||/^t\.me\//i.test(s))return true;
+    if(!/^[+\d\s()\-]+$/.test(s))return false;
+    var d=s.replace(/[^\d]/g,'');
+    return d.length>=10&&d.length<=15;
+  }
+  function setErr(el,msg){
+    el.classList.add('inp-err');
+    var n=el.nextElementSibling;
+    if(!(n&&n.classList&&n.classList.contains('ferr'))){
+      n=document.createElement('div');n.className='ferr';
+      el.parentNode.insertBefore(n,el.nextSibling);
+    }
+    n.textContent=msg;
+  }
+  function clearErr(el){
+    el.classList.remove('inp-err');
+    var n=el.nextElementSibling;
+    if(n&&n.classList&&n.classList.contains('ferr'))n.remove();
+  }
+  function rangeStr(f){
+    if(f.kind==='mln'||f.kind==='k')return money(f.mn)+' – '+money(f.mx);
+    return String(f.mn).replace('.',',')+'–'+String(f.mx).replace('.',',');
+  }
+  function validateMetrics(){
+    var first=null;
+    var dn=$('devName');
+    if(!validName(dn.value)){setErr(dn,'укажите название — минимум 2 буквы');first=first||dn;}
+    FLD.forEach(function(f){
+      var el=$(f.id), n=raw(f.id);
+      if(n===null){setErr(el,'заполните поле');first=first||el;return;}
+      var x=norm(f,n);
+      if(x<f.mn||x>f.mx){setErr(el,'похоже на опечатку: ожидаем '+rangeStr(f));first=first||el;}
+    });
+    var cb=$('callback');
+    if(!cb.value){setErr(cb,'выберите вариант');first=first||cb;}
+    return first;
+  }
   function compute(){
     var D=v('price'), L=v('leads'), B=v('budget'),
         cpl=v('cpl'), bots=v('bots'), qual=v('qual')/100,
@@ -485,6 +536,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   }
   function reveal(){
     render();
+    if(!$('cCompany').value)$('cCompany').value=$('devName').value.trim();
     if(!revealed){
       revealed=true;
       var rs=$('results');
@@ -502,19 +554,26 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   function shake(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
   // связка
   FLD.forEach(function(f){
-    $(f.id).addEventListener('input',function(){updProgress();if(revealed)render();});
+    $(f.id).addEventListener('input',function(){clearErr(this);updProgress();if(revealed)render();});
   });
-  $('callback').addEventListener('change',function(){updProgress();if(revealed)render();});
+  $('callback').addEventListener('change',function(){clearErr(this);updProgress();if(revealed)render();});
+  $('devName').addEventListener('input',function(){clearErr(this);updProgress();});
+  ['cName','cPhone','cCompany'].forEach(function(id){
+    $(id).addEventListener('input',function(){clearErr(this);});
+  });
   $('fillAvg').addEventListener('click',function(){
-    FLD.forEach(function(f){$(f.id).value=(f.d>=1000?rub.format(f.d):String(f.d).replace('.',','));});
+    FLD.forEach(function(f){var el=$(f.id);el.value=(f.d>=1000?rub.format(f.d):String(f.d).replace('.',','));clearErr(el);});
     if(!$('callback').value)$('callback').value='day';
+    clearErr($('callback'));
     updProgress();
     if(revealed)render();
   });
   $('calcBtn').addEventListener('click',function(){
-    if(filledCount()===0){
-      updProgress('внесите хотя бы пару своих цифр — или нажмите «заполнить всё рыночными средними»');
-      shake(document.querySelector('.form-card'));
+    var bad=validateMetrics();
+    if(bad){
+      updProgress('заполните выделенные поля — цифры можно взять кнопкой «заполнить рыночными средними»');
+      bad.scrollIntoView({behavior:'smooth',block:'center'});
+      shake(bad);
       return;
     }
     reveal();
@@ -527,8 +586,17 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   var FLBL={price:'средняя цена лота',leads:'обращений в месяц',budget:'бюджет в месяц',cpl:'CPL целевого',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная (все обращения→сделка), %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
   $('capForm').addEventListener('submit',function(e){
     e.preventDefault();
-    var name=$('cName').value.trim(), phone=$('cPhone').value.trim(), comp=$('cCompany').value.trim();
-    if(!phone){shake($('cPhone'));$('cPhone').focus();return;}
+    var nameEl=$('cName'), phoneEl=$('cPhone'), compEl=$('cCompany');
+    var ok=true;
+    if(!validName(nameEl.value)){setErr(nameEl,'укажите имя');ok=false;}
+    if(!validContact(phoneEl.value)){setErr(phoneEl,'телефон с кодом (10+ цифр) или @telegram');ok=false;}
+    if(!validName(compEl.value)){setErr(compEl,'укажите компанию или проект');ok=false;}
+    if(!ok){
+      var bad=[nameEl,phoneEl,compEl].filter(function(x){return x.classList.contains('inp-err');})[0];
+      if(bad){shake(bad);bad.focus();}
+      return;
+    }
+    var name=nameEl.value.trim(), phone=phoneEl.value.trim(), comp=compEl.value.trim();
     if(!revealed)reveal();
     unlock();
     lead={name:name,phone:phone,comp:comp};
@@ -542,7 +610,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     var lines=['Здравствуйте! Записываемся на экспресс-диагностику воронки.','',
       'Имя: '+((lead&&lead.name)||'—'),
       'Контакт: '+((lead&&lead.phone)||'—'),
-      'Компания: '+((lead&&lead.comp)||'—'),'',
+      'Девелопер: '+($('devName').value.trim()||'—'),
+      'Компания/проект: '+((lead&&lead.comp)||'—'),'',
       'Индекс воронки: '+last.health+'/100',
       'Недобор выручки: '+last.moneyStr,
       'Прямые потери бюджета (оценка): '+last.wasteStr,'','Цифры из расчёта:'];
