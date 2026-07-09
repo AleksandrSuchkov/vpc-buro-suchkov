@@ -64,16 +64,26 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .hero .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-size:13px;font-weight:600;background:var(--gray);border-radius:var(--pill);padding:6px 12px}
 .chip b{color:var(--black)}
-.row{display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid var(--gray)}
+.rows-head{display:grid;grid-template-columns:1fr 148px 164px;gap:10px;padding:0 0 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--b40)}
+.rows-head div:nth-child(2),.rows-head div:nth-child(3){padding-left:12px}
+.row{display:grid;grid-template-columns:1fr 148px 164px;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--gray)}
+.r-stage{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.r-you,.r-norm{border-radius:12px;padding:9px 12px;align-self:stretch;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.r-you .yv{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15;color:var(--black)}
+.r-you .vd{font-size:11.5px;font-weight:700;margin-top:2px}
+.r-you.g{background:color-mix(in srgb,var(--green) 11%,#fff)}.r-you.g .vd{color:var(--green)}
+.r-you.a{background:color-mix(in srgb,var(--amber) 14%,#fff)}.r-you.a .vd{color:var(--amber)}
+.r-you.r{background:color-mix(in srgb,var(--coral) 11%,#fff)}.r-you.r .vd{color:var(--coral)}
+.r-norm{background:var(--gray)}
+.r-norm .nv{font-size:12.5px;color:var(--b60);font-weight:600;line-height:1.35}
+.cl{display:none;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--b40);margin-bottom:3px}
 .row:last-child{border-bottom:none}
 .dot{width:14px;height:14px;border-radius:50%;margin-top:4px}
 .dot.g{background:var(--green)}.dot.a{background:var(--amber)}.dot.r{background:var(--coral)}
 .row .name{font-weight:700;font-size:15px}
 .row .desc{font-size:13.5px;color:var(--b60);margin-top:2px}
 .row .desc b{color:var(--black)}
-.row .rt{text-align:right;white-space:nowrap}
-.row .yours{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
-.row .bench{font-size:12px;color:var(--b40)}
+
 .verdict.g{color:var(--green)}.verdict.a{color:var(--amber)}.verdict.r{color:var(--coral)}
 .fixes{counter-reset:f;list-style:none;padding:0;margin:0}
 .fixes li{position:relative;padding:12px 14px 12px 46px;background:var(--gray);border-radius:var(--r-sm);margin-bottom:8px;font-size:14.5px}
@@ -114,8 +124,10 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .shake{animation:vpcshake .28s ease 2}
 @keyframes vpcshake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media(max-width:640px){
-  .row{grid-template-columns:26px 1fr}
-  .row .rt{grid-column:2;text-align:left;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+  .rows-head{display:none}
+  .row{grid-template-columns:1fr 1fr;gap:8px}
+  .r-stage{grid-column:1/-1}
+  .cl{display:block}
 }
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--b10);font-size:12.5px;color:var(--b60)}
 .wm{font-weight:800;letter-spacing:-.01em}
@@ -209,7 +221,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     <div class="gated" id="gated">
       <div class="gwrap">
         <div class="card" style="margin-bottom:14px">
-          <p style="margin:0 0 6px;font-weight:700">по стадиям — где и сколько утекает</p>
+          <p style="margin:0 0 12px;font-weight:700">по стадиям — где и сколько утекает</p>
+          <div class="rows-head"><div>стадия</div><div>у вас</div><div>норма · рынок 2026</div></div>
           <div id="rows"></div>
         </div>
         <div class="card" style="margin-bottom:14px">
@@ -331,13 +344,13 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     var doublePay=agentDeals*0.36*comm*D*12;
     var waste=overpay+botBurn+doublePay;
     var rows=[];
-    rows.push({key:'cpl',name:'стоимость целевого лида',yours:num(cpl)+' ₽',bench:'норма 12–20 тыс ₽',
+    rows.push({key:'cpl',name:'стоимость целевого лида',yours:num(cpl)+' ₽',bench:'12–20 тыс ₽',
       c: cpl<=15000?'g':(cpl<=25000?'a':'r'),
       desc: cpl>25000?'лид дороже верхней нормы — переплата <b>'+money(overpay)+'</b>/год на целевых лидах':(cpl>15000?'у верхней границы нормы; следите за качеством трафика':'в норме масс-сегмента')});
-    rows.push({key:'bots',name:'боты и фрод в бюджете',yours:v('bots')+'%',bench:'норма ≤15% · рынок до 50%',
+    rows.push({key:'bots',name:'боты и фрод в бюджете',yours:v('bots')+'%',bench:'≤15% · рынок до 50%',
       c: bots<=15?'g':(bots<=30?'a':'r'),
       desc: bots>15?'сверх нормы сожжено <b>'+money(botBurn)+'</b>/год маркетингового бюджета':'фрод под контролем'});
-    rows.push({key:'qual',name:'обращение → целевой лид',yours:v('qual')+'%',bench:'норма ≥35–40% · рынок 32%',
+    rows.push({key:'qual',name:'обращение → целевой лид',yours:v('qual')+'%',bench:'≥35–40% · рынок 32%',
       c: v('qual')>=38?'g':(v('qual')>=30?'a':'r'),
       desc: v('qual')<38?'ниже нормы: теряете <b>~'+num(Math.max(0,(0.38-qual)*L))+'</b> целевых лидов в месяц на квалификации':'квалификация в норме'});
     rows.push({key:'reach',name:'лид → разговор (дозвон)',yours:v('reach')+'%',bench:'цель ≥80% · рынок ~47%',
@@ -349,7 +362,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     rows.push({key:'through',name:'сквозная лид → сделка',yours:String(v('through')).replace('.',',')+'%',bench:'рынок 5–9% · цель 12%+',
       c: v('through')>=10?'g':(v('through')>=6?'a':'r'),
       desc: v('through')<10?'главный разрыв: недобор до <b>'+num(lostDeals)+'</b> сделок/мес ≈ <b>'+money(lostRevYear)+'</b>/год выручки':'сильная сквозная конверсия'});
-    rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'норма 45–55% · рынок 85–90%',
+    rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'45–55% · рынок 85–90%',
       c: (v('agent')>=45&&v('agent')<=55)?'g':((v('agent')<=70&&v('agent')>=35)?'a':'r'),
       desc: v('agent')>55?'зависимость от канала: до <b>'+money(doublePay)+'</b>/год двойной оплаты (реклама + комиссия за одну сделку)':'баланс своего отдела и агентов здоровый'});
     rows.push({key:'mort',name:'структура сделки: доля ипотеки',yours:v('mort')+'%',bench:'ипотека в ДДУ 56% · кэш+рассрочка растёт',
@@ -422,10 +435,11 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     // строки по стадиям
     var html='';
     r.rows.forEach(function(x){
-      html+='<div class="row"><div class="dot '+x.c+'"></div>'+
-        '<div><div class="name">'+x.name+'</div><div class="desc">'+x.desc+'</div></div>'+
-        '<div class="rt"><div class="yours">'+x.yours+'</div><div class="bench">'+x.bench+'</div>'+
-        '<div class="verdict '+x.c+'" style="font-size:12px;font-weight:700">'+VERD[x.c]+'</div></div></div>';
+      html+='<div class="row">'+
+        '<div class="r-stage"><div class="dot '+x.c+'"></div><div><div class="name">'+x.name+'</div><div class="desc">'+x.desc+'</div></div></div>'+
+        '<div class="r-you '+x.c+'"><span class="cl">у вас</span><div class="yv">'+x.yours+'</div><div class="vd">'+VERD[x.c]+'</div></div>'+
+        '<div class="r-norm"><span class="cl">норма</span><div class="nv">'+x.bench+'</div></div>'+
+        '</div>';
     });
     $('rows').innerHTML=html;
     // топ-3 рекомендации (бесплатная часть)
