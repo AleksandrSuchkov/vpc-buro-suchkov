@@ -121,6 +121,13 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .glock-card{position:sticky;top:24px;background:#fff;border-radius:20px;padding:24px 26px;max-width:500px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 0 0 1px rgba(0,0,0,.07)}
 .glock-t{margin:6px 0;font-weight:800;font-size:17px}
 .glock-d{margin:0 0 14px;font-size:13.5px;color:var(--b60);line-height:1.5}
+.cap-f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.cap-f label{font-size:12px;font-weight:700;color:var(--b60)}
+.cap-grid{align-items:end}
+.nx-h{font-weight:800;font-size:17px;margin:14px 0 6px}
+.nx{list-style:none;margin:8px 0 16px;padding:0;display:grid;gap:9px}
+.nx li{position:relative;padding-left:27px;font-size:14px;line-height:1.45}
+.nx li::before{content:"✓";position:absolute;left:0;top:1px;width:19px;height:19px;border-radius:50%;background:rgba(252,87,65,.13);color:var(--coral);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
 .shake{animation:vpcshake .28s ease 2}
 @keyframes vpcshake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media(max-width:640px){
@@ -225,10 +232,6 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
           <div class="rows-head"><div>стадия</div><div>у вас</div><div>норма · рынок 2026</div></div>
           <div id="rows"></div>
         </div>
-        <div class="card">
-          <p style="margin:0 0 8px;font-weight:700">что разберём на диагностике</p>
-          <p style="margin:0;font-size:14px;color:var(--b60);line-height:1.55">остальные 5 рекомендаций под вашу карту потерь · прямые потери бюджета: фрод, переплата за лид, двойная оплата агентского канала · приоритетный план починки по стадиям. запись — кнопкой ниже.</p>
-        </div>
       </div>
       <div class="glock no-print">
         <div class="glock-card">
@@ -242,20 +245,30 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 
     <!-- SOFT CAPTURE -->
     <div class="capture no-print">
-      <p style="margin:0;font-weight:800;font-size:17px">полная карта потерь — за контакт</p>
-      <p style="margin:6px 0 0;color:var(--b60);font-size:14px">оставьте контакт — полный разбор откроется сразу, а Бюро вернётся с коротким комментарием по вашей карте потерь. дальше по желанию — экспресс-диагностика воронки.</p>
-      <form id="capForm">
-        <div class="cap-grid">
-          <input type="text" id="cName" placeholder="имя" autocomplete="name">
-          <input type="text" id="cPhone" placeholder="телефон или @telegram" autocomplete="tel">
-          <input type="text" id="cCompany" placeholder="компания / проект" autocomplete="organization">
-          <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
-        </div>
-      </form>
-      <div id="capThanks" class="hidden" style="margin-top:12px;font-weight:600;color:var(--green)"></div>
-      <p class="muted">жмёте кнопку — полный разбор открывается сразу, а в вашей почте появляется готовое письмо-заявка с вашими цифрами: отправить его — одно нажатие. сам расчёт остаётся у вас в браузере. PDF-версия: Cmd/Ctrl+P.</p>
-      <div class="center" style="margin-top:14px">
-        <button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику воронки →</button>
+      <div id="capStage1">
+        <p style="margin:0;font-weight:800;font-size:17px">полная карта потерь — за контакт</p>
+        <p style="margin:6px 0 0;color:var(--b60);font-size:14px">оставьте контакт — полный разбор откроется сразу, а Бюро вернётся с коротким комментарием по вашей карте потерь.</p>
+        <form id="capForm">
+          <div class="cap-grid">
+            <div class="cap-f"><label for="cName">имя</label><input type="text" id="cName" placeholder="Александр" autocomplete="name"></div>
+            <div class="cap-f"><label for="cPhone">телефон или @telegram</label><input type="text" id="cPhone" placeholder="+7 900 000-00-00" autocomplete="tel"></div>
+            <div class="cap-f"><label for="cCompany">компания / проект</label><input type="text" id="cCompany" placeholder="ЖК «Пример»" autocomplete="organization"></div>
+            <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
+          </div>
+        </form>
+        <p class="muted">жмёте кнопку — полный разбор открывается сразу, а в вашей почте появляется готовое письмо-заявка с вашими цифрами: отправить его — одно нажатие. без рассылок и спама; сам расчёт остаётся у вас в браузере.</p>
+      </div>
+      <div id="capStage2" class="hidden">
+        <div id="capThanks" style="font-weight:600;color:var(--green)"></div>
+        <p class="nx-h">следующий шаг — экспресс-диагностика воронки</p>
+        <p style="margin:0 0 4px;color:var(--b60);font-size:14px">разбор с Бюро по вашим цифрам из этого расчёта:</p>
+        <ul class="nx">
+          <li>остальные 5 рекомендаций под вашу карту потерь</li>
+          <li>прямые потери бюджета: фрод, переплата за лид, двойная оплата агентского канала</li>
+          <li>приоритетный план починки по стадиям</li>
+        </ul>
+        <div class="center"><button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику →</button></div>
+        <p class="muted" style="text-align:center">PDF-версия расчёта: Cmd/Ctrl+P</p>
       </div>
     </div>
   </section>
@@ -516,9 +529,11 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       lines.push('· '+FLBL[f.id]+': '+val+(byMarket?' (по рынку)':''));
     });
     lines.push('· скорость перезвона: '+CBTXT[$('callback').value||'']);
-    $('capThanks').classList.remove('hidden');
-    $('capThanks').innerHTML=(name?name+', ':'')+'полный разбор открыт выше ↑, а в почте — готовое письмо-заявка: просто отправьте его. PDF-версия: Cmd/Ctrl+P.';
-    setTimeout(function(){$('gated').scrollIntoView({behavior:'smooth',block:'start'});},250);
+    $('capStage1').classList.add('hidden');
+    var s2=$('capStage2');
+    s2.classList.remove('hidden');
+    s2.classList.add('reveal');
+    $('capThanks').innerHTML=(name?name+', ':'')+'готово: полный разбор открыт выше ↑, а в почте — письмо-заявка, просто отправьте его.';
     setTimeout(function(){
       try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Экспресс-диагностика: полный разбор воронки')+'&body='+encodeURIComponent(lines.join('\n'));}catch(err){}
     },900);
