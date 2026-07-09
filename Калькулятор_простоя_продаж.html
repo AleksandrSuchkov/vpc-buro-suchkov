@@ -95,6 +95,12 @@ details.meth p b{color:var(--black)}
 .lg .f i{font-style:normal;color:var(--blue)}
 .lg .d{font-size:12.5px;color:var(--b60);line-height:1.4}
 .lg .ex{margin-top:8px;font-size:11.5px;font-weight:600;color:var(--blue)}
+/* из чего состоит простой */
+.lg .n{font-size:30px;font-weight:600;letter-spacing:-1.4px;line-height:1;color:var(--coral);margin-bottom:7px}
+.disp{margin-top:12px;background:var(--coral-9);border-radius:var(--r-md);padding:13px 15px;font-size:13.5px;line-height:1.45;max-width:840px}
+.note{margin:10px 0 0;font-size:12.5px;color:var(--b40);line-height:1.45;max-width:840px}
+.leaklink{margin:14px 0 0;font-size:13.5px;line-height:1.45;max-width:840px}
+.leaklink a{color:var(--blue);font-weight:600}
 .faq{display:flex;flex-direction:column;gap:8px;margin-top:16px}
 .faq details{background:var(--gray);border-radius:var(--r-md);padding:13px 16px}
 .faq summary{font-size:14px;font-weight:600;cursor:pointer;letter-spacing:-.3px}
@@ -113,14 +119,14 @@ footer .heart{color:var(--coral)}
     <span class="wm">Бюро&nbsp;Сучкова</span><span class="spacer"></span><span class="meta">калькулятор · q3 2026</span>
   </div>
 
-  <div class="kicker">сколько стоит месяц непроданных остатков</div>
-  <h1>калькулятор простоя продаж</h1>
-  <p class="lead">пока квартиры не проданы, деньги не попадают на эскроу — и проектное финансирование не дешевеет. каждый рубль в непроданном бетоне — это рубль долга, который обслуживается <b>по полной ставке</b>. посчитайте, во что простой обходится вам.</p>
+  <div class="kicker">калькулятор простоя продаж</div>
+  <h1>сколько стоит месяц ваших непроданных остатков</h1>
+  <p class="lead">пока квартиры не проданы, деньги не попадают на эскроу — и этот долг обслуживается <b>по полной ставке</b>. при эффективной ставке ПФ 12–16% и марже проектов 5–10% проценты копятся быстрее, чем проект зарабатывает. посчитайте порядок своих потерь — а ниже разберём, какая их часть управляемая.</p>
   <div class="bench">
-    <span>рынок: распроданность <b>69%</b> при норме ~70%</span>
+    <span>в домах с вводом-2026 продано <b>52%</b></span>
     <span>остатки продаются <b>3,2 года</b></span>
     <span>заморожено по стране <b>~3,5 трлн ₽</b></span>
-    <span>план продаж в I кв. выполнили <b>27%</b></span>
+    <span>план Q1 выполнили только <b>27%</b> девелоперов</span>
   </div>
 
   <div class="calc">
@@ -138,7 +144,7 @@ footer .heart{color:var(--coral)}
       <div class="field">
         <div class="lb"><span>эффективная ставка проектного финансирования</span><span class="val"><span id="vRate">14</span>%</span></div>
         <input type="range" id="rate" min="6" max="20" step="0.5" value="14">
-        <div class="hint">рынок 2026: 12–16% при покрытии эскроу ~72–73% (ЦБ, Коммерсантъ)</div>
+        <div class="hint">средневзвешенная ПФ ~10% (ЦБ) · эффективная для застройщика 12–16% (Ъ) · непокрытая эскроу часть ≈ ключевая +2,5–4,5 п.п. ≈ 17–19%</div>
       </div>
       <div class="frozen">
         <div class="l">капитал, замороженный в остатках</div>
@@ -151,15 +157,45 @@ footer .heart{color:var(--coral)}
       <div class="big">
         <div class="l">проценты на замороженный капитал · в месяц</div>
         <div class="v" id="vMonth">35,0 млн ₽</div>
-        <div class="s">это деньги, которые уходят банку, пока остатки стоят</div>
+        <div class="s">уходят банку — или недозарабатываются на замороженном капитале, пока остатки стоят</div>
       </div>
       <div class="rgrid">
         <div class="rc"><div class="l">в день</div><div class="v" id="vDay">1,17 млн ₽</div></div>
         <div class="rc"><div class="l">за квартал</div><div class="v" id="vQ">105 млн ₽</div></div>
         <div class="rc"><div class="l">за год</div><div class="v" id="vY">420 млн ₽</div></div>
       </div>
-      <div class="market">если продавать остатки в среднерыночном темпе (<b>3,2 года</b>, ДОМ.РФ), суммарные проценты на них составят ≈ <b id="vMarket">672 млн ₽</b>. столько стоит стратегия «подождём отскока».</div>
+      <div class="market">если продавать остатки в среднерыночном темпе (<b>3,2 года</b>, ДОМ.РФ), суммарные проценты составят ≈ <b id="vMarket">672 млн ₽</b> — больше, чем вся прибыль, заложенная в эти квартиры при марже 5–10%. сценарий «продаём как продаётся» стоит дороже, чем кажется.</div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-h"><span class="num">★</span><h2>из чего состоит простой</h2></div>
+    <p class="sec-d">ставку ЦБ и ипотеку вы не почините — но простой редко состоит из них целиком. четыре управляемые утечки, которые встречаются чаще всего:</p>
+    <div class="leg">
+      <div class="lg">
+        <div class="n">89%</div>
+        <div class="t">застройщиков не перезвонили по заявке (Яндекс, 219 тыс. звонков)</div>
+        <div class="d">лиды оплачены, звонок не состоялся — воронка теряет сделки на первом же шаге.</div>
+      </div>
+      <div class="lg">
+        <div class="n">36%</div>
+        <div class="t">«агентских» сделок начались с вашей же рекламы (Smartis)</div>
+        <div class="d">клиент пришёл сам, комиссию получил агент — вы платите за одну сделку дважды.</div>
+      </div>
+      <div class="lg">
+        <div class="n">70%</div>
+        <div class="t">лидов — холодный трафик</div>
+        <div class="d">конверсия в 1,5–2 раза ниже тёплой: бюджет растёт, продажи — нет.</div>
+      </div>
+      <div class="lg">
+        <div class="n">4+ клика</div>
+        <div class="t">до конкретного лота у 72% сайтов застройщиков</div>
+        <div class="d">покупатель уходит раньше, чем видит квартиру.</div>
+      </div>
+    </div>
+    <div class="disp">главное: 73% девелоперов не выполнили план I квартала. но 27% — выполнили. в том же рынке, по той же ставке. разница — не в ставке ЦБ, а в системе продаж.</div>
+    <div class="note">этот расчёт — цена бездействия системы, а не работа отдела продаж. покажите его на бюджетном комитете как аргумент за ресурсы.</div>
+    <p class="leaklink">остатки — симптом. где именно теряет воронка — покажет <a href="Экспресс-диагностика_воронки_продаж.html">экспресс-диагностика воронки</a>: 2 минуты по вашим цифрам.</p>
   </div>
 
   <div class="accel">
@@ -167,24 +203,24 @@ footer .heart{color:var(--coral)}
     <div class="d">рычаги без демпинга прайса: воронка (конверсия лид → сделка), агентский канал, ценовые решения, точечный перформанс. поставьте реалистичное ускорение — посмотрите, что оно стоит.</div>
     <div class="row">
       <div class="field" style="margin:0">
-        <div class="lb"><span>ускорение распродажи остатков</span><span class="val">на <span id="vAcc">4</span> мес быстрее</span></div>
-        <input type="range" id="acc" min="1" max="12" step="1" value="4">
-        <div class="hint">бенчмарки рынка: конверсия воронки 6,9→15,2% (ИИ-тренер), цикл сделки с кабинетом агента 52→30 дней</div>
+        <div class="lb"><span>ускорение распродажи остатков</span><span class="val">на <span id="vAcc">3</span> мес быстрее</span></div>
+        <input type="range" id="acc" min="1" max="12" step="1" value="3">
+        <div class="hint">кейсы рынка, не наши (форум «Движение» 2026): конверсия воронки 6,9→15,2%, цикл сделки 52→30 дней · 1–3 мес — консервативно, 4–6 — типовой проект, 7+ — все рычаги сразу</div>
       </div>
       <div class="saving">
         <div class="l">экономия на процентах</div>
-        <div class="v" id="vSave">140 млн ₽</div>
-        <div class="s">плюс раньше раскрывается эскроу и дешевеет весь портфель ПФ</div>
+        <div class="v" id="vSave">52,5 млн ₽</div>
+        <div class="s">считаем со среднего остатка (÷2), как в сценарии «подождём отскока» · плюс раньше наполняется эскроу и дешевеет весь портфель ПФ</div>
       </div>
     </div>
   </div>
 
   <div class="cta">
     <div>
-      <div class="t">где именно ускорить — покажет экспресс-диагностика</div>
-      <div class="s">2 недели: воронка, каналы, цены, агентский канал. на выходе — карта потерь с цифрами и план распродажи без демпинга. стоимость диагностики — меньше <span id="vDiag">двух дней</span> вашего простоя.</div>
+      <div class="t">сколько из этих потерь можно вернуть — покажет экспресс-диагностика</div>
+      <div class="s">за 2 недели разложим вашу цену простоя на рынок, который не изменить, — и утечки, которые закрываются: воронка, каналы, цены, агентский канал. на выходе — карта потерь с цифрами и точный расчёт по вашему графику эскроу и траншам. <span id="vDiagWrap">стоимость — <span id="vDiag">меньше двух дней</span> вашего простоя.</span></div>
     </div>
-    <a id="ctaMail" href="mailto:aleksandr@bureausuchkov.com?subject=Экспресс-диагностика: стоимость простоя&body=Здравствуйте! Посчитал стоимость простоя в калькуляторе Бюро. Хочу экспресс-диагностику.">получить расчёт → </a>
+    <a id="ctaMail" href="mailto:aleksandr@bureausuchkov.com?subject=Экспресс-диагностика: стоимость простоя&body=Здравствуйте! Посчитал стоимость простоя в калькуляторе Бюро. Хочу обсудить экспресс-диагностику по этим цифрам.">обсудить диагностику →</a>
   </div>
 
   <div class="section">
@@ -211,21 +247,27 @@ footer .heart{color:var(--coral)}
       </div>
       <div class="lg">
         <div class="t"><span>4</span>экономия от ускорения</div>
-        <div class="f">цена месяца <i>×</i> месяцы ускорения</div>
-        <div class="d">каждый месяц, снятый со срока распродажи, — это невыплаченные банку проценты, которые остаются в марже проекта.</div>
-        <div class="ex">пример: ускорение на 4 мес × 35 млн = 140 млн ₽</div>
+        <div class="f">цена месяца <i>÷</i> 2 <i>×</i> месяцы ускорения</div>
+        <div class="d">ускоряется весь график распродажи, поэтому проценты экономятся со среднего остатка — половины текущего, как и в формуле 3. каждый снятый месяц остаётся в марже проекта.</div>
+        <div class="ex">пример: 35 млн ÷ 2 × 4 мес = 70 млн ₽</div>
       </div>
     </div>
 
     <div class="faq">
       <details><summary>почему «каждый рубль остатка — это долг по полной ставке»?</summary>
-        <p>ставка проектного финансирования привязана к покрытию кредита деньгами на эскроу: покрытая часть финансируется по спецставке (вплоть до ~1%), непокрытая — по рыночной. по рынку покрытие сейчас ~72–73% (ЦБ, февраль 2026) — то есть непроданная часть портфеля реально висит долгом по полной ставке. как только сделка проходит, деньги падают на эскроу и проценты на эту часть почти исчезают. поэтому рубль непроданного ≈ рубль долга по полной ставке — <b>консервативное, но честное приближение</b>.</p>
+        <p>ставка проектного финансирования привязана к покрытию кредита деньгами на эскроу: покрытая часть финансируется по спецставке (вплоть до ~1%), непокрытая — по рыночной. по рынку покрытие сейчас ~72–73% (ЦБ, февраль 2026) — то есть непроданная часть портфеля реально висит долгом по полной ставке. как только сделка проходит, деньги падают на эскроу и проценты на эту часть почти исчезают. поэтому рубль непроданного ≈ рубль долга по полной ставке — <b>консервативное, но честное приближение</b>. нюанс про готовое: если дом введён и кредит погашен, остатки — уже не долг банку, а замороженный собственный капитал; его цена — альтернативная стоимость (при текущих ставках те же ~13–15% годовых) плюс содержание фонда. если долг после ввода не погашен — банк обычно переоценивает его ближе к рыночной ставке, то есть дороже ПФ.</p>
+      </details>
+      <details><summary>мы продаём в рассрочку — расчёт тот же?</summary>
+        <p>рассрочка наполняет эскроу только на оплаченную часть: сделка есть, а ставка на непокрытый остаток не падает. если рассрочек в структуре продаж много, реальная цена простоя ближе к расчётной, чем кажется по числу «проданных» квартир.</p>
+      </details>
+      <details><summary>это же ставка ЦБ и рынок — при чём тут мы?</summary>
+        <p>частично — правда: рынок и ставка давят на всех одинаково. но 27% девелоперов выполнили план Q1 в том же рынке, по той же ставке. и главное: ставка снизится — сгоревшие месяцы процентов не вернёт. диагностика для того и нужна: разложить вашу цену простоя на рыночную часть, которую не изменить, и управляемые утечки, которые закрываются за недели.</p>
       </details>
       <details><summary>откуда 3,2 года и почему в формуле деление на два?</summary>
         <p>3,2 года — средний срок продажи текущих остатков по данным Аналитики ДОМ.РФ (май 2026). деление на два — из равномерной распродажи: в первый месяц проценты идут со всего остатка, в последний — почти с нуля, в среднем за период — с половины. если ваш темп продаж ниже рыночного, реальная цифра будет больше расчётной.</p>
       </details>
       <details><summary>что калькулятор сознательно не учитывает?</summary>
-        <p>график раскрытия эскроу и транши, разницу ставок покрытой и непокрытой частей, расходы на содержание готового фонда (охрана, отопление, налог на имущество), инфляцию цены м² и скидки при затоваривании. почти всё неучтённое <b>увеличивает</b> потери — поэтому результат стоит читать как нижнюю оценку: реальная цена простоя, как правило, выше.</p>
+        <p>график раскрытия эскроу и транши, разницу ставок покрытой и непокрытой частей, расходы на содержание готового фонда (охрана, отопление, налог на имущество), инфляцию цены м² и скидки при затоваривании. для проектов с покрытием эскроу ниже 100% почти всё неучтённое <b>увеличивает</b> потери — читайте результат как нижнюю оценку. если ваш портфель покрыт с запасом, ваша цена простоя ниже расчётной: считайте по спреду ставок или альтернативной стоимости капитала.</p>
       </details>
       <details><summary>у нас другая ставка или эскроу частично раскрыт — расчёт не врёт?</summary>
         <p>ползунок ставки для того и нужен: поставьте вашу эффективную ставку по кредитному портфелю проекта. калькулятор оценивает <b>порядок величин</b>: задача — показать масштаб. финмодель он не заменит. точный расчёт под ваш график эскроу и транши — первая часть экспресс-диагностики.</p>
@@ -234,14 +276,21 @@ footer .heart{color:var(--coral)}
         <p>скидка тоже стоит денег, и обычно больше: 5% дисконта на остатке 3 млрд ₽ — это 150 млн ₽, то есть дороже четырёх месяцев простоя из примера выше. поэтому последовательность другая: сначала воронка, каналы и агентский канал (рычаги без демпинга), точечные ценовые решения — в последнюю очередь и по данным, а не от отчаяния.</p>
       </details>
       <details><summary>насколько этим цифрам можно верить?</summary>
-        <p>рыночные константы — из открытых источников Q2 2026: распроданность 69% и срок остатков 3,2 года (Аналитика ДОМ.РФ), ставки ПФ 12–16% и покрытие эскроу ~72–73% (ЦБ, Коммерсантъ), ~3,5 трлн ₽ замороженного капитала (Эксперт). ваши вводные — ваши: калькулятор ничего не отправляет и не сохраняет, расчёт происходит в браузере. это ознакомительная оценка, не финансовая консультация и не оферта.</p>
+        <p>рыночные константы — из открытых источников Q2 2026: срок остатков 3,2 года и распроданность ввода-2026 (Аналитика ДОМ.РФ, май 2026), средневзвешенная ставка ПФ ~10% (ЦБ) и эффективная 12–16% (Коммерсантъ), покрытие эскроу ~73% (ЦБ), ~3,5 трлн ₽ замороженного капитала (Эксперт). ваши вводные — ваши: калькулятор ничего не отправляет и не сохраняет, расчёт происходит в браузере. это ознакомительная оценка, не финансовая консультация и не оферта. расчёт фиксирует текущую ставку: при снижении ключевой будущие проценты уменьшатся — но не задним числом.</p>
       </details>
     </div>
   </div>
 
+  <div class="cta">
+    <div>
+      <div class="t">посчитали свою цену простоя?</div>
+      <div class="s">пришлите цифры — скажем, где у проектов такого размера обычно текут деньги, и честно ответим, нужна ли вам диагностика.</div>
+    </div>
+    <a id="ctaMail2" href="mailto:aleksandr@bureausuchkov.com?subject=Экспресс-диагностика: стоимость простоя">обсудить мой расчёт →</a>
+  </div>
 
   <footer>
-    данные: Аналитика ДОМ.РФ (распроданность 69%, срок остатков 3,2 года), ЦБ РФ (ставка, покрытие эскроу), Эксперт (~3,5 трлн ₽), форум «Движение» 2026. калькулятор — шаг 0 воронки Бюро; связки: «Маркетинговая_воронка_и_приоритеты.html», «Бандлы_что_собирать_сейчас.html» (бандл «разморозка капитала»). <span class="heart">♥</span>
+    данные: Аналитика ДОМ.РФ (срок остатков 3,2 года, распроданность ввода-2026), ЦБ РФ (ставки, покрытие эскроу), Коммерсантъ, Эксперт (~3,5 трлн ₽), форум «Движение» 2026. расчёт происходит в браузере — ваши цифры никуда не отправляются. <span class="heart">♥</span>
   </footer>
 </div>
 
@@ -266,12 +315,15 @@ function calc(){
   el('vQ').textContent = fmt(month*3);
   el('vY').textContent = fmt(month*12);
   el('vMarket').textContent = fmt(frozen/2*rate*3.2);
-  el('vSave').textContent = fmt(month*acc);
+  el('vSave').textContent = fmt(month*acc/2);
   const days = DIAG_COST/(month/30);
-  el('vDiag').textContent = days < 1 ? 'одного дня' : days < 2 ? 'двух дней' : days < 7 ? Math.ceil(days) + ' дней' : 'недели';
-  el('ctaMail').href = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: стоимость простоя') + '&body=' + encodeURIComponent(
+  el('vDiag').textContent = days < 1 ? 'меньше одного дня' : days < 2 ? 'меньше двух дней' : 'меньше ' + Math.ceil(days) + ' дней';
+  el('vDiagWrap').style.display = days > 4 ? 'none' : '';
+  const mailHref = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: стоимость простоя') + '&body=' + encodeURIComponent(
     'Здравствуйте! Посчитал стоимость простоя в калькуляторе Бюро:\n· остатки: ' + area.toLocaleString('ru-RU') + ' м² × ' + (price/1000) + ' тыс ₽/м² = ' + fmt(frozen) +
-    '\n· ставка ПФ: ' + (rate*100) + '%\n· цена простоя: ' + fmt(month) + ' в месяц\nХочу экспресс-диагностику.');
+    '\n· ставка ПФ: ' + (rate*100) + '%\n· цена простоя: ' + fmt(month) + ' в месяц\nХочу обсудить экспресс-диагностику по этим цифрам.');
+  el('ctaMail').href = mailHref;
+  el('ctaMail2').href = mailHref;
 }
 ['area','price','rate','acc'].forEach(id => el(id).addEventListener('input', calc));
 calc();
@@ -317,7 +369,7 @@ calc();
 })();
 </script>
 <!--vpcm:start-->
-<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">VPC × девелоперы</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><a class="vpcm-home" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg><span>всё оглавление</span><span class="vpcm-ha">↗</span></a><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-num">01</span><span class="vpcm-st">канвас и стратегия</span></div><a class="vpcm-item" href="Value_Proposition_Canvas.html"><span class="vpcm-it">Value Proposition Canvas</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="VPC_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D1%8C%D0%B4%D0%B5%D1%80%D0%B0.html"><span class="vpcm-it">шаблон Остервальдера</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="00_%D0%98%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D1%81%D0%B8%D0%BD%D1%82%D0%B5%D0%B7_VPC.md"><span class="vpcm-it">исследование и синтез</span><span class="vpcm-ic">▤</span></a></div><div class="vpcm-sec" style="--s:1"><div class="vpcm-sh"><span class="vpcm-num">02</span><span class="vpcm-st">маркетинг и продажи</span></div><a class="vpcm-item" href="%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B0_%D0%B8_%D0%BF%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B.html"><span class="vpcm-it">маркетинговая воронка &amp; приоритеты</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BA%D0%B0%D1%80%D1%82%D0%B0_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">боевая карта продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%90%D0%B3%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB_%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B_%D0%B8_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F.html"><span class="vpcm-it">агентский канал: проблемы и решения</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B0%D0%BD%D0%B4%D0%BB%D1%8B_%D1%87%D1%82%D0%BE_%D1%81%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%82%D1%8C_%D1%81%D0%B5%D0%B9%D1%87%D0%B0%D1%81.html"><span class="vpcm-it">бандлы: что собирать сейчас</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:2"><div class="vpcm-sh"><span class="vpcm-num">03</span><span class="vpcm-st">лид-магниты · для девелоперов</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B5%D0%BD%D1%87%D0%BC%D0%B0%D1%80%D0%BA_%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C_%D0%BB%D0%B8%D0%B4%D0%B0_%D0%B8_%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B8_2026.html"><span class="vpcm-it">бенчмарк: стоимость лида и сделки 2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9F%D0%BB%D0%B5%D0%B9%D0%B1%D1%83%D0%BA_%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F_2026.html"><span class="vpcm-it">плейбук: возражения-2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:3"><div class="vpcm-sh"><span class="vpcm-num">04</span><span class="vpcm-st">материалы для печати и встреч</span></div><a class="vpcm-item" href="VPC_%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80.pdf"><span class="vpcm-it">VPC-постер</span><span class="vpcm-ic">⤓</span></a><a class="vpcm-item" href="VPC_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx"><span class="vpcm-it">презентация</span><span class="vpcm-ic">⤓</span></a></div><div class="vpcm-sec" style="--s:4"><div class="vpcm-sh"><span class="vpcm-num">05</span><span class="vpcm-st">рынок</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
+<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">инструменты для девелоперов</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-st">инструменты</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
 <style>
 .vpcm,.vpcm *{box-sizing:border-box;font-family:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
 .vpcm-trigger{position:fixed;left:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:99998;display:inline-flex;align-items:center;gap:8px;background:#171AD9;color:#fff;font-size:14px;font-weight:600;letter-spacing:-.2px;line-height:1;border:0;cursor:pointer;padding:11px 16px 11px 13px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.20);-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,opacity .2s}

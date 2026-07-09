@@ -152,12 +152,12 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       <div class="form-grid">
 
         <div class="blk-t">экономика проекта</div>
-        <div class="field"><label for="price">средняя цена лота <span class="unit">млн ₽</span></label><input type="text" class="inp" id="price" inputmode="decimal" placeholder="8,5"><div class="hint">средний чек сделки · в среднем по РФ ≈ 8–9 млн ₽, миллионники выше</div></div>
+        <div class="field"><label for="price">средняя цена лота <span class="unit">₽</span></label><input type="text" class="inp" id="price" inputmode="decimal" placeholder="8 500 000 ₽"><div class="hint">средний чек сделки · в среднем по РФ ≈ 8–9 млн ₽, миллионники выше</div></div>
         <div class="field"><label for="leads">обращений (лидов) в месяц</label><input type="text" class="inp" id="leads" inputmode="numeric" placeholder="800"><div class="hint">все входящие обращения по всем каналам</div></div>
-        <div class="field"><label for="budget">маркетинговый бюджет в месяц <span class="unit">млн ₽</span></label><input type="text" class="inp" id="budget" inputmode="decimal" placeholder="4"><div class="hint">digital + классифайды + прочее</div></div>
+        <div class="field"><label for="budget">маркетинговый бюджет в месяц <span class="unit">₽</span></label><input type="text" class="inp" id="budget" inputmode="decimal" placeholder="4 000 000 ₽"><div class="hint">digital + классифайды + прочее</div></div>
 
         <div class="blk-t">трафик и лиды</div>
-        <div class="field"><label for="cpl">стоимость целевого лида <span class="unit">тыс ₽</span></label><input type="text" class="inp" id="cpl" inputmode="decimal" placeholder="16"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
+        <div class="field"><label for="cpl">стоимость целевого лида <span class="unit">₽</span></label><input type="text" class="inp" id="cpl" inputmode="decimal" placeholder="16 000 ₽"><div class="hint">норма масс-сегмента 12–20 тыс ₽; премиум — до 58 тыс</div></div>
         <div class="field"><label for="bots">доля ботов и фрода в бюджете <span class="unit">%</span></label><input type="text" class="inp" id="bots" inputmode="decimal" placeholder="30"><div class="hint">на рынке — до 50% digital-бюджета</div></div>
 
         <div class="blk-t">квалификация и обработка</div>
@@ -238,7 +238,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     <!-- SOFT CAPTURE -->
     <div class="capture no-print">
       <p style="margin:0;font-weight:800;font-size:17px">полный разбор + все рекомендации — за контакт</p>
-      <p style="margin:6px 0 0;color:var(--b60);font-size:14px">оставьте контакт — полный разбор откроется сразу, а Бюро вернётся с коротким комментарием по вашей карте потерь. дальше по желанию — экспресс-диагностика воронки (шаг 1).</p>
+      <p style="margin:6px 0 0;color:var(--b60);font-size:14px">оставьте контакт — полный разбор откроется сразу, а Бюро вернётся с коротким комментарием по вашей карте потерь. дальше по желанию — экспресс-диагностика воронки.</p>
       <form id="capForm">
         <div class="cap-grid">
           <input type="text" id="cName" placeholder="имя" autocomplete="name">
@@ -250,7 +250,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       <div id="capThanks" class="hidden" style="margin-top:12px;font-weight:600;color:var(--green)"></div>
       <p class="muted">жмёте кнопку — полный разбор открывается сразу, а в вашей почте появляется готовое письмо-заявка с вашими цифрами: отправить его — одно нажатие. сам расчёт остаётся у вас в браузере. PDF-версия: Cmd/Ctrl+P.</p>
       <div class="center" style="margin-top:14px">
-        <button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику воронки (шаг 1) →</button>
+        <button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику воронки →</button>
       </div>
     </div>
   </section>
@@ -277,8 +277,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   function num(n){return rub.format(Math.round(n));}
   // поля: d = рыночное среднее (плейсхолдер), mn/mx = клампы
   var FLD=[
-    {id:'price',d:8.5,mn:1,mx:200},{id:'leads',d:800,mn:10,mx:20000},{id:'budget',d:4,mn:0.1,mx:100},
-    {id:'cpl',d:16,mn:1,mx:150},{id:'bots',d:30,mn:0,mx:80},{id:'qual',d:32,mn:5,mx:90},
+    {id:'price',d:8500000,mn:500000,mx:200000000,kind:'mln'},{id:'leads',d:800,mn:10,mx:20000},{id:'budget',d:4000000,mn:100000,mx:100000000,kind:'mln'},
+    {id:'cpl',d:16000,mn:1000,mx:150000,kind:'k'},{id:'bots',d:30,mn:0,mx:80},{id:'qual',d:32,mn:5,mx:90},
     {id:'reach',d:47,mn:10,mx:100},{id:'through',d:6,mn:0.5,mx:25},{id:'agent',d:87,mn:0,mx:100},
     {id:'comm',d:3.5,mn:1,mx:8},{id:'mort',d:56,mn:10,mx:95}
   ];
@@ -293,6 +293,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   function v(id){
     var f=F[id], n=raw(id);
     if(n===null)n=f.d;
+    else if(f.kind==='mln'){ if(n<1000)n*=1e6; else if(n<100000)n*=1000; }
+    else if(f.kind==='k'){ if(n<1000)n*=1000; }
     return Math.min(f.mx,Math.max(f.mn,n));
   }
   function filledCount(){
@@ -307,8 +309,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   }
   var VERD={g:'норма',a:'зона риска',r:'утечка'};
   function compute(){
-    var D=v('price')*1e6, L=v('leads'), B=v('budget')*1e6,
-        cpl=v('cpl')*1000, bots=v('bots'), qual=v('qual')/100,
+    var D=v('price'), L=v('leads'), B=v('budget'),
+        cpl=v('cpl'), bots=v('bots'), qual=v('qual')/100,
         reach=v('reach')/100, through=v('through')/100,
         agent=v('agent')/100, comm=v('comm')/100, mort=v('mort'),
         cb=$('callback').value||'day';
@@ -329,9 +331,9 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     var doublePay=agentDeals*0.36*comm*D*12;
     var waste=overpay+botBurn+doublePay;
     var rows=[];
-    rows.push({key:'cpl',name:'стоимость целевого лида',yours:String(v('cpl')).replace('.',',')+' тыс ₽',bench:'норма 12–20 тыс',
-      c: v('cpl')<=15?'g':(v('cpl')<=25?'a':'r'),
-      desc: v('cpl')>25?'лид дороже верхней нормы — переплата <b>'+money(overpay)+'</b>/год на целевых лидах':(v('cpl')>15?'у верхней границы нормы; следите за качеством трафика':'в норме масс-сегмента')});
+    rows.push({key:'cpl',name:'стоимость целевого лида',yours:num(cpl)+' ₽',bench:'норма 12–20 тыс ₽',
+      c: cpl<=15000?'g':(cpl<=25000?'a':'r'),
+      desc: cpl>25000?'лид дороже верхней нормы — переплата <b>'+money(overpay)+'</b>/год на целевых лидах':(cpl>15000?'у верхней границы нормы; следите за качеством трафика':'в норме масс-сегмента')});
     rows.push({key:'bots',name:'боты и фрод в бюджете',yours:v('bots')+'%',bench:'норма ≤15% · рынок до 50%',
       c: bots<=15?'g':(bots<=30?'a':'r'),
       desc: bots>15?'сверх нормы сожжено <b>'+money(botBurn)+'</b>/год маркетингового бюджета':'фрод под контролем'});
@@ -466,7 +468,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
   });
   $('callback').addEventListener('change',function(){updProgress();if(revealed)render();});
   $('fillAvg').addEventListener('click',function(){
-    FLD.forEach(function(f){$(f.id).value=String(f.d).replace('.',',');});
+    FLD.forEach(function(f){$(f.id).value=(f.d>=1000?rub.format(f.d):String(f.d).replace('.',','));});
     if(!$('callback').value)$('callback').value='day';
     updProgress();
     if(revealed)render();
@@ -484,7 +486,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
     setTimeout(function(){$('cPhone').focus();},450);
   });
   var CBTXT={'':'не указана','15':'≤15 минут','day':'в тот же день','later':'на следующий день и позже','never':'часто не перезваниваем'};
-  var FLBL={price:'средняя цена лота, млн ₽',leads:'обращений в месяц',budget:'бюджет, млн ₽/мес',cpl:'CPL целевого, тыс ₽',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная лид→сделка, %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
+  var FLBL={price:'средняя цена лота',leads:'обращений в месяц',budget:'бюджет в месяц',cpl:'CPL целевого',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная лид→сделка, %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
   $('capForm').addEventListener('submit',function(e){
     e.preventDefault();
     var name=$('cName').value.trim(), phone=$('cPhone').value.trim(), comp=$('cCompany').value.trim();
@@ -498,7 +500,8 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
       'Прямые потери бюджета: '+last.wasteStr,'','Цифры:'];
     FLD.forEach(function(f){
       var byMarket=raw(f.id)===null;
-      lines.push('· '+FLBL[f.id]+': '+String(v(f.id)).replace('.',',')+(byMarket?' (по рынку)':''));
+      var val=(f.kind==='mln'||f.kind==='k')?money(v(f.id)):String(v(f.id)).replace('.',',');
+      lines.push('· '+FLBL[f.id]+': '+val+(byMarket?' (по рынку)':''));
     });
     lines.push('· скорость перезвона: '+CBTXT[$('callback').value||'']);
     $('capThanks').classList.remove('hidden');
@@ -555,7 +558,7 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 })();
 </script>
 <!--vpcm:start-->
-<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">VPC × девелоперы</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><a class="vpcm-home" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg><span>всё оглавление</span><span class="vpcm-ha">↗</span></a><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-num">01</span><span class="vpcm-st">канвас и стратегия</span></div><a class="vpcm-item" href="Value_Proposition_Canvas.html"><span class="vpcm-it">Value Proposition Canvas</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="VPC_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D1%8C%D0%B4%D0%B5%D1%80%D0%B0.html"><span class="vpcm-it">шаблон Остервальдера</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="00_%D0%98%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D1%81%D0%B8%D0%BD%D1%82%D0%B5%D0%B7_VPC.md"><span class="vpcm-it">исследование и синтез</span><span class="vpcm-ic">▤</span></a></div><div class="vpcm-sec" style="--s:1"><div class="vpcm-sh"><span class="vpcm-num">02</span><span class="vpcm-st">маркетинг и продажи</span></div><a class="vpcm-item" href="%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B0_%D0%B8_%D0%BF%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B.html"><span class="vpcm-it">маркетинговая воронка &amp; приоритеты</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BA%D0%B0%D1%80%D1%82%D0%B0_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">боевая карта продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%90%D0%B3%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB_%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B_%D0%B8_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F.html"><span class="vpcm-it">агентский канал: проблемы и решения</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B0%D0%BD%D0%B4%D0%BB%D1%8B_%D1%87%D1%82%D0%BE_%D1%81%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%82%D1%8C_%D1%81%D0%B5%D0%B9%D1%87%D0%B0%D1%81.html"><span class="vpcm-it">бандлы: что собирать сейчас</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:2"><div class="vpcm-sh"><span class="vpcm-num">03</span><span class="vpcm-st">лид-магниты · для девелоперов</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%91%D0%B5%D0%BD%D1%87%D0%BC%D0%B0%D1%80%D0%BA_%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C_%D0%BB%D0%B8%D0%B4%D0%B0_%D0%B8_%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B8_2026.html"><span class="vpcm-it">бенчмарк: стоимость лида и сделки 2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9F%D0%BB%D0%B5%D0%B9%D0%B1%D1%83%D0%BA_%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F_2026.html"><span class="vpcm-it">плейбук: возражения-2026</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-sec" style="--s:3"><div class="vpcm-sh"><span class="vpcm-num">04</span><span class="vpcm-st">материалы для печати и встреч</span></div><a class="vpcm-item" href="VPC_%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80.pdf"><span class="vpcm-it">VPC-постер</span><span class="vpcm-ic">⤓</span></a><a class="vpcm-item" href="VPC_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx"><span class="vpcm-it">презентация</span><span class="vpcm-ic">⤓</span></a></div><div class="vpcm-sec" style="--s:4"><div class="vpcm-sh"><span class="vpcm-num">05</span><span class="vpcm-st">рынок</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
+<div class="vpcm" data-vpc-menu="2"><button class="vpcm-trigger" type="button" aria-label="Открыть навигацию по материалам" aria-expanded="false" aria-controls="vpcm-panel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg><span>разделы</span></button><div class="vpcm-scrim" aria-hidden="true"></div><div class="vpcm-panel" id="vpcm-panel" role="dialog" aria-modal="true" aria-label="Навигация по материалам" aria-hidden="true"><div class="vpcm-hd"><div class="vpcm-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9.5 7H17v7.5"/></svg></div><div class="vpcm-ttl"><div class="vpcm-wm">Бюро Сучкова</div><div class="vpcm-sub">инструменты для девелоперов</div></div><button class="vpcm-close" type="button" aria-label="Закрыть навигацию"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="vpcm-body"><div class="vpcm-sec" style="--s:0"><div class="vpcm-sh"><span class="vpcm-st">инструменты</span></div><a class="vpcm-item" href="%D0%9A%D0%B0%D0%BB%D1%8C%D0%BA%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D1%8F_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">калькулятор простоя продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%AD%D0%BA%D1%81%D0%BF%D1%80%D0%B5%D1%81%D1%81-%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0_%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6.html"><span class="vpcm-it">экспресс-диагностика воронки продаж</span><span class="vpcm-ic">↗</span></a><a class="vpcm-item" href="%D0%9A%D0%B0%D1%80%D1%82%D0%B0_%D1%80%D1%8B%D0%BD%D0%BA%D0%B0_%D0%B4%D0%B5%D0%B2%D0%B5%D0%BB%D0%BE%D0%BF%D0%BC%D0%B5%D0%BD%D1%82%D0%B0_2026.html"><span class="vpcm-it">карта рынка девелопмента 2026</span><span class="vpcm-ic">↗</span></a></div><div class="vpcm-ft">собрано Бюро Сучкова <span>♥</span></div></div></div></div>
 <style>
 .vpcm,.vpcm *{box-sizing:border-box;font-family:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
 .vpcm-trigger{position:fixed;left:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:99998;display:inline-flex;align-items:center;gap:8px;background:#171AD9;color:#fff;font-size:14px;font-weight:600;letter-spacing:-.2px;line-height:1;border:0;cursor:pointer;padding:11px 16px 11px 13px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.20);-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,opacity .2s}
