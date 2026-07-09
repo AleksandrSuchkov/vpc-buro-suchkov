@@ -163,11 +163,11 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
   </header>
 
   <div class="strip">
-    <div class="stat"><div class="n">×2–3</div><div class="l">рост стоимости лида к 2023</div></div>
-    <div class="stat"><div class="n">44→32%</div><div class="l">конверсия в целевой лид за год</div></div>
+    <div class="stat"><div class="n">×1,5–2</div><div class="l">рост стоимости лида за 2 года</div></div>
+    <div class="stat"><div class="n">32%</div><div class="l">конверсия в целевой лид, рынок</div></div>
     <div class="stat"><div class="n">89%</div><div class="l">не перезвонили по пропущенному</div></div>
-    <div class="stat"><div class="n">85–90%</div><div class="l">сделок через агентов (норма 45–55)</div></div>
-    <div class="stat"><div class="n">65,5→56%</div><div class="l">доля ипотеки в ДДУ</div></div>
+    <div class="stat"><div class="n">65–90%</div><div class="l">сделок через агентов (норма 45–55)</div></div>
+    <div class="stat"><div class="n">76→68%</div><div class="l">доля ипотеки в ДДУ (ДОМ.РФ)</div></div>
   </div>
 
   <!-- FORM -->
@@ -196,7 +196,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         <div class="field"><label for="through">сквозная конверсия: все обращения → сделка <span class="unit">%</span></label><input type="text" class="inp" id="through" inputmode="decimal" placeholder="6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
         <div class="field"><label for="agent">доля сделок через агентов <span class="unit">%</span></label><input type="text" class="inp" id="agent" inputmode="decimal" placeholder="87"><div class="hint">норма здорового баланса 45–55%</div></div>
         <div class="field"><label for="comm">комиссия агентам <span class="unit">%</span></label><input type="text" class="inp" id="comm" inputmode="decimal" placeholder="3,5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
-        <div class="field"><label for="mort">доля ипотеки в сделках <span class="unit">%</span></label><input type="text" class="inp" id="mort" inputmode="decimal" placeholder="56"><div class="hint">упала 65,5 → 56%; отказ по рыночной ипотеке ~60%</div></div>
+        <div class="field"><label for="mort">доля ипотеки в сделках <span class="unit">%</span></label><input type="text" class="inp" id="mort" inputmode="decimal" placeholder="68"><div class="hint">упала 76 → 68% (ДОМ.РФ, 2025); отказ по рыночной ипотеке ~60%</div></div>
 
       </div>
       <div class="center calc-zone">
@@ -220,7 +220,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
           <div class="chips">
             <span class="chip">доп. сделок в год: <b id="heroDeals">—</b></span>
             <span class="chip" id="heroPctChip">—</span>
-            <span class="chip">переплаты бюджета (оценка): <b id="heroWaste">—</b>/год</span>
+            <span class="chip" id="heroWasteChip">переплаты бюджета (оценка): <b id="heroWaste">—</b>/год</span>
           </div>
           <div class="annot" id="annot"></div>
         </div>
@@ -444,15 +444,16 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     rows.push({key:'through',name:'сквозная: все обращения → сделка',yours:String(v('through')).replace('.',',')+'%',bench:'рынок 5–9% · цель 12%+',
       c: v('through')>=10?'g':(v('through')>=6?'a':'r'),
       desc: v('through')<10?'главный разрыв: недобор до <b>'+num(lostDeals)+'</b> сделок/мес ≈ <b>'+money(lostRevYear)+'</b>/год выручки':'сильная сквозная конверсия'});
-    rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'45–55% · рынок 85–90%',
+    rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'45–55% · рынок 65–90%',
       c: (v('agent')>=45&&v('agent')<=55)?'g':((v('agent')<=70&&v('agent')>=35)?'a':'r'),
       desc: v('agent')>55?'зависимость от канала: до <b>'+money(doublePay)+'</b>/год двойной оплаты (реклама + комиссия за одну сделку)':'баланс своего отдела и агентов здоровый'});
-    rows.push({key:'mort',name:'структура сделки: доля ипотеки',yours:v('mort')+'%',bench:'ипотека в ДДУ 56% · кэш+рассрочка растёт',
+    rows.push({key:'mort',name:'структура сделки: доля ипотеки',yours:v('mort')+'%',bench:'ипотека в ДДУ ~68% (ДОМ.РФ) · кэш+рассрочка растёт',
       c: mort>=55?'a':'r',
       desc: mort<55?'больше половины сделок вне ипотеки: собрана ли воронка под клиента с наличкой и рассрочкой?':'ипотека ещё несёт воронку — но доля падает, готовьте кэш-сценарий'});
     return {rows:rows,lostRevLow:lostRevLow,lostRevHigh:lostRevHigh,
             lostDealsLow:lostDealsLow,lostDealsHigh:lostDealsHigh,pctLow:pctLow,pctHigh:pctHigh,
-            waste:waste,overpay:overpay,botBurn:botBurn,doublePay:doublePay};
+            waste:waste,overpay:overpay,botBurn:botBurn,doublePay:doublePay,
+            lostReach:Math.max(0,(1-reach)*qLeads),lostQual:Math.max(0,(0.38-qual)*L)};
   }
   var revealed=false, unlocked=false, gaugeRAF=null, lead=null;
   var last={health:0,moneyStr:'—',wasteStr:'—'};
@@ -471,15 +472,52 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     gaugeRAF=requestAnimationFrame(step);
   }
   var order=['callback','reach','qual','through','bots','agent','cpl','mort'];
+  function pstr(n){return String(n).replace('.',',');}
+  /* d — цифры клиента из compute(); числовые вставки показываем только когда они значимы */
   var fixText={
-    callback:'<b>наладить перезвон в 15 минут</b> по каждому пропущенному — автораспределение и дисциплина ОП. самый дешёвый рычаг: возвращает клиентов, за которых уже заплачено.',
-    reach:'<b>поднять доходимость лид → разговор</b> — скорость и число касаний, реанимация «недозвонов». норма ≥80%.',
-    qual:'<b>усилить квалификацию обращение → целевой лид</b> — отсев ботов и нецелевых до отдела продаж, чтобы не платить за мусор.',
-    through:'<b>пересобрать воронку под сквозную 10%+</b> — узкие места лид→бронь→сделка; рыночный кейс: 6,9 → 15,2% на тех же лидах.',
-    bots:'<b>вычистить фрод из бюджета</b> — антибот, сквозная аналитика и post-view вместо last-click.',
-    agent:'<b>вернуть баланс канала к 45–55%</b> — управление агентами и защита от двойной оплаты.',
-    cpl:'<b>снизить стоимость целевого лида</b> — перераспределение каналов и качество трафика.',
-    mort:'<b>собрать воронку под кэш и рассрочку</b> — оффер, скрипты и скоринг рассрочки.'
+    callback:function(d){
+      var now={day:'сейчас вы перезваниваете в тот же день — за эти часы покупатель успевает поговорить с конкурентом',
+        later:'сейчас перезвон уходит на следующий день — к этому моменту покупатель уже разговаривает с другим ЖК',
+        never:'сейчас пропущенные часто остаются без перезвона — это оплаченные лиды, отданные конкурентам'}[d.cb]
+        ||'покупатель оставляет заявки сразу в несколько ЖК — встречу получает тот, кто перезвонил первым';
+      return '<b>наладить перезвон за 15 минут</b> по каждому пропущенному звонку и заявке. '+now+': через час шанс дозвониться падает в разы. что сделать: автораспределение пропущенных в CRM на свободного менеджера и норматив «перезвон ≤15 минут» с ежедневным контролем. самый дешёвый рычаг: возвращает клиентов, за которых вы уже заплатили.';
+    },
+    reach:function(d){
+      var mid=d.lostReach>=1?' у вас до разговора доходит '+pstr(d.reachPct)+'% — примерно <b>'+num(d.lostReach)+'</b> оплаченных целевых лидов в месяц остаются без разговора.':' лид, с которым так и не поговорили, — оплаченная заявка в корзине.';
+      return '<b>довести до разговора минимум 80% целевых лидов.</b>'+mid+' что сделать: первый звонок в первые минуты, 5–7 попыток в разное время вместо одной-двух, недозвоны добирать через WhatsApp и SMS.';
+    },
+    qual:function(d){
+      var mid=d.lostQual>=1?' у вас до целевого доходит '+pstr(d.qualPct)+'% обращений при норме 38% — разница ≈ <b>'+num(d.lostQual)+'</b> целевых лидов в месяц.':'';
+      return '<b>отсеивать ботов и нецелевые обращения до отдела продаж.</b> пустое обращение стоит денег дважды: вы платите за лид и занимаете менеджера, пока живой покупатель ждёт перезвона.'+mid+' что сделать: короткая квалификация на первой линии — бюджет, срок покупки, ипотека или наличные — и передача менеджерам только целевых.';
+    },
+    through:function(d){
+      var mid=d.lossStr?' по вашим цифрам это <b>'+d.lossStr+'</b> недополученной выручки в год.':'';
+      return '<b>пересобрать путь от обращения до сделки под сквозную конверсию 10%+.</b> у вас из 100 обращений — '+pstr(d.throughPct)+' сделок, рыночная норма — 8–10: дело обычно не в «плохих лидах», а в потерях между этапами — не дозвонились, не довели до встречи, не дожали бронь до ДДУ.'+mid+' что сделать: замерить конверсию каждого шага, найти два самых слабых и чинить их первыми. рыночный кейс: рост с 6,9% до 15,2% на тех же лидах и том же бюджете.';
+    },
+    bots:function(d){
+      var mid=d.botBurn>=100000?' по вашим цифрам это ≈ <b>'+money(d.botBurn)+'</b> в год, сожжённых без единого покупателя.':'';
+      return '<b>вычистить ботов и фрод из рекламного бюджета.</b> у вас на ботов и накрутку уходит '+pstr(d.botsPct)+'% бюджета при норме до 15%: вы платите за «заявки», за которыми нет покупателя, а отчёты выглядят красиво.'+mid+' что сделать: антифрод-проверка звонков и заявок, оценка каналов по броням и сделкам, а не по числу лидов, отключение источников, которые не дают сделок.';
+    },
+    agent:function(d){
+      if(d.agentPct>55){
+        var mid=d.doublePay>=100000?' — по вашим цифрам до <b>'+money(d.doublePay)+'</b> в год':'';
+        return '<b>снизить долю агентских сделок до 45–55%.</b> сейчас агентства приводят '+pstr(d.agentPct)+'% ваших сделок: за часть клиентов вы платите дважды, рекламой и комиссией'+mid+', а собственный отдел продаж слабеет. что сделать: правило «чей клиент» с фиксацией первого касания в CRM, усиление прямого канала, пересмотр условий для агентств.';
+      }
+      return '<b>донастроить агентский канал до 45–55% сделок.</b> сейчас агенты приводят '+pstr(d.agentPct)+'% — на рынке, где через агентов проходит 65–90% сделок, это недоиспользованный канал. что сделать: партнёрская программа с прозрачными условиями, быстрая фиксация клиента за агентом и выделенный менеджер для агентств.';
+    },
+    cpl:function(d){
+      if(d.cpl>20000){
+        var mid=d.overpay>=100000?' — переплата ≈ <b>'+money(d.overpay)+'</b> в год':'';
+        return '<b>снизить стоимость целевого лида до нормы 12–20 тыс ₽.</b> у вас целевой лид стоит '+num(d.cpl)+' ₽'+mid+': бюджет уходит в каналы, которые дают лиды, но не доводят до сделки. что сделать: считать по каждому каналу стоимость сделки, а не лида, и переливать бюджет туда, где сделка дешевле.';
+      }
+      return '<b>удержать стоимость целевого лида в норме 12–20 тыс ₽.</b> у вас '+num(d.cpl)+' ₽ — у верхней границы: при росте ставок этот канал первым уйдёт в переплату. что сделать: считать по каждому каналу стоимость сделки, а не лида, и переливать бюджет туда, где сделка дешевле.';
+    },
+    mort:function(d){
+      if(d.mortPct<55){
+        return '<b>собрать воронку под покупателя с наличными и рассрочкой.</b> у вас '+pstr(Math.round((100-d.mortPct)*10)/10)+'% сделок проходит мимо ипотеки, а оффер и скрипты у большинства девелоперов всё ещё построены вокруг «одобрим ставку». что сделать: отдельные сценарии для кэша и рассрочки — аргументы, условия, проверка платёжеспособности — и научить менеджеров вести обе ветки.';
+      }
+      return '<b>подготовить воронку под наличные и рассрочку заранее.</b> сейчас ипотека несёт '+pstr(d.mortPct)+'% ваших сделок, но доля ипотеки на рынке падает — без готовых кэш-сценариев провал будет резким. что сделать: отдельные сценарии для кэша и рассрочки — аргументы, условия, проверка платёжеспособности — и научить менеджеров вести обе ветки.';
+    }
   };
   function render(){
     var r=compute();
@@ -508,7 +546,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         hb.innerHTML='воронка недобирает <span class="u">'+money(capRev)+'+</span> в год';
         $('heroDeals').textContent=num(capDeals)+'+ шт';
         $('heroPctChip').innerHTML='разрыв до сильной воронки: <b>'+xStr+'</b>';
-        $('heroSub').textContent='консервативная оценка (+60% к текущим продажам). полный разрыв до рыночной нормы — '+xStr+': это уже не донастройка, а пересборка воронки. реальный потолок считаем на диагностике.';
+        $('heroSub').textContent='это осторожная оценка: в расчёт взяли всего +60% к вашим текущим продажам. полный разрыв до рыночной нормы — '+xStr+' по сделкам на тех же лидах и том же бюджете. такой разрыв точечными правками не закрыть — нужна пересборка воронки; реальный потолок считаем на диагностике.';
         last.moneyStr=money(capRev)+'+ в год (консервативная оценка)';
         last.moneyShort=money(capRev)+'+';
       } else {
@@ -516,18 +554,20 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         hb.innerHTML='воронка недобирает <span class="u">'+mstr+'</span> в год';
         $('heroDeals').textContent=(r.lostDealsLow>0?(num(r.lostDealsLow*12)+'–'+num(r.lostDealsHigh*12)):('до '+num(r.lostDealsHigh*12)))+' шт';
         $('heroPctChip').innerHTML='это <b>'+(r.pctLow>0?('+'+Math.round(r.pctLow)+'–'+Math.round(r.pctHigh)+'%'):('до +'+Math.round(r.pctHigh)+'%'))+'</b> к текущим продажам';
-        $('heroSub').textContent='грубая оценка сверху при доведении сквозной до 8–10% (агентский бенчмарк 9%, рыночный кейс 6,9→15,2%). точная цифра — на диагностике.';
+        $('heroSub').textContent='столько принесли бы те же лиды и тот же бюджет, если довести сквозную конверсию до рыночной нормы 8–10 сделок со 100 обращений (бенчмарк агентств — 9%, рыночный кейс — рост с 6,9% до 15,2%). точную цифру считаем на диагностике.';
         last.moneyStr=mstr+' в год';
         last.moneyShort='до '+money(r.lostRevHigh);
       }
     }
     $('heroWaste').textContent=money(r.waste);
+    /* переплата около нуля выглядит абсурдно и подрывает доверие — чип скрываем */
+    $('heroWasteChip').style.display=r.waste<100000?'none':'';
     last.health=health; last.wasteStr=money(r.waste)+'/год';
     // аннотация «что это значит»
     var an;
     if(health>=70)an='<b>что это значит.</b> воронка в хорошей форме: система работает, деньги теряются точечно. ниже — 3 рычага, которые дадут прирост быстрее всего.';
-    else if(health>=45)an='<b>что это значит.</b> воронка работает, но недобирает: несколько стадий теряют больше нормы, и это складывается в цифру выше. начните с трёх самых дешёвых починок.';
-    else an='<b>что это значит.</b> воронка в красной зоне: утечки идут сразу на нескольких стадиях. хорошая новость — первые рычаги дешёвые и быстрые, эффект виден за недели.';
+    else if(health>=45)an='<b>что это значит.</b> воронка работает, но недобирает. потери на стадиях перемножаются: −20% на дозвоне и −20% на встречах — это уже −36% сделок, поэтому сверху такая цифра. начните с трёх починок ниже: они почти не требуют бюджета, только дисциплины.';
+    else an='<b>что это значит.</b> воронка в красной зоне: деньги утекают сразу на нескольких стадиях, и потери перемножаются — каждая следующая стадия теряет уже от того, что осталось после предыдущей. хорошая новость: первые починки дешёвые и быстрые, эффект виден за недели.';
     var miss=TOTAL-filledCount();
     if(miss>0)an+=' <span style="color:var(--coral)">'+miss+' из '+TOTAL+' полей посчитаны по рыночным средним — внесите свои цифры, оценка станет точнее.</span>';
     $('annot').innerHTML=an;
@@ -553,7 +593,10 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     pool.sort(function(a,b){return order.indexOf(a.key)-order.indexOf(b.key);});
     var top=pool.slice(0,3);
     if(top.length===0){top=r.rows.slice(0,1);}
-    $('fixes').innerHTML=top.map(function(x){return '<li>'+fixText[x.key]+'</li>';}).join('');
+    var fctx={cb:$('callback').value,reachPct:v('reach'),lostReach:r.lostReach,qualPct:v('qual'),lostQual:r.lostQual,
+      throughPct:v('through'),lossStr:last.moneyShort,botsPct:v('bots'),botBurn:r.botBurn,
+      agentPct:v('agent'),doublePay:r.doublePay,cpl:v('cpl'),overpay:r.overpay,mortPct:v('mort')};
+    $('fixes').innerHTML=top.map(function(x){return '<li>'+fixText[x.key](fctx)+'</li>';}).join('');
   }
   function reveal(){
     render();
