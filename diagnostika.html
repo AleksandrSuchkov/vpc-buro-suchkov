@@ -262,7 +262,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         <form id="capForm">
           <div class="cap-grid">
             <div class="cap-f"><label for="cName">имя</label><input type="text" id="cName" placeholder="Александр" autocomplete="name"></div>
-            <div class="cap-f"><label for="cPhone">телефон или @telegram</label><input type="text" id="cPhone" placeholder="+7 900 000-00-00" autocomplete="tel"></div>
+            <div class="cap-f"><label for="cPhone">телефон или @telegram</label><input type="text" id="cPhone" placeholder="+7 (900) 000-00-00" autocomplete="tel"></div>
             <div class="cap-f"><label for="cCompany">компания / проект</label><input type="text" id="cCompany" placeholder="ЖК «Пример»" autocomplete="organization"></div>
             <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
           </div>
@@ -624,8 +624,23 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
   });
   $('callback').addEventListener('change',function(){clearErr(this);updProgress();if(revealed)render();});
   $('devName').addEventListener('input',function(){clearErr(this);updProgress();});
-  ['cName','cPhone','cCompany'].forEach(function(id){
+  ['cName','cCompany'].forEach(function(id){
     $(id).addEventListener('input',function(){clearErr(this);});
+  });
+  $('cPhone').addEventListener('input',function(){
+    clearErr(this);
+    var v=this.value;
+    if(/[A-Za-zА-Яа-яЁё@]/.test(v))return;            // @telegram / буквы — не маскируем
+    var d=v.replace(/\D/g,'');
+    if(!d)return;
+    if(d[0]==='7'||d[0]==='8')d=d.slice(1);            // отбрасываем код страны/8
+    d=d.slice(0,10);
+    var p='+7';
+    if(d.length>0)p+=' ('+d.slice(0,3);
+    if(d.length>3)p+=') '+d.slice(3,6);
+    if(d.length>6)p+='-'+d.slice(6,8);
+    if(d.length>8)p+='-'+d.slice(8,10);
+    this.value=p;
   });
   $('fillAvg').addEventListener('click',function(){
     FLD.forEach(function(f){var el=$(f.id);el.value=(f.d>=1000?rub.format(f.d):String(f.d).replace('.',','));clearErr(el);});
