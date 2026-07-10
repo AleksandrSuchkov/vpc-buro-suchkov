@@ -332,6 +332,32 @@ if(/[?&]sent=1/.test(location.search)){
     if(f)f.innerHTML='<div class="fh">заявка отправлена ✓</div><div class="fs" style="margin:6px 0 0">спасибо! отвечу в течение рабочего дня.<br>— Александр Сучков</div>';
   });
 }
+/* отправка без ухода со страницы; если сервис форм недоступен — фолбэк на письмо с заполненными полями */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.querySelector('.of-form');
+  if(!f||!f.querySelector('button'))return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var btn=f.querySelector('button');btn.disabled=true;btn.textContent='отправляю…';
+    var data=new FormData(f);
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    var t=ctrl?setTimeout(function(){ctrl.abort();},8000):null;
+    fetch('https://formsubmit.co/ajax/aleksandr@bureausuchkov.com',{method:'POST',body:data,headers:{'Accept':'application/json'},signal:ctrl&&ctrl.signal})
+      .then(function(r){if(t)clearTimeout(t);if(!r.ok)throw 0;return r.json();})
+      .then(function(j){
+        if(!(j&&(j.success===true||j.success==='true')))throw 0; /* FormSubmit отвечает 200 и при неуспехе */
+        f.innerHTML='<div class="fh">заявка отправлена ✓</div><div class="fs" style="margin:6px 0 0">спасибо! отвечу в течение рабочего дня.<br>— Александр Сучков</div>';
+      })
+      .catch(function(){
+        if(t)clearTimeout(t);
+        var body=encodeURIComponent('Здравствуйте! Заявка с плейбука «возражения-2026».\n\nИмя: '+(data.get('Имя')||'')+'\nКомпания: '+(data.get('Компания')||'')+'\nКонтакт: '+(data.get('Контакт')||''));
+        btn.disabled=false;btn.textContent='обсудить мой проект →';
+        var n=f.querySelector('.fn');
+        if(n)n.innerHTML='<b style="color:#FC5741">сервис форм сейчас недоступен</b> — открываю письмо в вашей почте с уже заполненной заявкой. если не открылось: <a href="mailto:aleksandr@bureausuchkov.com">aleksandr@bureausuchkov.com</a>';
+        location.href='mailto:aleksandr@bureausuchkov.com?subject='+encodeURIComponent('Заявка с плейбука «возражения-2026»')+'&body='+body;
+      });
+  });
+});
 </script>
 <script data-mobile-legibility="4">
 /* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */
