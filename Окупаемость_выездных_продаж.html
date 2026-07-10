@@ -145,10 +145,10 @@ footer{padding:28px 0 48px;color:var(--gray-dark);font-size:13px}
       <div class="panel">
         <h3>Прямые расходы</h3>
         <div class="hint">Всё, что платите деньгами за этот выезд, — суммой на всю команду.</div>
-        <div class="field"><label>Дорога туда-обратно<small>Билеты на всю команду в обе стороны</small></label><div class="inp"><input type="number" id="road" value="14371.5"><span class="unit">₽</span></div></div>
-        <div class="field"><label>Проживание<small>Отель: номера × ночи</small></label><div class="inp"><input type="number" id="hotel" value="34340"><span class="unit">₽</span></div></div>
-        <div class="field"><label>Питание<small>Завтраки, обеды, ужины на всех за все дни</small></label><div class="inp"><input type="number" id="meals" value="9000"><span class="unit">₽</span></div></div>
-        <div class="field"><label>Прочее<small>Такси, суточные, представительские</small></label><div class="inp"><input type="number" id="other" value="7500"><span class="unit">₽</span></div></div>
+        <div class="field"><label>Дорога туда-обратно<small>Билеты на всю команду в обе стороны</small></label><div class="inp"><input type="text" inputmode="decimal" id="road" value="14371.5"><span class="unit">₽</span></div></div>
+        <div class="field"><label>Проживание<small>Отель: номера × ночи</small></label><div class="inp"><input type="text" inputmode="decimal" id="hotel" value="34340"><span class="unit">₽</span></div></div>
+        <div class="field"><label>Питание<small>Завтраки, обеды, ужины на всех за все дни</small></label><div class="inp"><input type="text" inputmode="decimal" id="meals" value="9000"><span class="unit">₽</span></div></div>
+        <div class="field"><label>Прочее<small>Такси, суточные, представительские</small></label><div class="inp"><input type="text" inputmode="decimal" id="other" value="7500"><span class="unit">₽</span></div></div>
       </div>
 
       <div class="panel">
@@ -162,7 +162,7 @@ footer{padding:28px 0 48px;color:var(--gray-dark);font-size:13px}
             <button class="tbtn on" id="btnCost" type="button">Себестоимость часа</button>
             <button class="tbtn" id="btnOpp" type="button">Альтернативная стоимость</button>
           </div>
-          <div class="field" style="border:none"><label>Ставка часа<small id="rateHint">Зарплата + налоги ÷ рабочие часы месяца</small></label><div class="inp"><input type="number" id="rate" value="3500"><span class="unit">₽/ч</span></div></div>
+          <div class="field" style="border:none"><label>Ставка часа<small id="rateHint">Зарплата + налоги ÷ рабочие часы месяца</small></label><div class="inp"><input type="text" inputmode="decimal" id="rate" value="3500"><span class="unit">₽/ч</span></div></div>
           <div class="rate-note" id="rateNote"><b>Когда какую брать:</b> для ответа «окупилась ли поездка по факту» — себестоимость (~3 000–5 000 ₽/ч). Для решения «ехать или нет» — альтернативную стоимость (~8 000–15 000 ₽/ч): эти же часы команда могла продать клиентам.</div>
         </div>
       </div>
@@ -170,7 +170,7 @@ footer{padding:28px 0 48px;color:var(--gray-dark);font-size:13px}
       <div class="panel">
         <h3>Контракт</h3>
         <div class="hint">Средний чек того, что вы продаёте после таких поездок, и его маржинальность.</div>
-        <div class="field"><label>Средний чек<small>Бандл / проект Бюро</small></label><div class="inp"><input type="number" id="check" value="1000000"><span class="unit">₽</span></div></div>
+        <div class="field"><label>Средний чек<small>Бандл / проект Бюро</small></label><div class="inp"><input type="text" inputmode="decimal" id="check" value="1000000"><span class="unit">₽</span></div></div>
         <div class="field"><label>Маржинальность<small>Что остаётся после себестоимости исполнения</small></label><div class="inp"><input type="number" id="margin" value="50" min="1" max="95"><span class="unit">%</span></div></div>
       </div>
 
@@ -188,7 +188,7 @@ footer{padding:28px 0 48px;color:var(--gray-dark);font-size:13px}
         <div class="field"><label>Встреч проведено<small>Фактически состоявшиеся</small></label><div class="inp"><input type="number" id="fMeet" value="0" min="0"><span class="unit">шт</span></div></div>
         <div class="field"><label>Перешло в отношения<small>Есть продолжение после встречи</small></label><div class="inp"><input type="number" id="fRel" value="0" min="0"><span class="unit">шт</span></div></div>
         <div class="field"><label>Контрактов закрыто<small>Подписанные сделки от этой поездки</small></label><div class="inp"><input type="number" id="fCon" value="0" min="0"><span class="unit">шт</span></div></div>
-        <div class="field"><label>Выручка с них<small>Если 0 — возьмём средний чек × число контрактов</small></label><div class="inp"><input type="number" id="fRev" value="0" min="0"><span class="unit">₽</span></div></div>
+        <div class="field"><label>Выручка с них<small>Если 0 — возьмём средний чек × число контрактов</small></label><div class="inp"><input type="text" inputmode="decimal" id="fRev" value="0"><span class="unit">₽</span></div></div>
       </div>
     </div>
 
@@ -259,14 +259,31 @@ function setMode(m){
   mode=m;
   $('btnCost').classList.toggle('on',m==='cost');
   $('btnOpp').classList.toggle('on',m==='opp');
-  $('rate').value=modes[m].rate;
+  $('rate').value=modes[m].rate;fmtInput($('rate'));
   $('rateHint').textContent=modes[m].hint;
   calc();
 }
 $('btnCost').onclick=()=>setMode('cost');
 $('btnOpp').onclick=()=>setMode('opp');
 
-function num(id){return parseFloat($(id).value)||0}
+function num(id){return parseFloat(String($(id).value).replace(/[\s\u00A0]/g,'').replace(',','.'))||0}
+const money=['road','hotel','meals','other','rate','check','fRev'];
+function fmtInput(el){
+  const raw=String(el.value);
+  const caret=el.selectionStart??raw.length;
+  const digitsBefore=(raw.slice(0,caret).match(/\d/g)||[]).length;
+  let v=raw.replace(/[^\d.,]/g,'').replace(/\./g,',');
+  const parts=v.split(',');
+  let int=parts[0].replace(/^0+(?=\d)/,'');
+  const dec=parts.length>1?parts.slice(1).join('').slice(0,2):null;
+  int=int.replace(/\B(?=(\d{3})+(?!\d))/g,'\u00A0');
+  let out=int;
+  if(dec!==null)out+=','+dec;
+  el.value=out;
+  let pos=0,cnt=0;
+  while(pos<out.length&&cnt<digitsBefore){if(/\d/.test(out[pos]))cnt++;pos++;}
+  try{el.setSelectionRange(pos,pos)}catch(e){}
+}
 function decl(n){
   if(n<=1)return 'контракта';
   const r=Math.ceil(n)%10, r2=Math.ceil(n)%100;
@@ -326,7 +343,12 @@ function calc(){
   }
 }
 
-ids.forEach(id=>$(id).addEventListener('input',calc));
+ids.forEach(id=>{
+  const el=$(id);
+  if(money.includes(id)){el.addEventListener('input',()=>{fmtInput(el);calc();});}
+  else el.addEventListener('input',calc);
+});
+money.forEach(id=>fmtInput($(id)));
 $('tripName').addEventListener('input',()=>{
   const v=$('tripName').value.trim();
   $('tripOut').textContent=v?('Поездка: '+v+' · для окупаемости нужно'):'Для окупаемости нужно';
