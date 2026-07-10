@@ -282,7 +282,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
           <li>где происходят основные потери бюджета</li>
           <li>приоритетный план починки по стадиям</li>
         </ul>
-        <p class="muted">хотите быстрее — <a href="#" id="ctaBtn" style="color:var(--coral);font-weight:700">напишите в Бюро сейчас →</a> (откроется готовое письмо с вашими цифрами). PDF расчёта: Cmd/Ctrl+P.</p>
+        <p class="muted">хотите быстрее — <a href="https://t.me/naxtena" target="_blank" rel="noopener" id="ctaBtn" style="color:var(--coral);font-weight:700">написать менеджеру в Telegram →</a> (запуск новых проектов Бюро). PDF расчёта: Cmd/Ctrl+P.</p>
       </div>
     </div>
   </section>
@@ -690,29 +690,10 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     s2.classList.remove('hidden');
     s2.classList.add('reveal');
     $('capThanks').innerHTML=(name?name+', ':'')+'готово ✓ полный разбор открыт выше ↑, заявка на диагностику принята — Бюро свяжется по '+phone+'.';
+    var tgMsg='Здравствуйте! Прошёл экспресс-диагностику воронки на сайте Бюро — индекс '+last.health+'/100, недобор '+last.moneyStr+'. Хочу разбор.';
+    $('ctaBtn').setAttribute('href','https://t.me/naxtena?text='+encodeURIComponent(tgMsg));
   });
-  function buildLetter(){
-    var lines=['Здравствуйте! Записываемся на экспресс-диагностику воронки.','',
-      'Имя: '+((lead&&lead.name)||'—'),
-      'Контакт: '+((lead&&lead.phone)||'—'),
-      'Девелопер: '+($('devName').value.trim()||'—'),
-      'Компания/проект: '+((lead&&lead.comp)||'—'),'',
-      'Индекс воронки: '+last.health+'/100',
-      'Недобор выручки: '+last.moneyStr,
-      'Прямые потери бюджета (оценка): '+last.wasteStr,'','Цифры из расчёта:'];
-    FLD.forEach(function(f){
-      var byMarket=raw(f.id)===null;
-      var val=(f.kind==='mln'||f.kind==='k')?money(v(f.id)):String(v(f.id)).replace('.',',');
-      lines.push('· '+FLBL[f.id]+': '+val+(byMarket?' (по рынку)':''));
-    });
-    lines.push('· скорость перезвона: '+CBTXT[$('callback').value||'']);
-    return lines.join('\n');
-  }
-  $('ctaBtn').addEventListener('click',function(e){
-    if(e&&e.preventDefault)e.preventDefault();
-    logLead('написал');
-    try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Заявка на экспресс-диагностику воронки')+'&body='+encodeURIComponent(buildLetter());}catch(err){}
-  });
+  $('ctaBtn').addEventListener('click',function(){ logLead('написал'); }); // переход по t.me — нативный, в новой вкладке
   updProgress();
 })();
 </script>
