@@ -193,7 +193,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         <div class="field"><label>скорость первого перезвона</label><select id="callback"><option value="" selected>— выберите —</option><option value="15">в течение 15 минут</option><option value="day">в тот же день</option><option value="later">на следующий день и позже</option><option value="never">часто не перезваниваем</option></select><div class="hint">только 11% перезвонили по пропущенному — самая дешёвая починка</div></div>
 
         <div class="blk-t">сделки и каналы</div>
-        <div class="field"><label for="through">сквозная конверсия: все обращения → сделка <span class="unit">%</span></label><input type="text" class="inp" id="through" inputmode="decimal" placeholder="6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
+        <div class="field"><label for="through">сквозная конверсия: целевой лид → сделка <span class="unit">%</span></label><input type="text" class="inp" id="through" inputmode="decimal" placeholder="6"><div class="hint">прямой канал ~5%, агентский ~9%, цель сильной воронки 10–12%+</div></div>
         <div class="field"><label for="agent">доля сделок через агентов <span class="unit">%</span></label><input type="text" class="inp" id="agent" inputmode="decimal" placeholder="87"><div class="hint">норма здорового баланса 45–55%</div></div>
         <div class="field"><label for="comm">комиссия агентам <span class="unit">%</span></label><input type="text" class="inp" id="comm" inputmode="decimal" placeholder="3,5"><div class="hint">выросла 2,6 → 3,5%; премиум 4–4,5%</div></div>
         <div class="field"><label for="mort">доля ипотеки в сделках <span class="unit">%</span></label><input type="text" class="inp" id="mort" inputmode="decimal" placeholder="68"><div class="hint">упала 76 → 68% (ДОМ.РФ, 2025); отказ по рыночной ипотеке ~60%</div></div>
@@ -411,9 +411,9 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         cb=$('callback').value||'day';
     var TLOW=0.08, THIGH=0.10;
     var qLeads=L*qual;
-    var deals=L*through;
-    var lostDealsLow=Math.max(0,L*TLOW-deals);
-    var lostDealsHigh=Math.max(0,L*THIGH-deals);
+    var deals=qLeads*through;
+    var lostDealsLow=Math.max(0,qLeads*TLOW-deals);
+    var lostDealsHigh=Math.max(0,qLeads*THIGH-deals);
     var lostRevLow=lostDealsLow*D*12;
     var lostRevHigh=lostDealsHigh*D*12;
     var lostDeals=lostDealsHigh;
@@ -441,7 +441,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     var cbC = cb==='15'?'g':(cb==='day'?'a':'r');
     rows.push({key:'callback',name:'скорость первого перезвона',yours:({'15':'≤15 мин','day':'в тот же день','later':'позже','never':'часто нет'})[cb],bench:'цель ≤15 мин',
       c:cbC, desc: cbC==='g'?'скорость на уровне лучших':'89% девелоперов теряют клиента здесь; каждый час снижает дозвон в разы'});
-    rows.push({key:'through',name:'сквозная: все обращения → сделка',yours:String(v('through')).replace('.',',')+'%',bench:'рынок 5–9% · цель 12%+',
+    rows.push({key:'through',name:'сквозная: целевой лид → сделка',yours:String(v('through')).replace('.',',')+'%',bench:'рынок 5–9% · цель 12%+',
       c: v('through')>=10?'g':(v('through')>=6?'a':'r'),
       desc: v('through')<10?'главный разрыв: недобор до <b>'+num(lostDeals)+'</b> сделок/мес ≈ <b>'+money(lostRevYear)+'</b>/год выручки':'сильная сквозная конверсия'});
     rows.push({key:'agent',name:'доля сделок через агентов',yours:v('agent')+'%',bench:'45–55% · рынок 65–90%',
@@ -492,7 +492,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     },
     through:function(d){
       var mid=d.lossStr?' по вашим цифрам это <b>'+d.lossStr+'</b> недополученной выручки в год.':'';
-      return '<b>пересобрать путь от обращения до сделки под сквозную конверсию 10%+.</b> у вас из 100 обращений — '+pstr(d.throughPct)+' сделок, рыночная норма — 8–10: дело обычно не в «плохих лидах», а в потерях между этапами — не дозвонились, не довели до встречи, не дожали бронь до ДДУ.'+mid+' что сделать: замерить конверсию каждого шага, найти два самых слабых и чинить их первыми. рыночный кейс: рост с 6,9% до 15,2% на тех же лидах и том же бюджете.';
+      return '<b>пересобрать путь от целевого лида до сделки под сквозную конверсию 10%+.</b> у вас из 100 целевых лидов до сделки доходят '+pstr(d.throughPct)+', рыночная норма — 8–10: дело обычно не в «плохих лидах», а в потерях между этапами — не дозвонились, не довели до встречи, не дожали бронь до ДДУ.'+mid+' что сделать: замерить конверсию каждого шага, найти два самых слабых и чинить их первыми. рыночный кейс: рост с 6,9% до 15,2% на тех же лидах и том же бюджете.';
     },
     bots:function(d){
       var mid=d.botBurn>=100000?' по вашим цифрам это ≈ <b>'+money(d.botBurn)+'</b> в год, сожжённых без единого покупателя.':'';
@@ -536,7 +536,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
       last.moneyStr='крупных потерь по сквозной не видно';
       last.moneyShort=null;
     } else {
-      var deals=v('leads')*v('through')/100;
+      var deals=v('leads')*(v('qual')/100)*(v('through')/100);
       var curRev=deals*v('price')*12;
       var xGap=deals>0?(deals+r.lostDealsHigh)/deals:0;
       var xStr='×'+String(Math.round(xGap*10)/10).replace('.',',');
@@ -554,7 +554,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
         hb.innerHTML='воронка недобирает <span class="u">'+mstr+'</span> в год';
         $('heroDeals').textContent=(r.lostDealsLow>0?(num(r.lostDealsLow*12)+'–'+num(r.lostDealsHigh*12)):('до '+num(r.lostDealsHigh*12)))+' шт';
         $('heroPctChip').innerHTML='это <b>'+(r.pctLow>0?('+'+Math.round(r.pctLow)+'–'+Math.round(r.pctHigh)+'%'):('до +'+Math.round(r.pctHigh)+'%'))+'</b> к текущим продажам';
-        $('heroSub').textContent='столько принесли бы те же лиды и тот же бюджет, если довести сквозную конверсию до рыночной нормы 8–10 сделок со 100 обращений (бенчмарк агентств — 9%, рыночный кейс — рост с 6,9% до 15,2%). точную цифру считаем на диагностике.';
+        $('heroSub').textContent='столько принесли бы те же лиды и тот же бюджет, если довести сквозную конверсию до рыночной нормы 8–10 сделок со 100 целевых лидов (бенчмарк агентского канала — 9%, рыночный кейс — рост с 6,9% до 15,2%). точную цифру считаем на диагностике.';
         last.moneyStr=mstr+' в год';
         last.moneyShort='до '+money(r.lostRevHigh);
       }
@@ -648,7 +648,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     setTimeout(function(){$('cPhone').focus();},450);
   });
   var CBTXT={'':'не указана','15':'≤15 минут','day':'в тот же день','later':'на следующий день и позже','never':'часто не перезваниваем'};
-  var FLBL={price:'средняя цена лота',leads:'обращений в месяц',budget:'бюджет в месяц',cpl:'CPL целевого',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная (все обращения→сделка), %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
+  var FLBL={price:'средняя цена лота',leads:'обращений в месяц',budget:'бюджет в месяц',cpl:'CPL целевого',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная (целевой лид→сделка), %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
   $('capForm').addEventListener('submit',function(e){
     e.preventDefault();
     var nameEl=$('cName'), phoneEl=$('cPhone'), compEl=$('cCompany');
