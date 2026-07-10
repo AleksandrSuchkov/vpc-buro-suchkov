@@ -256,30 +256,28 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
       <div id="capStage1">
         <p style="margin:0;font-weight:800;font-size:18px" id="capTitle">полная карта воронки по 8 стадиям — что в норме, а что тянет вниз</p>
         <div class="cap-what">
-          <div class="cw"><span class="cw-k">сразу</span><span>полная карта по 8 стадиям — что в норме, где риск и где утечка, в цифрах</span></div>
-          <div class="cw"><span class="cw-k">дальше</span><span>Бюро смотрит ваши цифры и возвращается с коротким комментарием по точкам роста</span></div>
+          <div class="cw"><span class="cw-k">сразу</span><span>полная карта воронки по 8 стадиям открывается на этой странице — что в норме, где риск, где утечка</span></div>
+          <div class="cw"><span class="cw-k">и заявка</span><span>Бюро получает ваши цифры, связывается по контакту и разбирает воронку на экспресс-диагностике</span></div>
         </div>
         <form id="capForm">
           <div class="cap-grid">
             <div class="cap-f"><label for="cName">имя</label><input type="text" id="cName" placeholder="Александр" autocomplete="name"></div>
             <div class="cap-f"><label for="cPhone">телефон или @telegram</label><input type="text" id="cPhone" placeholder="+7 (900) 000-00-00" autocomplete="tel"></div>
             <div class="cap-f"><label for="cCompany">компания / проект</label><input type="text" id="cCompany" placeholder="ЖК «Пример»" autocomplete="organization"></div>
-            <button class="btn btn-blue" type="submit">открыть полный разбор →</button>
+            <button class="btn btn-blue" type="submit">открыть разбор и записаться →</button>
           </div>
         </form>
-        <p class="muted">без рассылок и спама. расчёт остаётся у вас в браузере.</p>
+        <p class="muted">одно действие: открываем полную карту и передаём заявку в Бюро. без рассылок и спама — расчёт остаётся у вас в браузере.</p>
       </div>
       <div id="capStage2" class="hidden">
-        <div id="capThanks" style="font-weight:600;color:var(--green)"></div>
-        <p class="nx-h">следующий шаг — экспресс-диагностика воронки</p>
-        <p style="margin:0 0 4px;color:var(--b60);font-size:14px">разбор с Бюро по вашим цифрам из этого расчёта:</p>
+        <div id="capThanks" style="font-weight:700;font-size:17px;color:var(--green)"></div>
+        <p class="nx-h">на экспресс-диагностике разберём:</p>
         <ul class="nx">
           <li>более 23 рекомендаций под вашу карту потерь</li>
           <li>где происходят основные потери бюджета</li>
           <li>приоритетный план починки по стадиям</li>
         </ul>
-        <div class="center"><button class="btn btn-primary" id="ctaBtn">записаться на экспресс-диагностику →</button></div>
-        <p class="muted" style="text-align:center">кнопка откроет в вашей почте готовое письмо-заявку — в нём уже ваши контакты и цифры расчёта, останется нажать «отправить». PDF-версия расчёта: Cmd/Ctrl+P.</p>
+        <p class="muted">хотите быстрее — <a href="#" id="ctaBtn" style="color:var(--coral);font-weight:700">напишите в Бюро сейчас →</a> (откроется готовое письмо с вашими цифрами). PDF расчёта: Cmd/Ctrl+P.</p>
       </div>
     </div>
   </section>
@@ -681,12 +679,12 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     if(!revealed)reveal();
     unlock();
     lead={name:name,phone:phone,comp:comp};
-    logLead('контакт');
+    logLead('заявка');
     $('capStage1').classList.add('hidden');
     var s2=$('capStage2');
     s2.classList.remove('hidden');
     s2.classList.add('reveal');
-    $('capThanks').innerHTML=(name?name+', ':'')+'готово — полный разбор открыт выше ↑.';
+    $('capThanks').innerHTML=(name?name+', ':'')+'готово ✓ полный разбор открыт выше ↑, заявка на диагностику принята — Бюро свяжется по '+phone+'.';
   });
   function buildLetter(){
     var lines=['Здравствуйте! Записываемся на экспресс-диагностику воронки.','',
@@ -705,8 +703,9 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     lines.push('· скорость перезвона: '+CBTXT[$('callback').value||'']);
     return lines.join('\n');
   }
-  $('ctaBtn').addEventListener('click',function(){
-    logLead('запись');
+  $('ctaBtn').addEventListener('click',function(e){
+    if(e&&e.preventDefault)e.preventDefault();
+    logLead('написал');
     try{window.location.href='mailto:hello@bureausuchkov.com?subject='+encodeURIComponent('Заявка на экспресс-диагностику воронки')+'&body='+encodeURIComponent(buildLetter());}catch(err){}
   });
   updProgress();

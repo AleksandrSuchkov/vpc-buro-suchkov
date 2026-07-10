@@ -211,15 +211,15 @@ summary{transition:color .15s}
       <div class="big">
         <div class="l">проценты на замороженный капитал · в месяц</div>
         <div class="v" id="vMonth">35,0 млн ₽</div>
-        <div class="s">уходят банку — или недозарабатываются на замороженном капитале, пока остатки стоят</div>
+        <div class="s">пока квартиры не проданы, эти деньги каждый месяц уходят банку процентами. если кредита нет — столько же недозарабатывает капитал, замороженный в остатках</div>
       </div>
       <div class="rgrid">
         <div class="rc"><div class="l">в день</div><div class="v" id="vDay">1,17 млн ₽</div></div>
         <div class="rc"><div class="l">за квартал</div><div class="v" id="vQ">105 млн ₽</div></div>
         <div class="rc"><div class="l">за год</div><div class="v" id="vY">420 млн ₽</div></div>
       </div>
-      <div class="eq">год простоя ≈ <b id="vEq">2 800 м²</b> — подъезд, отданный банку в виде процентов</div>
-      <div class="market">если продавать остатки в среднерыночном темпе (<b>3,2 года</b>, ДОМ.РФ), суммарные проценты составят ≈ <b id="vMarket">672 млн ₽</b> — больше, чем вся прибыль, заложенная в эти квартиры при марже 5–10%. сценарий «продаём как продаётся» стоит дороже, чем кажется. при вашем темпе распродажа — к <b id="vDate">марту 2030</b><span id="vWindow">; окно 2027 — дефицит готового и рост цен — пройдёт без вас</span>.</div>
+      <div class="eq">проценты за год простоя ≈ стоимость <b id="vEq">2 800 м²</b> — столько метров вы фактически отдаёте банку</div>
+      <div class="market">сценарий «продаём как продаётся»: в среднем по рынку остатки распродаются за <b>3,2 года</b> (ДОМ.РФ). за это время процентов набежит ≈ <b id="vMarket">672 млн ₽</b> — сопоставимо со всей прибылью, заложенной в эти квартиры при марже 5–10%, или больше неё. при вашем текущем темпе распродажа завершится к <b id="vDate">марту 2030</b><span id="vWindow"> — окно 2027 года (дефицит готового жилья и рост цен) пройдёт без вас</span>.</div>
       <div class="ract">
         <button type="button" id="btnPdf">сохранить расчёт в pdf</button>
         <a id="btnTg" href="https://t.me/share/url" target="_blank" rel="noopener">переслать в telegram</a>
@@ -413,12 +413,12 @@ function calc(){
   el('vMarket').textContent = fmt(frozen/2*rate*3.2);
   const months = area/pace;
   if (months > 120){
-    el('vDate').textContent = '2036+ — за горизонтом планирования';
-    el('vWindow').textContent = '; окно 2027 — дефицит готового и рост цен — пройдёт без вас';
+    el('vDate').textContent = '2036 году или позже';
+    el('vWindow').textContent = ' — за горизонтом планирования; окно 2027 года (дефицит готового жилья и рост цен) пройдёт без вас';
   } else {
     const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + Math.round(months));
     el('vDate').textContent = MONTHS_K[d.getMonth()] + ' ' + d.getFullYear();
-    el('vWindow').textContent = d.getFullYear() <= 2027 ? '; вы успеваете к окну 2027 — дефициту готового жилья' : '; окно 2027 — дефицит готового и рост цен — пройдёт без вас';
+    el('vWindow').textContent = d.getFullYear() <= 2027 ? ' — вы успеваете к 2027 году, когда прогнозируют дефицит готового жилья и рост цен' : ' — окно 2027 года (дефицит готового жилья и рост цен) пройдёт без вас';
   }
   el('vEq').textContent = (Math.round(month*12/price/100)*100).toLocaleString('ru-RU') + ' м²';
   el('vSave').textContent = fmt(month*acc/2);
