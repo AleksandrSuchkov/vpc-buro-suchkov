@@ -263,10 +263,11 @@ document.addEventListener('DOMContentLoaded',function(){
     var data=new FormData(f);
     var ctrl=('AbortController' in window)?new AbortController():null;
     var t=ctrl?setTimeout(function(){ctrl.abort();},8000):null;
-    fetch('https://formsubmit.co/ajax/aleksandr@bureausuchkov.com',{method:'POST',body:data,headers:{'Accept':'application/json'},signal:ctrl&&ctrl.signal})
+    var obj={};data.forEach(function(v,k){obj[k]=v;});obj['_source']='плейбук «возражения-2026»';
+    fetch('https://bureau-leads.useapps.ru/lead',{method:'POST',body:JSON.stringify(obj),headers:{'Content-Type':'application/json'},signal:ctrl&&ctrl.signal})
       .then(function(r){if(t)clearTimeout(t);if(!r.ok)throw 0;return r.json();})
       .then(function(j){
-        if(!(j&&(j.success===true||j.success==='true')))throw 0; /* FormSubmit отвечает 200 и при неуспехе */
+        if(!(j&&j.success===true))throw 0;
         f.innerHTML='<div class="fh">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлю лично в ближайшее время — и предложу время под диагностику вашего отдела продаж.<br>— Александр Сучков</div>';
       })
       .catch(function(){
