@@ -44,7 +44,10 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .field{margin-bottom:18px}
 .field:last-child{margin-bottom:0}
 .field .lb{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--b60);margin-bottom:7px}
-.field .lb .val{font-size:16px;font-weight:600;color:var(--black);letter-spacing:-.4px}
+.field .lb .val{font-size:16px;font-weight:600;color:var(--black);letter-spacing:-.4px;white-space:nowrap}
+.val .vin{font:inherit;color:var(--black);border:0;border-bottom:1px dashed var(--b40);background:transparent;text-align:right;padding:0 0 1px;outline:none;border-radius:0;min-width:1.2ch;transition:border-color .15s}
+.val .vin:hover{border-bottom-color:var(--blue)}
+.val .vin:focus-visible{border-bottom:1.5px solid var(--blue);padding-bottom:.5px}
 input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:28px;margin:-11px 0;background:transparent;outline:none;cursor:pointer}
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:var(--pill);background:var(--b20)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:var(--blue);cursor:pointer;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25)}
@@ -179,21 +182,21 @@ summary{transition:color .15s}
         <button type="button" aria-pressed="false" data-area="12000" data-price="330">проект МСК/СПб</button>
       </div>
       <div class="field">
-        <div class="lb"><span>непроданные остатки</span><span class="val"><span id="vArea">20 000</span> м²</span></div>
+        <div class="lb"><span>непроданные остатки</span><span class="val"><input id="vArea" class="vin" type="text" inputmode="numeric" value="20 000" aria-label="непроданные остатки, м²"> м²</span></div>
         <input type="range" id="area" min="1000" max="150000" step="1000" value="20000" aria-label="непроданные остатки, м²">
         <div class="hint">строящееся + готовое, не в сделках и не в бронях</div>
       </div>
       <div class="field">
-        <div class="lb"><span>средняя цена продажи</span><span class="val"><span id="vPrice">150</span> тыс ₽/м²</span></div>
+        <div class="lb"><span>средняя цена продажи</span><span class="val"><input id="vPrice" class="vin" type="text" inputmode="numeric" value="150" aria-label="средняя цена продажи, тысяч рублей за м²"> тыс ₽/м²</span></div>
         <input type="range" id="price" min="60" max="600" step="5" value="150" aria-label="средняя цена продажи, тысяч рублей за м²">
       </div>
       <div class="field">
-        <div class="lb"><span>эффективная ставка проектного финансирования</span><span class="val"><span id="vRate">14</span>%</span></div>
-        <input type="range" id="rate" min="6" max="20" step="0.5" value="14" aria-label="эффективная ставка проектного финансирования, %">
-        <div class="hint">средневзвешенная ПФ ~10% (ЦБ) · эффективная для застройщика 12–16% (Ъ) · непокрытая эскроу часть ≈ ключевая +2,5–4,5 п.п. ≈ 17–19%</div>
+        <div class="lb"><span>ставка на замороженный капитал</span><span class="val"><input id="vRate" class="vin" type="text" inputmode="decimal" value="14" aria-label="ставка на замороженный капитал, %">%</span></div>
+        <input type="range" id="rate" min="6" max="20" step="0.5" value="14" aria-label="ставка на замороженный капитал, %">
+        <div class="hint">стройка: эффективная ставка ПФ 12–16% (Ъ), непокрытая эскроу часть ≈ ключевая +2,5–4,5 п.п. · введённый дом с погашенным кредитом: альтернативная стоимость капитала ~13–15% · средневзвешенная ПФ ~10% (ЦБ)</div>
       </div>
       <div class="field">
-        <div class="lb"><span>текущий темп продаж</span><span class="val"><span id="vPace">500</span> м²/мес</span></div>
+        <div class="lb"><span>текущий темп продаж</span><span class="val"><input id="vPace" class="vin" type="text" inputmode="numeric" value="500" aria-label="текущий темп продаж, м² в месяц"> м²/мес</span></div>
         <input type="range" id="pace" min="100" max="5000" step="50" value="500" aria-label="текущий темп продаж, м² в месяц">
         <div class="hint">сколько метров в среднем уходит в сделки за месяц</div>
       </div>
@@ -259,7 +262,7 @@ summary{transition:color .15s}
     <div class="d">рычаги без демпинга прайса: воронка (конверсия лид → сделка), агентский канал, ценовые решения, точечный перформанс. поставьте реалистичное ускорение — посмотрите, что оно стоит.</div>
     <div class="row">
       <div class="field" style="margin:0">
-        <div class="lb"><span>ускорение распродажи остатков</span><span class="val">на <span id="vAcc">3</span> мес быстрее</span></div>
+        <div class="lb"><span>ускорение распродажи остатков</span><span class="val">на <input id="vAcc" class="vin" type="text" inputmode="numeric" value="3" aria-label="ускорение распродажи, месяцев"> мес быстрее</span></div>
         <input type="range" id="acc" min="1" max="12" step="1" value="3" aria-label="ускорение распродажи, месяцев">
         <div class="hint">кейсы рынка, не наши (форум «Движение» 2026): конверсия воронки 6,9→15,2%, цикл сделки 52→30 дней · 1–3 мес — консервативно, 4–6 — типовой проект, 7+ — все рычаги сразу</div>
         <details class="why">
@@ -299,8 +302,8 @@ summary{transition:color .15s}
       </div>
       <div class="lg">
         <div class="t"><span>2</span>цена простоя в месяц</div>
-        <div class="f">капитал <i>×</i> ставка ПФ <i>÷</i> 12</div>
-        <div class="d">проценты банку за месяц, пока остаток стоит. в день — ещё ÷ 30; за квартал и год — × 3 и × 12.</div>
+        <div class="f">капитал <i>×</i> ставка <i>÷</i> 12</div>
+        <div class="d">проценты банку — или недополученный доход на капитале — за месяц, пока остаток стоит. в день — ещё ÷ 30; за квартал и год — × 3 и × 12.</div>
         <div class="ex">пример: 3 млрд × 14% ÷ 12 = 35 млн ₽/мес ≈ 1,17 млн ₽/день</div>
       </div>
       <div class="lg">
@@ -366,11 +369,15 @@ const fmt = n => {
 };
 const el = id => document.getElementById(id);
 const DIAG_COST = 1.6e6; // диагностика 3+ из каталога
-const DEFAULTS = {area:'20000', price:'150', rate:'14', acc:'3', pace:'500'};
+const DEFAULTS = {area:20000, price:150, rate:14, acc:3, pace:500};
+const V = Object.assign({}, DEFAULTS);
+const FIELD_OF = {vArea:'area', vPrice:'price', vRate:'rate', vPace:'pace', vAcc:'acc'};
+const fitVin = i => { i.style.width = (String(i.value).length + .5) + 'ch'; };
+const setVal = (id, text) => { const i = el(id); if (document.activeElement !== i) i.value = text; fitVin(i); };
 const MONTHS_K = ['январю','февралю','марту','апрелю','маю','июню','июлю','августу','сентябрю','октябрю','ноябрю','декабрю'];
 function stateQS(){
   const p = new URLSearchParams();
-  for (const id in DEFAULTS){ if (el(id).value !== DEFAULTS[id]) p.set(id, el(id).value); }
+  for (const id in DEFAULTS){ if (V[id] !== DEFAULTS[id]) p.set(id, String(V[id])); }
   const s = p.toString();
   return s ? '?' + s : '';
 }
@@ -386,17 +393,17 @@ function applyQuery(){
     if (!q.has(id)) continue;
     const inp = el(id), v = parseFloat(String(q.get(id)).replace(',', '.'));
     if (isNaN(v)) continue;
-    const min = +inp.min, step = +inp.step;
-    inp.value = Math.min(+inp.max, Math.max(min, min + Math.round((v - min)/step)*step));
+    V[id] = Math.min(+inp.max, Math.max(+inp.min, v));
+    inp.value = V[id];
   }
 }
 function calc(){
-  const area = +el('area').value, price = +el('price').value*1000, rate = +el('rate').value/100, acc = +el('acc').value, pace = +el('pace').value;
-  el('vArea').textContent = area.toLocaleString('ru-RU');
-  el('vPrice').textContent = (price/1000).toLocaleString('ru-RU');
-  el('vRate').textContent = (rate*100).toLocaleString('ru-RU');
-  el('vAcc').textContent = acc;
-  el('vPace').textContent = pace.toLocaleString('ru-RU');
+  const area = V.area, price = V.price*1000, rate = V.rate/100, acc = V.acc, pace = V.pace;
+  setVal('vArea', area.toLocaleString('ru-RU'));
+  setVal('vPrice', V.price.toLocaleString('ru-RU'));
+  setVal('vRate', V.rate.toLocaleString('ru-RU'));
+  setVal('vAcc', String(acc));
+  setVal('vPace', pace.toLocaleString('ru-RU'));
   const frozen = area*price, month = frozen*rate/12;
   el('vFrozen').textContent = fmt(frozen);
   el('vMonth').textContent = fmt(month);
@@ -420,7 +427,7 @@ function calc(){
   el('vDiagWrap').style.display = days > 4 ? 'none' : '';
   const mailHref = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: стоимость простоя') + '&body=' + encodeURIComponent(
     'Здравствуйте! Посчитал стоимость простоя в калькуляторе Бюро:\n· остатки: ' + area.toLocaleString('ru-RU') + ' м² × ' + (price/1000) + ' тыс ₽/м² = ' + fmt(frozen) +
-    '\n· ставка ПФ: ' + (rate*100) + '%\n· цена простоя: ' + fmt(month) + ' в месяц\nХочу обсудить экспресс-диагностику по этим цифрам.');
+    '\n· ставка: ' + (rate*100) + '%\n· цена простоя: ' + fmt(month) + ' в месяц\nХочу обсудить экспресс-диагностику по этим цифрам.');
   el('ctaMail').href = mailHref;
   el('ctaMail2').href = mailHref;
   el('btnTg').href = 'https://t.me/share/url?url=' + encodeURIComponent(pageURL()) + '&text=' + encodeURIComponent('посчитал цену простоя продаж: ' + fmt(month) + ' в месяц');
@@ -428,12 +435,25 @@ function calc(){
 }
 function syncPresets(){
   document.querySelectorAll('.presets button').forEach(b =>
-    b.setAttribute('aria-pressed', String(b.dataset.area === el('area').value && b.dataset.price === el('price').value)));
+    b.setAttribute('aria-pressed', String(+b.dataset.area === V.area && +b.dataset.price === V.price)));
 }
-['area','price','rate','acc','pace'].forEach(id => el(id).addEventListener('input', () => { calc(); syncURL(); }));
+['area','price','rate','acc','pace'].forEach(id => el(id).addEventListener('input', () => { V[id] = +el(id).value; calc(); syncURL(); }));
+for (const vid in FIELD_OF){
+  const inp = el(vid), id = FIELD_OF[vid], r = el(id);
+  inp.addEventListener('input', () => {
+    fitVin(inp);
+    const v = parseFloat(inp.value.replace(/[\s  ]/g,'').replace(',','.'));
+    if (isNaN(v)) return;
+    V[id] = Math.min(+r.max, Math.max(+r.min, v));
+    r.value = V[id];
+    calc(); syncURL();
+  });
+  inp.addEventListener('blur', () => calc());
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); inp.blur(); } });
+}
 document.querySelectorAll('.presets button').forEach(b => b.addEventListener('click', () => {
-  el('area').value = b.dataset.area;
-  el('price').value = b.dataset.price;
+  V.area = +b.dataset.area; V.price = +b.dataset.price;
+  el('area').value = V.area; el('price').value = V.price;
   calc(); syncURL();
 }));
 el('btnPdf').addEventListener('click', () => window.print());
