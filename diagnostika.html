@@ -319,6 +319,20 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     if(event==='расчёт'){if(logged.calc)return;logged.calc=1;}
     try{fetch(LOG_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,body:JSON.stringify(snap(event))});}catch(e){}
   }
+  // заявка → Telegram Бюро (bureau-leads-bot); Google Таблица остаётся вторым каналом
+  function notifyBot(){
+    try{
+      var d=snap('заявка');
+      var un=function(s){s=String(s==null?'':s);return s.charAt(0)==="'"?s.slice(1):s;}; // снимаем апостроф защиты Sheets
+      fetch('https://bureau-leads.useapps.ru/lead',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        '_source':'экспресс-диагностика воронки','_page':location.href.split('#')[0].split('?')[0],
+        'Имя':un(d.name),'Компания':un(d.company),'Контакт':un(d.contact),
+        'Девелопер':un(d.developer),'Индекс здоровья':(d.score?d.score+'/100':''),
+        'Недобор выручки':un(d.loss),'Потери бюджета':un(d.waste),'Скорость перезвона':un(d.callback),
+        'Оставлены рыночные значения':un(d.defaults)
+      })});
+    }catch(e){}
+  }
   var rub=new Intl.NumberFormat('ru-RU');
   function money(n){
     n=Math.max(0,Math.round(n));
@@ -685,6 +699,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     unlock();
     lead={name:name,phone:phone,comp:comp};
     logLead('заявка');
+    notifyBot();
     $('capStage1').classList.add('hidden');
     var s2=$('capStage2');
     s2.classList.remove('hidden');

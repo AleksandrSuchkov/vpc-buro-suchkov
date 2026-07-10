@@ -101,6 +101,17 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .cta .s{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;max-width:620px}
 .cta .s a{background:none;padding:0;border-radius:0;flex:initial;font-size:inherit;font-weight:600;color:#fff;text-decoration:underline}
 .cta a{flex:none;background:#fff;color:var(--blue);font-weight:600;font-size:14.5px;text-decoration:none;border-radius:var(--pill);padding:13px 22px}
+.cta form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;width:100%}
+@media(max-width:760px){.cta form{grid-template-columns:1fr}}
+.cta form input{min-width:0;background:#fff;border:0;border-radius:10px;padding:12px 14px;font-family:var(--font);font-size:14px;letter-spacing:-.3px;color:var(--black)}
+.cta form input::placeholder{color:var(--b40)}
+.cta form input:focus{outline:2px solid var(--coral)}
+.cta form .hp{position:absolute;left:-9999px;width:1px;height:1px;padding:0;border:0}
+.cta form button{background:#fff;color:var(--blue);border:0;border-radius:var(--pill);padding:12px 20px;font-family:var(--font);font-size:14.5px;font-weight:600;letter-spacing:-.3px;cursor:pointer;white-space:nowrap}
+.cta form button:hover{background:rgba(255,255,255,.88)}
+.cta form .fine{grid-column:1/-1;font-size:11.5px;color:rgba(255,255,255,.6);line-height:1.4}
+.cta form .ok{grid-column:1/-1;font-size:14px;font-weight:600}
+@media print{.cta form{display:none}}
 details.meth{margin-top:26px;border-radius:var(--r-lg);background:var(--gray);padding:16px 20px}
 details.meth summary{font-size:14px;font-weight:600;cursor:pointer}
 details.meth p{font-size:13px;color:var(--b60);line-height:1.45;max-width:880px}
@@ -209,7 +220,15 @@ footer{margin-top:30px;font-size:12.5px;color:var(--b60);line-height:1.5}
         <div class="t">хотите те же цифры, но по вашему проекту?</div>
         <div class="s">экспресс-диагностика за 2 недели: воронка, каналы, атрибуция, агентский канал. на выходе — карта потерь с цифрами и приоритеты. а пока думаете — <a href="calc">калькулятор простоя</a> посчитает, во что обходится месяц ожидания.</div>
       </div>
-      <a href="mailto:aleksandr@bureausuchkov.com?subject=Экспресс-диагностика воронки&body=Здравствуйте! Прочитал бенчмарк-отчёт «Стоимость лида и сделки 2026». Хочу сверить цифры по нашему проекту.">сверить мои цифры →</a>
+      <form id="bmForm">
+        <input type="text" name="name" placeholder="имя" autocomplete="name" required aria-label="имя">
+        <input type="text" name="company" placeholder="компания / проект" autocomplete="organization" required aria-label="компания">
+        <input type="text" name="contact" placeholder="телефон или @telegram" autocomplete="tel" required aria-label="телефон или telegram">
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">сверить мои цифры →</button>
+        <div class="fine" id="bmFine">если запускали самодиагностику — её результат приложится к заявке · отправляя форму, вы соглашаетесь на обработку персональных данных</div>
+        <div class="ok" id="bmOk" hidden>заявка ушла ✓ вернёмся в течение рабочего дня — со сверкой ваших цифр против бенчмарков.</div>
+      </form>
     </div>
   </div>
 
@@ -241,6 +260,30 @@ function upd(){
 }
 run.addEventListener('click',()=>{started=true;upd();});
 boxes.forEach(b=>b.addEventListener('change',()=>{if(started)upd();}));
+
+/* заявка → Telegram Бюро (bureau-leads-bot); при сбое — фолбэк на письмо */
+const CHK_LABELS = [...document.querySelectorAll('.check label span')].map(s=>s.textContent);
+document.getElementById('bmForm').addEventListener('submit', ev => {
+  ev.preventDefault();
+  const f = ev.currentTarget, fd = new FormData(f);
+  const done = () => { [...f.querySelectorAll('input,button')].forEach(x=>x.hidden=true); document.getElementById('bmFine').hidden=true; document.getElementById('bmOk').hidden=false; };
+  if (fd.get('website')){ done(); return; } /* honeypot */
+  const marked = [...boxes].map((b,i)=>b.checked?CHK_LABELS[i]:null).filter(Boolean);
+  const diag = (started||marked.length) ? (marked.length+' из 7: '+(marked.join(' · ')||'ни один маркер не отмечен')) : 'не запускал';
+  const btn = f.querySelector('button');
+  btn.disabled = true; btn.textContent = 'отправляем…';
+  fetch('https://bureau-leads.useapps.ru/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+    '_source': 'бенчмарк «стоимость лида и сделки 2026»', '_page': location.href.split('#')[0],
+    'Имя': fd.get('name'), 'Компания': fd.get('company'), 'Телефон или Telegram': fd.get('contact'),
+    'Самодиагностика': diag
+  })})
+    .then(r=>r.json()).then(j=>{ if(!(j&&j.success===true)) throw 0; done(); })
+    .catch(()=>{
+      btn.disabled = false; btn.textContent = 'сверить мои цифры →';
+      location.href = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Бенчмарк: сверить мои цифры') + '&body=' + encodeURIComponent(
+        'Имя: ' + fd.get('name') + '\nКомпания: ' + fd.get('company') + '\nКонтакт: ' + fd.get('contact') + '\nСамодиагностика: ' + diag);
+    });
+});
 </script>
 <script data-mobile-legibility="4">
 /* mobile-legibility: читаемый пол шрифта (14px) + перенос flex + схлопывание тесных grid на узких экранах */

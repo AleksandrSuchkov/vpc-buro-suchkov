@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var data=new FormData(f);
     var ctrl=('AbortController' in window)?new AbortController():null;
     var t=ctrl?setTimeout(function(){ctrl.abort();},8000):null;
-    var obj={};data.forEach(function(v,k){obj[k]=v;});obj['_source']='плейбук «возражения-2026»';
+    var obj={};data.forEach(function(v,k){obj[k]=v;});obj['_source']='плейбук «возражения-2026»';obj['_page']=location.href.split('#')[0].split('?')[0];
     fetch('https://bureau-leads.useapps.ru/lead',{method:'POST',body:JSON.stringify(obj),headers:{'Content-Type':'application/json'},signal:ctrl&&ctrl.signal})
       .then(function(r){if(t)clearTimeout(t);if(!r.ok)throw 0;return r.json();})
       .then(function(j){

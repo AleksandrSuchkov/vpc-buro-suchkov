@@ -471,25 +471,26 @@ document.querySelectorAll('.presets button').forEach(b => b.addEventListener('cl
   calc(); syncURL();
 }));
 el('btnPdf').addEventListener('click', () => window.print());
-const LEAD_ENDPOINT = ''; // URL веб-приложения Google Apps Script (…/exec) — приём заявок в Google Таблицу
+const LEAD_ENDPOINT = 'https://bureau-leads.useapps.ru/lead'; // приём заявок → Telegram Бюро (bureau-leads-bot)
 el('leadForm').addEventListener('submit', ev => {
   ev.preventDefault();
   const form = el('leadForm');
   const fd = new FormData(form);
-  if (fd.get('website')) return; /* honeypot: поле видят только боты */
-  fd.delete('website');
-  fd.set('calc', leadCalc);
-  fd.set('page', pageURL());
-  if (!LEAD_ENDPOINT){
-    location.href = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: заявка с калькулятора') + '&body=' + encodeURIComponent(
-      'Имя: ' + fd.get('name') + '\nТелефон: ' + fd.get('phone') + '\nКомпания: ' + fd.get('company') + '\n\n' + fd.get('calc') + '\n' + fd.get('page'));
-    return;
-  }
+  const done = () => { form.hidden = true; el('leadFine').hidden = true; el('leadOk').hidden = false; };
+  if (fd.get('website')){ done(); return; } /* honeypot: поле видят только боты */
   const btn = form.querySelector('button');
   btn.disabled = true; btn.textContent = 'отправляем…';
-  fetch(LEAD_ENDPOINT, {method:'POST', mode:'no-cors', body: new URLSearchParams(fd)})
-    .then(() => { form.hidden = true; el('leadFine').hidden = true; el('leadOk').hidden = false; })
-    .catch(() => { btn.disabled = false; btn.textContent = 'обсудить диагностику →'; alert('не получилось отправить — напишите на aleksandr@bureausuchkov.com'); });
+  fetch(LEAD_ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+    '_source': 'калькулятор простоя продаж', '_page': pageURL(),
+    'Имя': fd.get('name'), 'Телефон': fd.get('phone'), 'Компания': fd.get('company'),
+    'Расчёт': leadCalc
+  })})
+    .then(r => r.json()).then(j => { if (!(j && j.success === true)) throw 0; done(); })
+    .catch(() => {
+      btn.disabled = false; btn.textContent = 'обсудить диагностику →';
+      location.href = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: заявка с калькулятора') + '&body=' + encodeURIComponent(
+        'Имя: ' + fd.get('name') + '\nТелефон: ' + fd.get('phone') + '\nКомпания: ' + fd.get('company') + '\n\n' + leadCalc + '\n' + pageURL());
+    });
 });
 applyQuery();
 calc();
