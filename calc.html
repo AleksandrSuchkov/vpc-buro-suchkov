@@ -368,9 +368,9 @@ summary{transition:color .15s}
   <div class="cta">
     <div>
       <div class="t">посчитали свою цену простоя?</div>
-      <div class="s">пришлите ваш расчёт — подскажем, где проекты такого масштаба теряют чаще всего, и честно скажем, нужна ли вам диагностика. бесплатно и ни к чему не обязывает.</div>
+      <div class="s">оставьте контакты — вернёмся в течение рабочего дня с первичным разбором ваших цифр и честно скажем, нужна ли вам диагностика.</div>
     </div>
-    <a id="ctaMail2" href="mailto:aleksandr@bureausuchkov.com?subject=Экспресс-диагностика: стоимость простоя">обсудить мой расчёт →</a>
+    <a href="#lead">оставить заявку →</a>
   </div>
 
   <footer>
@@ -386,6 +386,7 @@ const fmt = n => {
 };
 const el = id => document.getElementById(id);
 const DIAG_COST = 1.6e6; // диагностика 3+ из каталога
+let leadCalc = ''; // сводка расчёта — прикладывается к заявке из формы
 const DEFAULTS = {area:20000, price:150, rate:14, acc:3, pace:500};
 const V = Object.assign({}, DEFAULTS);
 const FIELD_OF = {vArea:'area', vPrice:'price', vRate:'rate', vPace:'pace', vAcc:'acc'};
@@ -442,11 +443,7 @@ function calc(){
   const days = DIAG_COST/(month/30);
   el('vDiag').textContent = days < 1 ? 'меньше одного дня' : days < 2 ? 'меньше двух дней' : 'меньше ' + Math.ceil(days) + ' дней';
   el('vDiagWrap').style.display = days > 4 ? 'none' : '';
-  const mailHref = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: стоимость простоя') + '&body=' + encodeURIComponent(
-    'Здравствуйте! Посчитал стоимость простоя в калькуляторе Бюро:\n· остатки: ' + area.toLocaleString('ru-RU') + ' м² × ' + (price/1000) + ' тыс ₽/м² = ' + fmt(frozen) +
-    '\n· ставка: ' + (rate*100) + '%\n· цена простоя: ' + fmt(month) + ' в месяц\nХочу обсудить экспресс-диагностику по этим цифрам.');
-  el('ctaMail').href = mailHref;
-  el('ctaMail2').href = mailHref;
+  leadCalc = 'остатки: ' + area.toLocaleString('ru-RU') + ' м² × ' + (price/1000) + ' тыс ₽/м² = ' + fmt(frozen) + ' · ставка: ' + V.rate + '% · цена простоя: ' + fmt(month) + ' в месяц';
   el('btnTg').href = 'https://t.me/share/url?url=' + encodeURIComponent(pageURL()) + '&text=' + encodeURIComponent('посчитал цену простоя продаж: ' + fmt(month) + ' в месяц');
   syncPresets();
 }
@@ -474,6 +471,26 @@ document.querySelectorAll('.presets button').forEach(b => b.addEventListener('cl
   calc(); syncURL();
 }));
 el('btnPdf').addEventListener('click', () => window.print());
+const LEAD_ENDPOINT = ''; // URL веб-приложения Google Apps Script (…/exec) — приём заявок в Google Таблицу
+el('leadForm').addEventListener('submit', ev => {
+  ev.preventDefault();
+  const form = el('leadForm');
+  const fd = new FormData(form);
+  if (fd.get('website')) return; /* honeypot: поле видят только боты */
+  fd.delete('website');
+  fd.set('calc', leadCalc);
+  fd.set('page', pageURL());
+  if (!LEAD_ENDPOINT){
+    location.href = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: заявка с калькулятора') + '&body=' + encodeURIComponent(
+      'Имя: ' + fd.get('name') + '\nТелефон: ' + fd.get('phone') + '\nКомпания: ' + fd.get('company') + '\n\n' + fd.get('calc') + '\n' + fd.get('page'));
+    return;
+  }
+  const btn = form.querySelector('button');
+  btn.disabled = true; btn.textContent = 'отправляем…';
+  fetch(LEAD_ENDPOINT, {method:'POST', mode:'no-cors', body: new URLSearchParams(fd)})
+    .then(() => { form.hidden = true; el('leadFine').hidden = true; el('leadOk').hidden = false; })
+    .catch(() => { btn.disabled = false; btn.textContent = 'обсудить диагностику →'; alert('не получилось отправить — напишите на aleksandr@bureausuchkov.com'); });
+});
 applyQuery();
 calc();
 </script>
