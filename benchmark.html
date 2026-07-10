@@ -45,7 +45,8 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .sec-d b{color:var(--black)}
 /* бенч-таблица */
 .tbl{display:flex;flex-direction:column;gap:8px}
-.tr{display:grid;grid-template-columns:1.3fr 130px 1.6fr;gap:14px;background:var(--gray);border-radius:var(--r-md);padding:13px 16px;align-items:baseline}
+.tr{display:grid;grid-template-columns:1.3fr minmax(130px,max-content) 1.6fr;gap:14px;background:var(--gray);border-radius:var(--r-md);padding:13px 16px;align-items:baseline}
+@media(max-width:480px){.tr.hd{display:none}}
 @media(max-width:760px){.tr{grid-template-columns:1fr;row-gap:4px}}
 .tr.hd{background:none;padding:2px 16px}
 .tr.hd div{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--b40)}
@@ -56,7 +57,7 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .tr .c b{color:var(--black)}
 /* воронка-норма */
 .fun{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-.fs{display:grid;grid-template-columns:190px 1fr 120px;gap:14px;align-items:center;border-radius:var(--r-md);padding:12px 16px;color:#fff}
+.fs{display:grid;grid-template-columns:190px 1fr minmax(110px,max-content);gap:14px;align-items:center;border-radius:var(--r-md);padding:12px 16px;color:#fff}
 @media(max-width:700px){.fs{grid-template-columns:1fr;row-gap:4px}}
 .fs .n{font-size:14px;font-weight:600;letter-spacing:-.4px}
 .fs .d{font-size:12.5px;opacity:.85;line-height:1.35}
@@ -68,7 +69,7 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .cc{border-radius:var(--r-lg);box-shadow:var(--hair);padding:17px 19px}
 .cc .t{font-size:15.5px;font-weight:600;letter-spacing:-.5px;margin-bottom:2px}
 .cc .cac{font-size:23px;font-weight:600;letter-spacing:-1px;color:var(--coral);margin:6px 0 8px}
-.cc .cac span{font-size:12px;color:var(--b40);font-weight:500;letter-spacing:0}
+.cc .cac span{font-size:12px;color:var(--b40);font-weight:500;letter-spacing:0;white-space:nowrap}
 .cc .d{font-size:12.5px;color:var(--b60);line-height:1.42}
 .cc .d b{color:var(--black)}
 .cc .hid{margin-top:9px;font-size:11.5px;line-height:1.4;background:var(--coral-9);border-radius:var(--r-sm);padding:8px 11px;color:var(--black)}
@@ -86,6 +87,7 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .check .t{font-size:17px;font-weight:600;letter-spacing:-.5px;margin-bottom:12px}
 .check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.4;margin-bottom:9px;cursor:pointer}
 .check input{margin-top:3px;accent-color:var(--blue);width:16px;height:16px;flex:none}
+.check label span{flex:1;min-width:0}
 .check .verdict{margin-top:14px;font-size:14px;font-weight:600;color:var(--blue)}
 .check .run{margin-top:14px;background:var(--blue);color:#fff;border:0;border-radius:var(--pill);padding:12px 22px;font-family:var(--font);font-size:14.5px;font-weight:600;letter-spacing:-.3px;cursor:pointer}
 .check .run:hover{background:var(--blue-hover)}
@@ -97,14 +99,12 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .cta{margin-top:16px;background:var(--blue);color:#fff;border-radius:var(--r-xl);padding:24px 28px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
 .cta .t{font-size:clamp(17px,2.2vw,22px);font-weight:600;letter-spacing:-.7px;line-height:1.15;max-width:620px}
 .cta .s{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;max-width:620px}
+.cta .s a{color:#fff;text-decoration:underline}
 .cta a{flex:none;background:#fff;color:var(--blue);font-weight:600;font-size:14.5px;text-decoration:none;border-radius:var(--pill);padding:13px 22px}
 details.meth{margin-top:26px;border-radius:var(--r-lg);background:var(--gray);padding:16px 20px}
 details.meth summary{font-size:14px;font-weight:600;cursor:pointer}
 details.meth p{font-size:13px;color:var(--b60);line-height:1.45;max-width:880px}
 footer{margin-top:30px;font-size:12.5px;color:var(--b60);line-height:1.5}
-footer .h{font-size:13px;font-weight:600;color:var(--black);margin-bottom:8px}
-footer .heart{color:var(--coral)}
-footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill);padding:3px 11px;margin:0 6px 6px 0;font-size:12px}
 @media print{.wrap{padding:10mm}.shift,.fs,.cta,.lv .i{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
@@ -118,7 +118,7 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
 
   <div class="kicker">аналитика бюро · для собственников, коммерческих и маркетологов девелопера</div>
   <h1>стоимость лида и сделки — 2026</h1>
-  <p class="lead">сводка бенчмарков по стоимости привлечения в жилом девелопменте: лид, целевой лид, сделка — по каналам и стадиям воронки. собрано из докладов форума «Движение» (июнь 2026, 209 докладов, датасеты до 1,6 млн лидов) и открытой рыночной аналитики. <b>сверьте свои цифры со средними по рынку</b> — разница и есть ваш потенциал.</p>
+  <p class="lead">бенчмарки стоимости привлечения в жилом девелопменте: лид, целевой лид, сделка — по каналам и стадиям воронки. собрано из докладов форума «Движение» (июнь 2026, 209 докладов, датасеты до 1,6 млн лидов) и открытой рыночной аналитики. отчёт читается сверху вниз: <b>сколько стоит лид → где воронка его теряет → во что реально обходится сделка → что чинить первым</b>. сверяйте свои цифры по ходу — разница со средним и есть ваш потенциал. в конце — самодиагностика из 7 вопросов с вердиктом по вашей воронке.</p>
 
   <div class="shift">
     <div class="l">главный вывод отчёта</div>
@@ -127,9 +127,9 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
 
   <div class="stats">
     <div class="stat dn"><div class="n">×1,5–2</div><div class="l">рост стоимости лида за 2 года</div></div>
-    <div class="stat dn"><div class="n">12–20 тыс ₽</div><div class="l">целевой лид первички (масс-сегмент)</div></div>
-    <div class="stat dn"><div class="n">160–220 тыс ₽</div><div class="l">сделка (CAC) в холодных digital-каналах</div></div>
-    <div class="stat dn"><div class="n">58 379 ₽</div><div class="l">целевое обращение в премиуме Москвы (+88% г/г)</div></div>
+    <div class="stat dn"><div class="n">12&#8288;–&#8288;20 тыс&nbsp;₽</div><div class="l">целевой лид первички (масс-сегмент)</div></div>
+    <div class="stat dn"><div class="n">160&#8288;–&#8288;220 тыс&nbsp;₽</div><div class="l">сделка (CAC) в холодных digital-каналах</div></div>
+    <div class="stat dn"><div class="n">58&nbsp;379&nbsp;₽</div><div class="l">целевое обращение в премиуме Москвы (+88% г/г)</div></div>
     <div class="stat dn"><div class="n">44→32%</div><div class="l">конверсия в целевой лид (до/после отмены льготной)</div></div>
     <div class="stat up"><div class="n">6,9→15,2%</div><div class="l">конверсия лид→сделка после пересборки воронки (кейс)</div></div>
   </div>
@@ -145,18 +145,18 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
       <div class="tr"><div class="m">целевое обращение, премиум Москва</div><div class="v">58 379 ₽</div><div class="c"><b>+88% за год</b> — премиум дорожает быстрее всех (Sostav)</div></div>
       <div class="tr"><div class="m">конверсия обращения в целевой лид</div><div class="v">44% → 32%</div><div class="c">до/после отмены льготной ипотеки; каждый третий рубль лидгена не доходит даже до квалификации (Artsofte)</div></div>
       <div class="tr"><div class="m">классифайды, тарифы Москва</div><div class="v">+70–93%</div><div class="c">за два года, ≥6 повышений; агентские затраты на классифайды ~<b>400 тыс ₽/мес</b> — «налог на возможность работать» (Движение.ру)</div></div>
-      <div class="tr"><div class="m">боты и фрод</div><div class="v">до 50%</div><div class="c">доля digital-бюджета; на одном разбирательстве фродеры заработали 247 млн ₽ (Циан × Smartis)</div></div>
+      <div class="tr"><div class="m">боты и фрод</div><div class="v">до 50%</div><div class="c">доля digital-бюджета (Sostav); минимум 247 млн ₽ заработали фродопроизводители за 2025–2026 (Smartis, скоринг «Антифрод»)</div></div>
     </div>
   </div>
 
   <div class="section">
     <div class="sec-h"><span class="num">02</span><h2>от лида к сделке: где воронка теряет деньги</h2></div>
-    <p class="sec-d">путь клиента-2026 длинный: <b>51 касание, 67% выбирают дольше 90 дней</b> (Циан × Smartis). на каждом стыке — потери. ниже — нормы стадий и главные утечки.</p>
+    <p class="sec-d">сделать лид дешевле почти невозможно — цену входа диктует рынок. выигрывает тот, кто не теряет уже оплаченного клиента: путь к покупке — <b>51 касание, 67% выбирают дольше 90 дней</b> (Циан × Smartis), и на каждом стыке воронки — потери. ниже — нормы стадий и главные утечки.</p>
     <div class="fun">
-      <div class="fs f1"><div><div class="n">обращение → целевой лид</div><div class="d">утечка: боты, нецелевые, «дешёвый лид ≠ сделка»</div></div><div class="d">рынок: конверсия в целевой лид упала 44→32% после отмены льготной ипотеки. если у вас ниже 30% — проблема в каналах или квалификации</div><div class="k">норма ≥ 35–40%</div></div>
+      <div class="fs f1"><div><div class="n">обращение → целевой лид</div><div class="d">утечка: боты, нецелевые, «дешёвый лид ≠ сделка»</div></div><div class="d">рынок: конверсия в целевой лид упала 44→32% после отмены льготной ипотеки (Artsofte). если у вас ниже 30% — ищите проблему в каналах или квалификации</div><div class="k">ориентир&nbsp;Бюро&nbsp;≥&nbsp;35–40%</div></div>
       <div class="fs f2"><div><div class="n">лид → разговор</div><div class="d">утечка: скорость и дисциплина контакта</div></div><div class="d">только <b>11% застройщиков перезвонили</b> по пропущенному; до разговора доходит 47% обратных звонков (Яндекс Недвижимость, 219 226 звонков). самая дешёвая починка во всей воронке</div><div class="k">89% теряют тут</div></div>
-      <div class="fs f3"><div><div class="n">разговор → встреча/бронь</div><div class="d">утечка: скрипт, ToV, работа с возражениями-2026</div></div><div class="d">сильный ToV даёт <b>+85% к записи</b> на встречу, сильный CTA → 96% записей (Белокуров). агент доводит встречу до брони за 5 дней, свой ОП — за 11,4 (Profitbase)</div><div class="k">×1,85 на ToV</div></div>
-      <div class="fs f4"><div><div class="n">лид → сделка (сквозная)</div><div class="d">итоговая метрика воронки</div></div><div class="d">прямой канал ~<b>5%</b>, агентский ~<b>9%</b> (Profitbase, 219 застройщиков, 1,6 млн лидов). пересборка воронки с ИИ-тренером: <b>6,9→15,2%</b> (РАЗУМ)</div><div class="k">5–9% · цель 12%+</div></div>
+      <div class="fs f3"><div><div class="n">разговор → встреча/бронь</div><div class="d">утечка: скрипт, ToV, работа с возражениями-2026</div></div><div class="d">сильный ToV даёт <b>+85% к записи</b> на встречу, сильный CTA → 96% записей (Яндекс Недвижимость). агент доводит встречу до брони за 5 дней, свой ОП — за 11,4 (Profitbase)</div><div class="k">×1,85 на ToV</div></div>
+      <div class="fs f4"><div><div class="n">лид → сделка (сквозная)</div><div class="d">итоговая метрика воронки</div></div><div class="d">прямой канал ~<b>5%</b>, агентский ~<b>9%</b> (Profitbase, 219 застройщиков, 1,6 млн лидов). пересборка воронки с ИИ-тренером: <b>6,9→15,2%</b> (РАЗУМ)</div><div class="k">5–9%&nbsp;·&nbsp;цель&nbsp;12%+</div></div>
     </div>
   </div>
 
@@ -167,35 +167,36 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
       <div class="cc"><div class="t">холодный digital (контекст, таргет)</div><div class="cac">160–220 тыс ₽ <span>/ сделка</span></div><div class="d">масс-сегмент; долгий прогрев: 70% трафика холодные, конверсия в 1,5–2 раза ниже тёплых.</div><div class="hid"><b>скрытое:</b> боты до 50% бюджета + слепая атрибуция — часть сделок припишут другим каналам</div></div>
       <div class="cc"><div class="t">классифайды</div><div class="cac">≈400 тыс ₽ <span>/ мес фикс</span></div><div class="d">обязательный канал-«налог»: тарифы +70–93% за два года, ≥6 повышений. работает на охват и на агентов.</div><div class="hid"><b>скрытое:</b> неуправляемая цена: повышения тарифов не согласуют с вашим бюджетом</div></div>
       <div class="cc"><div class="t">агентский канал</div><div class="cac">~420 тыс ₽ <span>комиссия 3,5% × 12 млн</span></div><div class="d">конвертит вдвое лучше прямого (~9% vs ~5%) и быстрее (5 дней vs 11,4 до брони). комиссия выросла 2,6→3,5%, премиум 4–4,5%.</div><div class="hid"><b>скрытое:</b> двойная оплата — <b>36% «агентских» сделок</b> начались с вашей рекламы (Smartis / СК10): платите и за лид, и за комиссию</div></div>
-      <div class="cc"><div class="t">премиум-сегмент</div><div class="cac">625 тыс ₽ <span>/ сделка (кейс)</span></div><div class="d">кейс РКС: CPL 58 139 ₽, CR 9,3%, цикл 9 дней. премиум дорожает быстрее рынка (+88% CPL).</div><div class="hid"><b>скрытое:</b> сделка в премиуме удлинилась 45→75 дней, 62% срывов — на проверках (ELEMENT)</div></div>
+      <div class="cc"><div class="t">премиум и высокий чек</div><div class="cac">625 тыс ₽ <span>/ сделка (кейс РКС)</span></div><div class="d">ориентир по высокому чеку — кейс РКС Девелопмент: CPL 58 139 ₽, CR 9,3%, цикл 9 дней. сам премиум дорожает быстрее рынка: +88% к целевому обращению за год (Sostav).</div><div class="hid"><b>скрытое:</b> сделка в премиуме удлинилась 45→75 дней, 62% срывов — на проверках (ELEMENT)</div></div>
       <div class="cc"><div class="t">бренд (накопленный эффект)</div><div class="cac">каждая 4-я <span>продажа</span></div><div class="d">«каждая четвёртая продажа обеспечивается накопленным эффектом бренда»; вклад маркетинга с учётом бренда — до 28% (ORO).</div><div class="hid"><b>скрытое (наоборот):</b> брендформанс снижает CPL всех остальных каналов — эффект, который last click не видит</div></div>
-      <div class="cc"><div class="t">органика: SEO и AI-выдача</div><div class="cac">длинный <span>горизонт</span></div><div class="d">60% сессий заканчиваются AI-ответом без перехода на сайт; зато AI-трафик конвертит ×4 (Artsofte).</div><div class="hid"><b>скрытое:</b> кто не виден в AI-выдаче — не существует для растущей доли спроса</div></div>
+      <div class="cc"><div class="t">органика: SEO и AI-выдача</div><div class="cac">длинный <span>горизонт</span></div><div class="d">60% сессий с AI-ответом заканчиваются без перехода на сайт (SparkToro); зато AI-трафик конвертит ×4 против органики (Semrush).</div><div class="hid"><b>скрытое:</b> кто не виден в AI-выдаче — не существует для растущей доли спроса</div></div>
     </div>
   </div>
 
   <div class="section">
     <div class="sec-h"><span class="num">04</span><h2>пять рычагов: как платить за сделку меньше</h2></div>
-    <p class="sec-d">по данным форума, быстрее всего сделку удешевляет <b>ремонт воронки и атрибуции</b> — докупка трафика просто масштабирует утечки. рычаги — по скорости окупаемости.</p>
+    <p class="sec-d">когда сделка стоит 160–220 тысяч, первый инстинкт — торговаться за трафик. данные форума говорят обратное: быстрее всего сделку удешевляет <b>ремонт воронки и атрибуции</b> — докупка трафика лишь масштабирует утечки. пять рычагов ниже — в порядке скорости окупаемости.</p>
     <div class="lev">
       <div class="lv"><div class="i">1</div><div><div class="t">скорость и дисциплина контакта</div><div class="d">89% застройщиков не перезванивают — клиент уходит до разговора. регламент перезвона, контроль пропущенных, ИИ-анализ 100% звонков.</div><span class="eff">самая дешёвая починка: эффект за недели</span></div></div>
       <div class="lv"><div class="i">2</div><div><div class="t">конверсия воронки на тех же лидах</div><div class="d">CJM: где теряется клиент между этапами; скрипты и возражения-2026 (эскроу, рассрочка, «вторичка дешевле» — реальный дисконт like-for-like всего <b>3,6–6,1%</b>, Циан); ИИ-тренер: кейс 6,9→15,2%.</div><span class="eff">эквивалент удвоения бюджета — без бюджета</span></div></div>
       <div class="lv"><div class="i">3</div><div><div class="t">post-view-атрибуция и защита от двойной оплаты</div><div class="d">увидеть, где реально рождается сделка: 36% «агентских» прогреты вашей рекламой. пересчёт экономики каналов по полной стоимости сделки, а не по цене лида.</div><span class="eff">до 15 млн ₽/год на 100 сделках — только на двойной оплате</span></div></div>
-      <div class="lv"><div class="i">4</div><div><div class="t">сайт: 47 секунд на решение</div><div class="d">пользователь не изучает сайты — он их отсеивает; у 72% сайтов путь к лоту 4+ клика (idalite, 277 сайтов). UX-аудит даёт +15–30% к конверсии сайта.</div><span class="eff">быстрый аудит → эффект на всём платном трафике</span></div></div>
+      <div class="lv"><div class="i">4</div><div><div class="t">сайт: 47 секунд на решение</div><div class="d">пользователь не изучает сайты — он их отсеивает; у 72% сайтов путь к лоту 4+ клика (idalite, 277 сайтов). по оценке Бюро, UX-аудит даёт +15–30% к конверсии сайта.</div><span class="eff">быстрый аудит → эффект на всём платном трафике</span></div></div>
       <div class="lv"><div class="i">5</div><div><div class="t">брендформанс: снижать CPL всех каналов сразу</div><div class="d">узнаваемость — предиктор продаж: каждая 4-я продажа — эффект бренда. брендформанс прогревает холодных (70% трафика!) и снижает общий CPL — но требует единого ToV и терпения.</div><span class="eff">стратегический: закладывать сейчас — пожинать в 2027</span></div></div>
     </div>
   </div>
 
   <div class="section">
     <div class="sec-h"><span class="num">05</span><h2>самодиагностика: 7 вопросов</h2></div>
+    <p class="sec-d">бенчмарки работают, только когда приложены к собственной воронке. семь маркеров ниже — самые частые утечки из разделов 01–04. отметьте, что совпадает с вашей ситуацией, и запустите самодиагностику — получите вердикт и первый шаг.</p>
     <div class="check">
       <div class="t">отметьте, что про вас</div>
-      <label><input type="checkbox"> не знаем стоимость <b>сделки</b> по каждому каналу — считаем только цену лида</label>
-      <label><input type="checkbox"> конверсия обращения в целевой лид ниже 32% (или не измеряется)</label>
-      <label><input type="checkbox"> нет регламента перезвона по пропущенным в течение 10 минут</label>
-      <label><input type="checkbox"> не используем post-view — не знаем, сколько «агентских» сделок начались с нашей рекламы</label>
-      <label><input type="checkbox"> путь к лоту на сайте — больше 3 кликов</label>
-      <label><input type="checkbox"> конверсия лид → сделка ниже 9% (бенчмарк агентского канала)</label>
-      <label><input type="checkbox"> бюджет на лидген за год вырос, а число сделок — нет</label>
+      <label><input type="checkbox"><span>не знаем стоимость <b>сделки</b> по каждому каналу — считаем только цену лида</span></label>
+      <label><input type="checkbox"><span>конверсия обращения в целевой лид ниже 32% (или не измеряется)</span></label>
+      <label><input type="checkbox"><span>нет регламента перезвона по пропущенным в течение 10 минут</span></label>
+      <label><input type="checkbox"><span>не используем post-view — не знаем, сколько «агентских» сделок начались с нашей рекламы</span></label>
+      <label><input type="checkbox"><span>путь к лоту на сайте — больше 3 кликов</span></label>
+      <label><input type="checkbox"><span>конверсия лид → сделка ниже 9% (бенчмарк агентского канала)</span></label>
+      <label><input type="checkbox"><span>бюджет на лидген за год вырос, а число сделок — нет</span></label>
       <button class="run" id="run" type="button">запустить самодиагностику</button>
       <div class="verdict" id="verdict" hidden></div>
       <div class="next" id="next" hidden>
@@ -206,7 +207,7 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
     <div class="cta">
       <div>
         <div class="t">хотите те же цифры, но по вашему проекту?</div>
-        <div class="s">экспресс-диагностика за 2 недели: воронка, каналы, атрибуция, агентский канал. на выходе — карта потерь с цифрами и приоритеты. плюс калькулятор простоя — посчитайте, что стоит месяц ожидания.</div>
+        <div class="s">экспресс-диагностика за 2 недели: воронка, каналы, атрибуция, агентский канал. на выходе — карта потерь с цифрами и приоритеты. а пока думаете — <a href="calc">калькулятор простоя</a> посчитает, во что обходится месяц ожидания.</div>
       </div>
       <a href="mailto:aleksandr@bureausuchkov.com?subject=Экспресс-диагностика воронки&body=Здравствуйте! Прочитал бенчмарк-отчёт «Стоимость лида и сделки 2026». Хочу сверить цифры по нашему проекту.">сверить мои цифры →</a>
     </div>
@@ -214,13 +215,11 @@ footer .pl{display:inline-block;background:var(--gray);border-radius:var(--pill)
 
   <details class="meth">
     <summary>методика и источники</summary>
-    <p>бенчмарки собраны из докладов форума «Движение. Недвижимость» (июнь 2026; в том числе датасеты: Profitbase — 219 застройщиков, 1,6 млн лидов, 93,8 тыс. продаж; Яндекс Недвижимость — 219 226 звонков, 382 застройщика; Циан × Smartis — post-view-атрибуция; idalite — 277 сайтов) и открытой аналитики (Dviga, Sostav, Движение.ру, Аналитика ДОМ.РФ). цифры — диапазоны по рынку: ваш сегмент, регион и класс проекта сдвигают их существенно, поэтому сравнивайте порядок величин, а не копейки. кейсы конверсии (6,9→15,2%; 53→94%) — результаты конкретных проектов, не гарантия. данные Q2 2026, следующая редакция отчёта — Q4 2026.</p>
+    <p>бенчмарки собраны из докладов форума «Движение. Недвижимость» (июнь 2026; в том числе датасеты: Profitbase — 219 застройщиков, 1,6 млн лидов, 93,8 тыс. продаж; Яндекс Недвижимость — 219 226 звонков, 382 застройщика; Циан × Smartis — post-view-атрибуция; idalite — 277 сайтов) и открытой аналитики (Dviga, Sostav, Движение.ру, Аналитика ДОМ.РФ). цифры — диапазоны по рынку: ваш сегмент, регион и класс проекта сдвигают их существенно, поэтому сравнивайте порядок величин, а не копейки. кейсы конверсии (например, 6,9→15,2%) — результаты конкретных проектов, не гарантия. данные Q2 2026, следующая редакция отчёта — Q4 2026.</p>
   </details>
 
   <footer>
-    <div class="h">источники <span class="heart">♥</span></div>
-    <span class="pl">Profitbase / Селезнёв</span><span class="pl">Яндекс Недвижимость / Белокуров</span><span class="pl">Циан × Smartis / Глебов, Балашов</span><span class="pl">Artsofte / Торичко</span><span class="pl">РАЗУМ / Сурматов</span><span class="pl">idalite / Проскурякова</span><span class="pl">РКС / Сибагатуллина</span><span class="pl">ELEMENT / Конвей</span><span class="pl">ORO / Тихомирова</span><span class="pl">Dviga · Sostav · Движение.ру · ДОМ.РФ</span>
-    <p style="margin-top:12px">отчёт Бюро Сучкова · MOFU-магнит контент-сезона «как выполнить план продаж, когда рынок встал» · связки: «Калькулятор_простоя_продаж.html», «Маркетинговая_воронка_и_приоритеты.html».</p>
+    <p>бенчмарк-отчёт Бюро Сучкова · данные Q2 2026 · методика и перечень источников — в блоке выше · следующая редакция — Q4 2026</p>
   </footer>
 </div>
 
