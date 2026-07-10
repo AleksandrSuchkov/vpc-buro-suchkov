@@ -164,7 +164,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
 
   <div class="strip">
     <div class="stat"><div class="n">×1,5–2</div><div class="l">рост стоимости лида за 2 года</div></div>
-    <div class="stat"><div class="n">32%</div><div class="l">конверсия в целевой лид, рынок</div></div>
+    <div class="stat"><div class="n">44→32%</div><div class="l">конверсия в целевой лид (после отмены льготной)</div></div>
     <div class="stat"><div class="n">89%</div><div class="l">не перезвонили по пропущенному</div></div>
     <div class="stat"><div class="n">65–90%</div><div class="l">сделок через агентов (норма 45–55)</div></div>
     <div class="stat"><div class="n">76→68%</div><div class="l">доля ипотеки в ДДУ (ДОМ.РФ)</div></div>
@@ -296,17 +296,18 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
   var $=function(id){return document.getElementById(id);};
   // === логирование в Google Sheets (через Apps Script Web App) ===
   var LOG_ENDPOINT='https://script.google.com/macros/s/AKfycbzw7Q31nA13OzM7udISFxPq6fGA4Vb4dTHL4deKTDcnCfbINfkNOv8VCw6s5TZxgclxZA/exec';
+  function safe(s){s=(s==null?'':String(s));return /^[=+\-@]/.test(s)?("'"+s):s;} // защита от formula injection в Sheets
   function snap(event){
-    var d={event:event,page:location.href,
-      developer:$('devName').value.trim(),
-      name:(lead&&lead.name)||$('cName').value.trim(),
-      contact:(lead&&lead.phone)||$('cPhone').value.trim(),
-      company:(lead&&lead.comp)||$('cCompany').value.trim(),
-      score:last.health||'',loss:last.moneyStr||'',waste:last.wasteStr||'',
-      callback:CBTXT[$('callback').value||'']||''};
+    var d={event:event,page:safe(location.href),
+      developer:safe($('devName').value.trim()),
+      name:safe((lead&&lead.name)||$('cName').value.trim()),
+      contact:safe((lead&&lead.phone)||$('cPhone').value.trim()),
+      company:safe((lead&&lead.comp)||$('cCompany').value.trim()),
+      score:last.health||'',loss:safe(last.moneyStr||''),waste:safe(last.wasteStr||''),
+      callback:safe(CBTXT[$('callback').value||'']||'')};
     var mkt=[];
     FLD.forEach(function(f){d[f.id]=v(f.id);if(raw(f.id)===null)mkt.push(FLBL[f.id]||f.id);});
-    d.defaults=mkt.join(', ');
+    d.defaults=safe(mkt.join(', '));
     return d;
   }
   var logged={};
