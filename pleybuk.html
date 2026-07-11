@@ -227,7 +227,7 @@ footer a{color:var(--blue);text-decoration:none}
       <div class="of-case">эти скрипты мы тренируем с ОП и агентами застройщиков · кейс: конверсия лид→сделка <b>6,9% → 15,2%</b></div>
       <div class="printc">полная версия и диагностика — по заявке: aleksandr@bureausuchkov.com · Бюро Сучкова</div>
     </div>
-    <form class="of-form" action="https://formsubmit.co/aleksandr@bureausuchkov.com" method="POST">
+    <form class="of-form" action="mailto:aleksandr@bureausuchkov.com" method="post" enctype="text/plain">
       <div class="fh">куда прислать остальные 7 ответов?</div>
       <input type="text" name="Имя" placeholder="как вас зовут" required autocomplete="name" aria-label="имя">
       <input type="text" name="Компания" placeholder="компания / проект, город" required autocomplete="organization" aria-label="компания, проект, город">
@@ -235,9 +235,6 @@ footer a{color:var(--blue);text-decoration:none}
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <input type="hidden" name="_subject" value="Плейбук: прислать полную версию (7 ответов) + диагностика">
       <input type="hidden" name="Отправить клиенту" value="https://aleksandrsuchkov.github.io/vpc-buro-suchkov/pleybuk-full">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://aleksandrsuchkov.github.io/vpc-buro-suchkov/pleybuk.html?sent=1#zayavka">
       <button type="submit">получить остальные 7 ответов →</button>
       <div class="fn" role="status" aria-live="polite">одно сообщение с ответами и предложение диагностики — никаких рассылок. отправляет Анастасия из Бюро — <a href="https://t.me/naxtena" target="_blank" rel="noopener">t.me/naxtena</a>.</div>
     </form>
@@ -252,14 +249,7 @@ footer a{color:var(--blue);text-decoration:none}
   </footer>
 </div>
 <script>
-/* после отправки формы FormSubmit возвращает на ?sent=1 — показываем подтверждение вместо формы */
-if(/[?&]sent=1/.test(location.search)){
-  document.addEventListener('DOMContentLoaded',function(){
-    var f=document.querySelector('.of-form');
-    if(f)f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлём в ближайшее время — и предложим время под диагностику вашего отдела продаж.<br>— Анастасия, Бюро Сучкова</div>';
-  });
-}
-/* отправка без ухода со страницы; если сервис форм недоступен — фолбэк на письмо с заполненными полями */
+/* отправка без ухода со страницы; фолбэк без JS — mailto с заполненными полями */
 document.addEventListener('DOMContentLoaded',function(){
   var f=document.querySelector('.of-form');
   if(!f||!f.querySelector('button'))return;
@@ -269,7 +259,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var data=new FormData(f);
     var ctrl=('AbortController' in window)?new AbortController():null;
     var t=ctrl?setTimeout(function(){ctrl.abort();},8000):null;
-    var skip={'_honey':1,'_captcha':1,'_template':1,'_next':1};var obj={};data.forEach(function(v,k){if(!skip[k])obj[k]=v;});obj['_source']='плейбук «возражения-2026»';obj['_page']=location.href.split('#')[0].split('?')[0];
+    var skip={'_honey':1};var obj={};data.forEach(function(v,k){if(!skip[k])obj[k]=v;});obj['_source']='плейбук «возражения-2026»';obj['_page']=location.href.split('#')[0].split('?')[0];
     fetch('https://bureau-leads.useapps.ru/lead',{method:'POST',body:JSON.stringify(obj),headers:{'Content-Type':'application/json'},signal:ctrl&&ctrl.signal})
       .then(function(r){if(t)clearTimeout(t);if(!r.ok)throw 0;return r.json();})
       .then(function(j){
