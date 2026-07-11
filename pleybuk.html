@@ -239,7 +239,7 @@ footer a{color:var(--blue);text-decoration:none}
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_next" value="https://aleksandrsuchkov.github.io/vpc-buro-suchkov/pleybuk.html?sent=1#zayavka">
       <button type="submit">получить остальные 7 ответов →</button>
-      <div class="fn" role="status" aria-live="polite">одно сообщение с ответами и предложение диагностики — никаких рассылок. отправляет лично Александр Сучков.</div>
+      <div class="fn" role="status" aria-live="polite">одно сообщение с ответами и предложение диагностики — никаких рассылок. отправляет Анастасия из Бюро — <a href="https://t.me/naxtena" target="_blank" rel="noopener">t.me/naxtena</a>.</div>
     </form>
   </div>
 
@@ -256,7 +256,7 @@ footer a{color:var(--blue);text-decoration:none}
 if(/[?&]sent=1/.test(location.search)){
   document.addEventListener('DOMContentLoaded',function(){
     var f=document.querySelector('.of-form');
-    if(f)f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлю лично в ближайшее время — и предложу время под диагностику вашего отдела продаж.<br>— Александр Сучков</div>';
+    if(f)f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлём в ближайшее время — и предложим время под диагностику вашего отдела продаж.<br>— Анастасия, Бюро Сучкова</div>';
   });
 }
 /* отправка без ухода со страницы; если сервис форм недоступен — фолбэк на письмо с заполненными полями */
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded',function(){
       .then(function(r){if(t)clearTimeout(t);if(!r.ok)throw 0;return r.json();})
       .then(function(j){
         if(!(j&&j.success===true))throw 0;
-        f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлю лично в ближайшее время — и предложу время под диагностику вашего отдела продаж.<br>— Александр Сучков</div>';
+        f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлём в ближайшее время — и предложим время под диагностику вашего отдела продаж.<br>— Анастасия, Бюро Сучкова</div>';
       })
       .catch(function(){
         if(t)clearTimeout(t);
