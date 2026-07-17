@@ -717,10 +717,10 @@ footer{padding:10px 0 56px;text-align:center;font-size:14px;color:#8B98A5}
     <p>проверим рекламные кабинеты, найдём точки роста и соберём рекомендации в презентацию.</p>
     <p class="term">срок — до 10 рабочих дней после получения доступов.</p>
     <form class="cta-form" id="auditForm">
-      <input type="text" name="name" placeholder="имя" required>
-      <input type="text" name="company" placeholder="компания" required>
-      <input type="text" name="position" placeholder="должность" required>
-      <input type="tel" name="phone" placeholder="телефон" required>
+      <input type="text" name="name" placeholder="имя" required minlength="2" autocomplete="name" aria-label="имя">
+      <input type="text" name="company" placeholder="компания" required minlength="2" autocomplete="organization" aria-label="компания">
+      <input type="text" name="position" placeholder="должность" required minlength="2" autocomplete="organization-title" aria-label="должность">
+      <input type="tel" name="phone" placeholder="телефон" required inputmode="tel" autocomplete="tel" aria-label="телефон">
       <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent">
         <input type="checkbox" name="consent" required>
@@ -749,9 +749,9 @@ footer{padding:10px 0 56px;text-align:center;font-size:14px;color:#8B98A5}
   var LS_KEY='zhk-launch-map-v1';
   // заявка → Telegram Бюро (bureau-leads-bot); при сбое — видимое сообщение + mailto-фолбэк
   var LEAD_ENDPOINT='https://bureau-leads.useapps.ru/lead';
-  // второй канал — Google Таблица (Apps Script Web App), лист «карта запуска ЖК».
-  // пусто = канал выключен, заявки всё равно уходят в бота. URL вставить после развёртывания скрипта.
-  var LOG_ENDPOINT='';
+  // второй канал — Google Таблица (Apps Script Web App), лист «карта запуска ЖК» (маршрут по полю _sheet).
+  // пусто = канал выключен, заявки всё равно уходят в бота.
+  var LOG_ENDPOINT='https://script.google.com/macros/s/AKfycbzw7Q31nA13OzM7udISFxPq6fGA4Vb4dTHL4deKTDcnCfbINfkNOv8VCw6s5TZxgclxZA/exec';
 
   function load(){try{return JSON.parse(localStorage.getItem(LS_KEY))||{}}catch(e){return{}}}
   function save(s){try{localStorage.setItem(LS_KEY,JSON.stringify(s))}catch(e){}}
@@ -815,6 +815,15 @@ footer{padding:10px 0 56px;text-align:center;font-size:14px;color:#8B98A5}
   function safe(s){s=(s==null?'':String(s));return /^[=+\-@]/.test(s)?("'"+s):s;} // защита от formula injection в Sheets
 
   var form=document.getElementById('auditForm');
+
+  // телефон: 10–15 цифр (E.164), разделители любые — +7, скобки, дефисы, пробелы.
+  // пустое поле оставляем на required, иначе браузер вместо «заполните поле» покажет наше сообщение.
+  var phone=form.phone;
+  phone.addEventListener('input',function(){
+    var n=(phone.value.match(/\d/g)||[]).length;
+    phone.setCustomValidity(!phone.value||(n>=10&&n<=15)?'':'похоже на опечатку: нужно 10–15 цифр, например +7 900 000-00-00');
+  });
+
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var fd=new FormData(form);
