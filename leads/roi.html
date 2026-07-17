@@ -116,6 +116,9 @@ section{padding:36px 0}
 .lead-cta button:disabled{opacity:.7;cursor:default;transform:none}
 .lead-cta input:focus-visible,.lead-cta button:focus-visible{outline:2px solid var(--white);outline-offset:3px}
 .lead-cta .fine{margin-top:12px;font-size:12px;color:rgba(255,255,255,.6);line-height:1.4;max-width:720px}
+.lead-cta .consent{flex:1 1 100%;display:flex;gap:8px;align-items:flex-start;max-width:720px;font-size:12px;color:rgba(255,255,255,.6);line-height:1.4;cursor:pointer}
+.lead-cta .consent input{flex:0 0 auto;width:16px;height:16px;min-width:0;margin:0;padding:0;border-radius:3px;background:none;accent-color:var(--white)}
+.lead-cta .consent a{color:var(--white);text-decoration:underline}
 .lead-cta .ok{margin-top:14px;font-size:15px;font-weight:600}
 .lead-cta .err{margin-top:12px;font-size:13.5px;font-weight:600;color:#FFD9D2}
 .roi-sticky{display:none;position:sticky;bottom:12px;z-index:5;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;background:var(--blue);color:var(--white);border-radius:var(--pill);padding:13px 22px;box-shadow:0 6px 20px rgba(23,26,217,.35);text-decoration:none;font-weight:600}
@@ -287,9 +290,10 @@ footer{padding:28px 0 48px;color:var(--gray-dark);font-size:13px}
     <input type="tel" name="phone" placeholder="телефон" autocomplete="tel" required aria-label="телефон">
     <input type="text" name="company" placeholder="компания" autocomplete="organization" required aria-label="компания">
     <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="consent"><input type="checkbox" name="consent" required><span>соглашаюсь на обработку персональных данных в соответствии с <a href="https://bureausuchkov.com/documents/policy" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
     <button type="submit">обсудить разбор →</button>
   </form>
-  <div class="fine" id="leadFine">к заявке автоматически приложится ваш расчёт окупаемости · отправляя форму, вы соглашаетесь на обработку персональных данных</div>
+  <div class="fine" id="leadFine">к заявке автоматически приложится ваш расчёт окупаемости</div>
   <div class="ok" id="leadOk" role="status" hidden>заявка ушла. вернёмся в течение рабочего дня — с разбором по вашим цифрам.</div>
   <div class="err" id="leadErr" role="status" hidden>не удалось отправить. попробуйте ещё раз или напишите на <a id="leadMail" href="mailto:aleksandr@bureausuchkov.com" style="color:#fff;text-decoration:underline">aleksandr@bureausuchkov.com</a></div>
 </div>

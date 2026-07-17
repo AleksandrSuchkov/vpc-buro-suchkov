@@ -121,6 +121,9 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .cta form button{background:#fff;color:var(--blue);border:0;border-radius:var(--pill);padding:12px 20px;font-family:var(--font);font-size:14.5px;font-weight:600;letter-spacing:-.3px;cursor:pointer;white-space:nowrap}
 .cta form button:hover{background:rgba(255,255,255,.88)}
 .cta form .fine{grid-column:1/-1;font-size:11.5px;color:rgba(255,255,255,.6);line-height:1.4}
+.cta form .consent{grid-column:1/-1;display:flex;gap:8px;align-items:flex-start;font-size:11.5px;color:rgba(255,255,255,.6);line-height:1.4;cursor:pointer}
+.cta form .consent input{flex:0 0 auto;width:16px;height:16px;padding:0;border-radius:3px;background:none;accent-color:#fff}
+.cta form .consent a{background:none;padding:0;border-radius:0;color:#fff;text-decoration:underline}
 .cta form .ok{grid-column:1/-1;font-size:14px;font-weight:600}
 .cta form .err{grid-column:1/-1;font-size:13px;font-weight:600;color:#fff;line-height:1.4}
 .cta form .err a{background:none;padding:0;border-radius:0;color:#fff;text-decoration:underline}
@@ -239,7 +242,8 @@ footer{margin-top:30px;font-size:12.5px;color:var(--b60);line-height:1.5}
         <input type="text" name="contact" placeholder="телефон или @telegram" autocomplete="tel" required aria-label="телефон или telegram">
         <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button type="submit">сверить мои цифры →</button>
-        <div class="fine" id="bmFine">если запускали самодиагностику — её результат приложится к заявке · отправляя форму, вы соглашаетесь на обработку персональных данных</div>
+        <label class="consent"><input type="checkbox" name="consent" required><span>соглашаюсь на обработку персональных данных в соответствии с <a href="https://bureausuchkov.com/documents/policy" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
+        <div class="fine" id="bmFine">если запускали самодиагностику — её результат приложится к заявке</div>
         <div class="ok" id="bmOk" hidden role="status" aria-live="polite" tabindex="-1">заявка ушла ✓ вернёмся в течение рабочего дня — со сверкой ваших цифр против бенчмарков.</div>
         <div class="err" id="bmErr" hidden role="status" aria-live="polite">не отправилось — проверьте связь и попробуйте ещё раз или напишите на <a id="bmMail" href="mailto:aleksandr@bureausuchkov.com">aleksandr@bureausuchkov.com</a>.</div>
       </form>
@@ -282,7 +286,7 @@ document.getElementById('bmForm').addEventListener('submit', ev => {
   ev.preventDefault();
   const f = ev.currentTarget, fd = new FormData(f);
   const bmErr = document.getElementById('bmErr');
-  const done = () => { [...f.querySelectorAll('input,button')].forEach(x=>x.hidden=true); document.getElementById('bmFine').hidden=true; bmErr.hidden=true; const ok=document.getElementById('bmOk'); ok.hidden=false; ok.focus(); };
+  const done = () => { [...f.querySelectorAll('input,button,.consent')].forEach(x=>x.hidden=true); document.getElementById('bmFine').hidden=true; bmErr.hidden=true; const ok=document.getElementById('bmOk'); ok.hidden=false; ok.focus(); };
   if (fd.get('website')){ done(); return; } /* honeypot */
   const marked = [...boxes].map((b,i)=>b.checked?CHK_LABELS[i]:null).filter(Boolean);
   const diag = (started||marked.length) ? (marked.length+' из 7: '+(marked.join(' · ')||'ни один маркер не отмечен')) : 'не запускал';

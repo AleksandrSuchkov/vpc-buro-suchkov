@@ -116,6 +116,9 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 @media(max-width:680px){.cap-grid{grid-template-columns:1fr}}
 .cap-grid input[type=text]{font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:var(--r-sm);border:none;box-shadow:var(--hair);background:#fff}
 .muted{font-size:12px;color:var(--b40);margin-top:8px}
+.consent{grid-column:1/-1;display:flex;gap:8px;align-items:flex-start;margin-top:2px;font-size:12px;color:var(--b60);line-height:1.4;cursor:pointer}
+.consent input{flex:0 0 auto;width:16px;height:16px;margin:1px 0 0;accent-color:var(--blue)}
+.consent a{color:var(--blue);text-decoration:underline}
 .hidden{display:none}
 /* — интерактив: ввод, гейт, реакции — */
 .field .inp{width:100%;font-family:var(--font);font-size:16px;font-weight:600;letter-spacing:-.2px;color:#000;background:#fff;border:1.5px solid rgba(0,0,0,.16);border-radius:12px;padding:12px 14px;outline:none;transition:border-color .15s,box-shadow .15s;box-sizing:border-box}
@@ -286,6 +289,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
             <div class="cap-f"><label for="cPhone">телефон или @telegram</label><input type="text" id="cPhone" placeholder="+7 (900) 000-00-00" autocomplete="tel"></div>
             <div class="cap-f"><label for="cCompany">компания / проект</label><input type="text" id="cCompany" placeholder="ЖК «Пример»" autocomplete="organization"></div>
             <button class="btn btn-blue" type="submit">открыть разбор и записаться →</button>
+            <label class="consent"><input type="checkbox" id="cConsent" name="consent" required><span>соглашаюсь на обработку персональных данных в соответствии с <a href="https://bureausuchkov.com/documents/policy" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
           </div>
         </form>
         <p class="muted">одно действие: открываем полную карту и передаём заявку в Бюро. без рассылок и спама — данные используем только для разбора вашей заявки.</p>
