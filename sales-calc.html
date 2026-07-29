@@ -28,17 +28,28 @@ input{font-family:inherit}
 .brand{font-size:16px;font-weight:600;letter-spacing:-.6px;white-space:nowrap}
 .brand span{color:var(--gray-dark);font-weight:500}
 .top .spacer{flex:1}
+.top .num{font-size:14px;font-weight:600;color:var(--coral)}
+.top .grp-l{font-size:13px;color:var(--b60);white-space:nowrap}
 .presets{display:flex;flex-wrap:wrap;gap:8px}
-.presets button{font-family:inherit;font-weight:500;letter-spacing:-.3px;background:#fff;box-shadow:var(--hair);border:0;border-radius:var(--pill);padding:8px 15px;font-size:13px;color:var(--b60);cursor:pointer;transition:background .15s}
+.presets button{font-family:inherit;font-weight:500;letter-spacing:-.3px;background:#fff;box-shadow:var(--hair);border:0;border-radius:var(--pill);padding:8px 15px;font-size:13px;color:var(--b60);cursor:pointer;transition:background .15s var(--ease),color .15s var(--ease),box-shadow .15s var(--ease),transform .15s var(--ease)}
 .presets button:hover{background:var(--gray-hover)}
+.presets button:active{transform:scale(.97)}
 .presets button[aria-pressed=true]{background:var(--blue);color:#fff;box-shadow:none}
 .presets button[aria-pressed=true]:hover{background:var(--blue-hover)}
+.seg{background:#fff;box-shadow:var(--hair);border-radius:var(--pill);padding:3px;gap:2px}
+.seg button{box-shadow:none;background:transparent}
 .chk{display:flex;align-items:baseline;gap:9px;font-size:13px;color:var(--b60);white-space:nowrap}
-.chk .box{display:inline-flex;align-items:baseline;gap:6px;background:var(--gray);border-radius:var(--r-sm);padding:9px 13px}
+.chk .field{display:inline-flex;align-items:baseline;gap:6px;background:#fff;box-shadow:var(--hair);border-radius:var(--r-sm);padding:9px 13px;transition:box-shadow .15s}
+.chk .field:hover,.fld .inp:hover{box-shadow:inset 0 0 0 1px var(--b40)}
+.chk .field.need{box-shadow:inset 0 0 0 1.5px var(--coral)}
+.chk .field:focus-within{box-shadow:inset 0 0 0 1.5px var(--blue)}
+@keyframes ping{from{box-shadow:inset 0 0 0 1.5px var(--coral),0 0 0 0 rgba(252,87,65,.55)}to{box-shadow:inset 0 0 0 1.5px var(--coral),0 0 0 14px rgba(252,87,65,0)}}
+.chk .field.ping{animation:ping .8s var(--ease) 2}
 .chk input{font-weight:600;font-size:18px;letter-spacing:-.4px;border:0;background:transparent;outline:none;width:4.5ch;color:var(--black);font-variant-numeric:tabular-nums;text-align:right}
 .chk input::placeholder{color:var(--b40);font-weight:500}
 .chk .u{font-size:12.5px;color:var(--b60);font-weight:600}
-.resetbtn{font-family:inherit;font-weight:500;font-size:12.5px;letter-spacing:-.3px;color:var(--b60);background:none;border:0;border-bottom:1px dashed var(--b40);padding:2px 0;cursor:pointer;transition:color .15s}
+.resetbtn{font-family:inherit;font-weight:500;font-size:12.5px;letter-spacing:-.3px;color:var(--b60);background:none;border:0;border-bottom:1px dashed var(--b40);padding:4px 0;cursor:pointer;transition:color .15s}
+.resetbtn[data-arm="1"]{color:var(--coral);border-bottom-color:var(--coral)}
 .resetbtn:hover{color:var(--coral);border-bottom-color:var(--coral)}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
@@ -51,31 +62,31 @@ input{font-family:inherit}
 .section:first-child{margin-top:6px}
 .sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:5px}
 .sec-h .num{font-size:14px;font-weight:600;color:var(--coral)}
-.sec-h h2{font-size:24px;margin:0;letter-spacing:-1.1px;font-weight:500}
-.sec-d{color:var(--b60);font-size:14px;max-width:640px;margin-bottom:16px;line-height:1.34}
+.sec-h h2{font-size:26px;margin:0;letter-spacing:-1.1px;font-weight:600;text-wrap:balance}
+.sec-d{color:var(--b60);font-size:14px;max-width:640px;margin-bottom:16px;line-height:1.34;text-wrap:pretty}
 .sec-d b{color:var(--black)}
-.calc{display:grid;grid-template-columns:1fr 1.12fr;gap:16px}
+.calc{display:grid;grid-template-columns:1fr 1.12fr;gap:16px;align-items:start}
 @media(max-width:680px){.calc{grid-template-columns:1fr}}
 
 /* поля ввода */
 .panel{background:var(--gray);border-radius:var(--r-xl);padding:22px 24px}
-.panel h3{font-size:19px;text-transform:none;font-weight:600;margin:0 0 16px;letter-spacing:-.5px}
-.modeswitch{margin:-4px 0 16px}
+.panel h3{font-size:13px;text-transform:none;font-weight:600;color:var(--b40);margin:0 0 16px;letter-spacing:0;line-height:28px}
+.modeswitch{margin:0 0 16px}
 .fld{margin-bottom:16px}
 .fld:last-child{margin-bottom:0}
 .fld>label{display:block;font-size:13px;color:var(--b60);margin-bottom:6px}
-.fld .inp{display:flex;align-items:baseline;gap:7px;background:#fff;box-shadow:var(--hair);border-radius:var(--r-sm);padding:11px 13px;transition:box-shadow .15s}
+.fld .inp{display:flex;align-items:baseline;gap:7px;background:#fff;box-shadow:var(--hair);border-radius:var(--r-sm);padding:11px 13px;cursor:text;transition:box-shadow .15s}
 .fld .inp:focus-within{box-shadow:inset 0 0 0 1.5px var(--blue)}
 .fld input{font-weight:600;font-size:19px;letter-spacing:-.5px;border:0;background:transparent;outline:none;width:100%;min-width:0;color:var(--black);font-variant-numeric:tabular-nums}
-.fld input::placeholder{color:var(--b40);font-weight:500}
+.fld input::placeholder{color:rgba(0,0,0,.28);font-weight:500}
 .fld .u{font-size:12.5px;color:var(--b60);white-space:nowrap;font-weight:600;flex:none}
-.fld .hint{font-size:11.5px;color:rgba(0,0,0,.5);margin-top:5px;line-height:1.3}
+.fld .hint{font-size:12px;color:var(--b60);margin-top:5px;line-height:1.3}
 .fld .hint b{color:var(--gray-dark);font-weight:600}
-.opt{font-size:11px;color:var(--b40);font-weight:500}
+.opt{font-size:11px;color:var(--b60);font-weight:500}
 
 /* результаты */
 .res{background:var(--black);color:#fff;border-radius:var(--r-xl);padding:22px 24px;display:flex;flex-direction:column}
-.res h3{font-size:19px;font-weight:600;color:#fff;margin:0 0 16px;letter-spacing:-.5px}
+.res h3{font-size:16px;font-weight:600;color:#fff;margin:0 0 16px;letter-spacing:-.5px;line-height:28px}
 .big{margin-bottom:16px}
 .big .l{font-size:12.5px;color:rgba(255,255,255,.6);font-weight:600}
 .big .v{font-size:clamp(32px,4.6vw,46px);font-weight:600;letter-spacing:-2px;line-height:1;color:var(--coral)}
@@ -83,10 +94,16 @@ input{font-family:inherit}
 .rgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .rgrid.two{grid-template-columns:1fr 1fr}
 @media(max-width:520px){.rgrid,.rgrid.two{grid-template-columns:1fr 1fr}}
-.rc{background:rgba(255,255,255,.1);border-radius:var(--r-md);padding:12px 13px}
-.rc .l{font-size:11px;color:rgba(255,255,255,.6)}
-.rc .v{font-size:18px;font-weight:600;letter-spacing:-.6px;margin-top:2px}
-.rc .s{font-size:10.5px;color:rgba(255,255,255,.5);margin-top:3px;line-height:1.25}
+.rc{background:rgba(255,255,255,.1);border-radius:var(--r-md);padding:12px 13px;display:flex;flex-direction:column}
+.rc .l{font-size:11px;color:rgba(255,255,255,.6);line-height:1.2;min-height:2.4em}
+.rc .v{font-size:18px;font-weight:600;letter-spacing:-.6px;margin-top:2px;line-height:1.15}
+.rc .s{font-size:11px;color:rgba(255,255,255,.55);margin-top:auto;padding-top:3px;line-height:1.25}
+.big .v.e{color:rgba(255,255,255,.25);font-size:32px;letter-spacing:-1px}
+.rc .v.e{color:rgba(255,255,255,.28)}
+@keyframes upd{from{background:rgba(255,255,255,.18)}to{background:transparent}}
+.res .upd{animation:upd .6s var(--ease);border-radius:4px}
+.res .gochk{font:inherit;font-size:inherit;background:none;border:0;padding:0;cursor:pointer;color:#fff;font-weight:600;border-bottom:1px dashed rgba(255,255,255,.5)}
+.res .gochk:hover{color:var(--coral-hover);border-bottom-color:var(--coral-hover)}
 .box{margin-top:12px;background:rgba(255,255,255,.07);border-radius:var(--r-md);padding:13px 15px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.9)}
 .box.cmp b{color:#fff}
 .box.hot{background:rgba(252,87,65,.18)}
@@ -99,35 +116,39 @@ input{font-family:inherit}
 .drrbox .v{font-size:20px;font-weight:600;letter-spacing:-.6px;margin-top:2px}
 
 /* панель аргументов */
-.args{position:sticky;top:16px}
+.args{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;overscroll-behavior:contain}
 @media(max-width:1000px){.args{position:static}}
 .argbox{background:var(--gray);border-radius:var(--r-xl);padding:20px 20px 8px}
 .argbox h3{font-size:19px;margin:0 0 4px;letter-spacing:-.5px;font-weight:600}
 .argbox .sub{font-size:12px;color:var(--b60);margin-bottom:14px;line-height:1.3}
 .arggrp{margin-bottom:14px}
-.arggrp .cap{font-size:11px;font-weight:600;color:var(--coral);letter-spacing:.2px;margin-bottom:7px}
-.argrow{background:#fff;box-shadow:var(--hair);border-radius:var(--r-md);padding:11px 13px;margin-bottom:7px;display:flex;gap:10px;align-items:flex-start;transition:opacity .15s}
+.arggrp .cap{font-size:11px;font-weight:600;color:var(--b40);letter-spacing:.2px;margin-bottom:7px}
+.argrow{background:#fff;box-shadow:var(--hair);border-radius:var(--r-md);padding:11px 13px;margin-bottom:7px;display:flex;gap:10px;align-items:flex-start;transition:opacity .15s var(--ease),background .15s var(--ease)}
+.argrow:not(.off){cursor:pointer}
+.argrow:not(.off):hover{background:var(--gray-hover)}
 .argrow .txt{font-size:12.5px;line-height:1.38;margin:0;flex:1;letter-spacing:-.2px}
 .argrow .txt b{color:var(--blue);font-weight:600}
 .argrow.off{opacity:.4}
-.argrow.off .cp{pointer-events:none}
-.cp{flex:none;align-self:center;font-family:inherit;font-weight:600;font-size:11px;letter-spacing:-.2px;color:var(--b60);background:var(--gray);border:0;border-radius:var(--pill);padding:7px 11px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
+.cp:disabled{opacity:0;pointer-events:none}
+.cp{flex:none;align-self:center;font-family:inherit;font-weight:600;font-size:11px;letter-spacing:-.2px;color:var(--b60);background:var(--gray);border:0;border-radius:var(--pill);padding:7px 11px;cursor:pointer;transition:background .15s var(--ease),color .15s var(--ease),transform .15s var(--ease);white-space:nowrap}
 .cp:hover{background:var(--blue);color:#fff}
+.cp:active{transform:scale(.95)}
 .cp.done{background:var(--grn);color:#fff}
 .trumps{margin-top:16px;background:var(--black);color:#fff;border-radius:var(--r-xl);padding:20px 20px 8px}
 .trumps h3{font-size:19px;margin:0 0 4px;letter-spacing:-.5px;font-weight:600}
 .trumps .sub{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:14px;line-height:1.3}
 .trumps .argrow{background:rgba(255,255,255,.08);box-shadow:none}
 .trumps .argrow .txt{color:rgba(255,255,255,.92)}
-.trumps .argrow .txt b{color:var(--coral)}
+.trumps .argrow .txt b{color:#fff}
+.trumps .argrow:not(.off):hover{background:rgba(255,255,255,.16)}
 .trumps .cp{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8)}
 .trumps .cp:hover{background:#fff;color:var(--black)}
 .trumps .cp.done{background:var(--grn);color:#fff}
 
 footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--b10);font-size:11.5px;color:var(--b60);line-height:1.5;max-width:900px}
 footer b{color:var(--gray-dark);font-weight:600}
-@media(pointer:coarse){.presets button{padding:11px 16px}.cp{padding:10px 13px}}
-@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+@media(pointer:coarse){.presets button{padding:13px 18px}.cp{padding:12px 15px}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important;animation-duration:.001ms!important}}
 </style>
 </head>
 <body>
@@ -168,14 +189,15 @@ footer b{color:var(--gray-dark);font-weight:600}
   <div class="top">
     <div class="brand">калькулятор менеджера&nbsp; <span>бюро сучкова</span></div>
     <div class="spacer"></div>
-    <div class="presets" id="clsRow" role="group" aria-label="класс жилья">
+    <span class="num" aria-hidden="true">00</span><span class="grp-l">класс и чек — для всех расчётов</span>
+    <div class="presets seg" id="clsRow" role="group" aria-label="класс жилья">
       <button data-cls="econom" aria-pressed="true">эконом</button>
       <button data-cls="comfort" aria-pressed="false">комфорт</button>
       <button data-cls="business" aria-pressed="false">бизнес</button>
       <button data-cls="premium" aria-pressed="false">премиум</button>
     </div>
     <label class="chk">средний чек
-      <span class="box"><input id="chk" inputmode="decimal" placeholder="—" aria-label="средний чек, млн ₽"><span class="u">млн ₽</span></span>
+      <span class="field" id="chkField"><input id="chk" inputmode="decimal" placeholder="—" aria-label="средний чек, млн ₽"><span class="u">млн ₽</span></span>
     </label>
     <button class="resetbtn" id="reset" type="button">сбросить всё</button>
   </div>
@@ -190,11 +212,11 @@ footer b{color:var(--gray-dark);font-weight:600}
         <div class="calc">
           <div class="panel">
             <h3>вводные</h3>
-            <div class="fld"><label>количество лотов</label><div class="inp"><input id="lots" inputmode="numeric" placeholder="—"><span class="u">шт</span></div></div>
-            <div class="fld"><label>горизонт продаж</label><div class="inp"><input id="hor" inputmode="numeric" placeholder="—"><span class="u">мес</span></div></div>
-            <div class="fld"><label>доля брони к старту</label><div class="inp"><input id="start" inputmode="decimal" placeholder="15"><span class="u">%</span></div><div class="hint">пусто — считаем по 15%</div></div>
+            <div class="fld"><label for="lots">количество лотов</label><div class="inp"><input id="lots" inputmode="numeric" placeholder="—"><span class="u">шт</span></div></div>
+            <div class="fld"><label for="hor">горизонт продаж</label><div class="inp"><input id="hor" inputmode="numeric" placeholder="—"><span class="u">мес</span></div></div>
+            <div class="fld"><label for="start">доля брони к старту</label><div class="inp"><input id="start" inputmode="decimal" placeholder="15"><span class="u">%</span></div><div class="hint">пусто — считаем по 15%</div></div>
           </div>
-          <div class="res">
+          <div class="res" aria-live="polite">
             <h3>что это в деньгах</h3>
             <div class="big"><div class="l">общая выручка проекта</div><div class="v" id="s1rev">—</div><div class="s" id="s1revF"></div></div>
             <div class="rgrid">
@@ -214,13 +236,13 @@ footer b{color:var(--gray-dark);font-weight:600}
         <div class="calc">
           <div class="panel">
             <h3>вводные</h3>
-            <div class="fld"><label>цель — брони</label><div class="inp"><input id="tgt" inputmode="numeric" placeholder="—"><span class="u">шт</span></div></div>
-            <div class="fld"><label>конверсия лид → бронь</label><div class="inp"><input id="c1" inputmode="decimal" placeholder=""><span class="u">%</span></div><div class="hint"><b id="hC1"></b></div></div>
-            <div class="fld"><label>конверсия бронь → сделка</label><div class="inp"><input id="c2" inputmode="decimal" placeholder=""><span class="u">%</span></div><div class="hint"><b id="hC2"></b></div></div>
-            <div class="fld"><label>CPL целевого лида</label><div class="inp"><input id="cpl" inputmode="decimal" placeholder=""><span class="u">тыс ₽</span></div><div class="hint"><b id="hCpl"></b></div></div>
-            <div class="fld"><label>месяцев до цели <span class="opt">необязательно</span></label><div class="inp"><input id="m2g" inputmode="numeric" placeholder="—"><span class="u">мес</span></div></div>
+            <div class="fld"><label for="tgt">цель — брони</label><div class="inp"><input id="tgt" inputmode="numeric" placeholder="—"><span class="u">шт</span></div></div>
+            <div class="fld"><label for="c1">конверсия лид → бронь</label><div class="inp"><input id="c1" inputmode="decimal" placeholder=""><span class="u">%</span></div><div class="hint"><b id="hC1"></b></div></div>
+            <div class="fld"><label for="c2">конверсия бронь → сделка</label><div class="inp"><input id="c2" inputmode="decimal" placeholder=""><span class="u">%</span></div><div class="hint"><b id="hC2"></b></div></div>
+            <div class="fld"><label for="cpl">CPL целевого лида</label><div class="inp"><input id="cpl" inputmode="decimal" placeholder=""><span class="u">тыс ₽</span></div><div class="hint"><b id="hCpl"></b></div></div>
+            <div class="fld"><label for="m2g">месяцев до цели <span class="opt">необязательно</span></label><div class="inp"><input id="m2g" inputmode="numeric" placeholder="—"><span class="u">мес</span></div></div>
           </div>
-          <div class="res">
+          <div class="res" aria-live="polite">
             <h3>сколько нужно вложить</h3>
             <div class="big"><div class="l">бюджет на лиды</div><div class="v" id="s2bud">—</div><div class="s" id="s2budF"></div></div>
             <div class="rgrid">
@@ -239,22 +261,22 @@ footer b{color:var(--gray-dark);font-weight:600}
         <div class="sec-d">во что обходится сдвиг продаж вправо — на процентах проектного финансирования. квартиры продадутся позже, но деньги за это капают уже сейчас.</div>
         <div class="calc">
           <div class="panel">
-            <div class="presets modeswitch" id="modeRow" role="group" aria-label="режим">
+            <div class="presets modeswitch seg" id="modeRow" role="group" aria-label="режим">
               <button data-mode="A" aria-pressed="true">просадка</button>
               <button data-mode="B" aria-pressed="false">недобор к плану</button>
             </div>
             <div id="modeA">
-              <div class="fld"><label>было продаж</label><div class="inp"><input id="was" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
-              <div class="fld"><label>просадка</label><div class="inp"><input id="drop" inputmode="decimal" placeholder="—"><span class="u">%</span></div></div>
+              <div class="fld"><label for="was">было продаж</label><div class="inp"><input id="was" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
+              <div class="fld"><label for="drop">просадка</label><div class="inp"><input id="drop" inputmode="decimal" placeholder="—"><span class="u">%</span></div></div>
             </div>
             <div id="modeB" hidden>
-              <div class="fld"><label>план</label><div class="inp"><input id="plan" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
-              <div class="fld"><label>факт</label><div class="inp"><input id="fact" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
+              <div class="fld"><label for="plan">план</label><div class="inp"><input id="plan" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
+              <div class="fld"><label for="fact">факт</label><div class="inp"><input id="fact" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
             </div>
-            <div class="fld"><label>ставка проектного финансирования</label><div class="inp"><input id="rate" inputmode="decimal" placeholder="14"><span class="u">%</span></div><div class="hint">рынок 12–16% <b>(Коммерсантъ)</b>; пусто — 14%</div></div>
-            <div class="fld"><label>стоимость решения бюро <span class="opt">необязательно</span></label><div class="inp"><input id="sol" inputmode="decimal" placeholder="—"><span class="u">млн ₽</span></div></div>
+            <div class="fld"><label for="rate">ставка проектного финансирования</label><div class="inp"><input id="rate" inputmode="decimal" placeholder="14"><span class="u">%</span></div><div class="hint">рынок 12–16% <b>(Коммерсантъ)</b>; пусто — 14%</div></div>
+            <div class="fld"><label for="sol">стоимость решения бюро <span class="opt">необязательно</span></label><div class="inp"><input id="sol" inputmode="decimal" placeholder="—"><span class="u">млн ₽</span></div></div>
           </div>
-          <div class="res">
+          <div class="res" aria-live="polite">
             <h3>цена сдвига</h3>
             <div class="big"><div class="l">цена сдвига на процентах ПФ</div><div class="v" id="s3int">—</div><div class="s" id="s3intF"></div></div>
             <div class="rgrid">
@@ -280,18 +302,18 @@ footer b{color:var(--gray-dark);font-weight:600}
 
         <div class="arggrp">
           <div class="cap">собственнику</div>
-          <div class="argrow off" id="pOwn1"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
-          <div class="argrow off" id="pOwn2"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
-          <div class="argrow off" id="pOwn3"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
+          <div class="argrow off" id="pOwn1" data-sec="01"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
+          <div class="argrow off" id="pOwn2" data-sec="03"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
+          <div class="argrow off" id="pOwn3" data-sec="03"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
         </div>
         <div class="arggrp">
           <div class="cap">коммерческому директору</div>
-          <div class="argrow off" id="pCom1"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
-          <div class="argrow off" id="pCom2"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
+          <div class="argrow off" id="pCom1" data-sec="02"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
+          <div class="argrow off" id="pCom2" data-sec="01"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
         </div>
         <div class="arggrp">
           <div class="cap">маркетингу</div>
-          <div class="argrow off" id="pMkt1"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
+          <div class="argrow off" id="pMkt1" data-sec="02"><p class="txt"></p><button class="cp" type="button">копир.</button></div>
         </div>
       </div>
 
@@ -368,12 +390,19 @@ function entered(id){
 }
 function eff(id){ var e = entered(id); return e!==null ? e : ph(id); }
 
-function setTxt(id,t){ $(id).textContent = t; }
+function setTxt(id,t){
+  var e=$(id);
+  if(e.textContent!==t && e.textContent!==''){ e.classList.remove('upd'); void e.offsetWidth; e.classList.add('upd'); }
+  e.textContent=t;
+  if(e.classList.contains('v')) e.classList.toggle('e', t==='—');
+}
 
 // ---- главный пересчёт ----
 function calc(){
   var B = BENCH[state.cls];
   var checkR = eff('chk')*1e6; // ₽
+  var noChk = entered('chk')===null;
+  $('chkField').classList.toggle('need', noChk && INPUTS.some(function(id){ return id!=='chk' && entered(id)!==null; }));
 
   // === секция 1 ===
   var lots = eff('lots'), hor = eff('hor'), startSh = eff('start');
@@ -382,7 +411,8 @@ function calc(){
   var paceR = pace*checkR;
   var startLots = lots*startSh/100, startR = startLots*checkR;
   setTxt('s1rev', money(revenue));
-  setTxt('s1revF', isFinite(revenue) ? count(lots,0)+' '+nform(lots,'лот','лота','лотов')+' × '+money(checkR) : '');
+  if(isFinite(revenue)) setTxt('s1revF', count(lots,0)+' '+nform(lots,'лот','лота','лотов')+' × '+money(checkR));
+  else $('s1revF').innerHTML = noChk ? '<button class="gochk" type="button">укажите средний чек в шапке ↑</button>' : '';
   setTxt('s1pace', isFinite(pace) ? count(pace)+' '+nform(pace,'лот','лота','лотов')+'/мес' : '—');
   setTxt('s1paceF', isFinite(pace) ? count(lots,0)+' ÷ '+count(hor,0)+' мес' : '');
   setTxt('s1paceRub', money(paceR));
@@ -422,7 +452,8 @@ function calc(){
   if(isFinite(drr)){ if(drr>norm+2) dcls='r'; else if(drr>norm) dcls='y'; }
   $('s2dot').className = 'dot '+dcls;
   setTxt('s2drr', pct(drr));
-  setTxt('s2drrF', isFinite(drr) ? 'норма для класса «'+B.label+'» — '+rng(B.drr)+'%' : 'заполните воронку и чек');
+  if(isFinite(drr)) setTxt('s2drrF', 'норма для класса «'+B.label+'» — '+rng(B.drr)+'%');
+  else $('s2drrF').innerHTML = noChk ? 'нужны цель по броням и <button class="gochk" type="button">чек в шапке ↑</button>' : 'нужна цель по броням';
 
   // === секция 3 ===
   var rate = eff('rate'), sol = eff('sol');
@@ -435,7 +466,8 @@ function calc(){
   var interestY = shiftY*rate/100;
   var payDays = sol*1e6 / (interestY/365);
   setTxt('s3int', money(interestY));
-  setTxt('s3intF', isFinite(interestY) ? money(shiftY)+' × '+count(rate)+'% (ставка ПФ)' : '');
+  if(isFinite(interestY)) setTxt('s3intF', money(shiftY)+' × '+count(rate)+'% (ставка ПФ)');
+  else $('s3intF').innerHTML = noChk ? '<button class="gochk" type="button">укажите средний чек в шапке ↑</button>' : '';
   setTxt('s3short', noLoss ? 'потерь нет' : (isFinite(shortfall) ? count(shortfall)+' '+nform(shortfall,'лот','лота','лотов')+'/мес' : '—'));
   setTxt('s3shortF', noLoss ? (state.mode==='B' ? 'факт не ниже плана' : 'просадка 0%') : (isFinite(shortfall) ? (state.mode==='A' ? count(eff('was'))+' × '+count(Math.min(eff('drop'),100))+'%' : count(eff('plan'))+' − '+count(eff('fact'))) : ''));
   setTxt('s3sm', money(shiftM));
@@ -469,10 +501,11 @@ function calc(){
 function phrase(id, ready, a, b){
   // 3 аргумента: (id, ready, text); 4: (id, ready, noLossFlag, text) — при noLoss слот честно говорит, что потерь нет
   var text = (b===undefined) ? a : b;
-  var off = (b!==undefined && a) ? 'потерь нет — аргумент не нужен' : '— заполните данные секции —';
   var row = $(id);
+  var off = (b!==undefined && a) ? 'потерь нет — аргумент не нужен' : '— заполните секцию '+(row.dataset.sec||'')+' —';
   row.querySelector('.txt').textContent = ready ? text : off;
   row.classList.toggle('off', !ready);
+  row.querySelector('.cp').disabled = !ready;
 }
 
 // ---- placeholder'ы класса + подписи бенчмарков ----
@@ -547,10 +580,18 @@ refreshPlaceholders();
 $('modeA').hidden = (state.mode!=='A'); $('modeB').hidden = (state.mode!=='B');
 pressRow('modeRow','mode',state.mode);
 
-INPUTS.forEach(function(id){ $(id).addEventListener('input', calc); });
+INPUTS.forEach(function(id){ $(id).addEventListener('input', calc); $(id).setAttribute('autocomplete','off'); });
+[].forEach.call(document.querySelectorAll('.cp'),function(b){ b.setAttribute('aria-live','polite'); });
 $('clsRow').addEventListener('click', function(e){ var b=e.target.closest('button'); if(b) setClass(b.dataset.cls); });
 $('modeRow').addEventListener('click', function(e){ var b=e.target.closest('button'); if(b) setMode(b.dataset.mode); });
 $('reset').addEventListener('click', function(){
+  var b=$('reset');
+  if(b.dataset.arm!=='1'){
+    b.dataset.arm='1'; b.textContent='точно сбросить?';
+    setTimeout(function(){ b.dataset.arm=''; b.textContent='сбросить всё'; },2500);
+    return;
+  }
+  b.dataset.arm=''; b.textContent='сбросить всё';
   INPUTS.forEach(function(id){ $(id).value=''; });
   state.cls='econom'; state.mode='A';
   pressRow('clsRow','cls','econom'); setMode('A'); refreshPlaceholders();
@@ -558,11 +599,30 @@ $('reset').addEventListener('click', function(){
   calc();
 });
 document.addEventListener('click', function(e){
-  var btn = e.target.closest('.cp'); if(!btn) return;
-  var row = btn.closest('.argrow'); if(row.classList.contains('off')) return;
-  copyText(row.querySelector('.txt').textContent, btn);
+  var row = e.target.closest('.argrow');
+  if(row && !row.classList.contains('off')) copyText(row.querySelector('.txt').textContent, row.querySelector('.cp'));
+  var w = e.target.closest('.inp');
+  if(w && e.target.tagName!=='INPUT') w.querySelector('input').focus();
+  if(e.target.closest('.gochk')) goChk();
+});
+function goChk(){
+  var b=$('chkField');
+  b.scrollIntoView({block:'center',behavior:'smooth'});
+  $('chk').focus({preventScroll:true});
+  b.classList.remove('ping'); void b.offsetWidth; b.classList.add('ping');
+}
+document.addEventListener('keydown', function(e){
+  var i=e.target; if(!i.id || INPUTS.indexOf(i.id)<0) return;
+  if(e.key==='Enter'){ i.blur(); return; }
+  var d = e.key==='ArrowUp'?1 : e.key==='ArrowDown'?-1 : 0; if(!d) return;
+  e.preventDefault();
+  var cur = parseFloat(i.value.replace(',','.'));
+  if(!isFinite(cur)) cur = isFinite(ph(i.id)) ? ph(i.id) : 0;
+  i.value = String(Math.max(0, Math.round((cur+d*(e.shiftKey?10:1))*10)/10)).replace('.',',');
+  calc();
 });
 
+if(!location.search && matchMedia('(pointer:fine)').matches) $('chk').focus();
 calc();
 </script>
 </body>
