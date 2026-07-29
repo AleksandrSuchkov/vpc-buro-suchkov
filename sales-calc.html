@@ -25,7 +25,8 @@ input{font-family:inherit}
 
 /* шапка */
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;padding-bottom:20px;margin-bottom:8px;border-bottom:1px solid var(--b10)}
-.brand{font-size:16px;font-weight:600;letter-spacing:-.6px;white-space:nowrap}
+.brand{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;letter-spacing:-.6px;white-space:nowrap}
+.brand .mk{width:28px;height:28px;flex:none}
 .brand span{color:var(--gray-dark);font-weight:500}
 .top .spacer{flex:1}
 .top .num{font-size:14px;font-weight:600;color:var(--coral)}
@@ -187,7 +188,7 @@ footer b{color:var(--gray-dark);font-weight:600}
 <div class="wrap">
 
   <div class="top">
-    <div class="brand">калькулятор менеджера&nbsp; <span>бюро сучкова</span></div>
+    <div class="brand"><svg class="mk" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M 0 0 L 0 17.078 C 0.639 17.793 1.392 18.357 2.182 18.846 C 8.652 22.533 26.52 18.245 37.467 15.085 L 0 40.213 L 0 60 L 19.787 60 L 44.915 22.533 C 41.718 33.48 37.467 51.348 41.154 57.818 C 41.605 58.646 42.207 59.398 42.922 60 L 60 60 L 60 0 L 0 0 Z" fill="#171AD9"/></svg><span>калькулятор менеджера&nbsp; <span style="color:var(--gray-dark);font-weight:500">бюро сучкова</span></span></div>
     <div class="spacer"></div>
     <span class="num" aria-hidden="true">00</span><span class="grp-l">класс и чек — для всех расчётов</span>
     <div class="presets seg" id="clsRow" role="group" aria-label="класс жилья">
@@ -273,7 +274,7 @@ footer b{color:var(--gray-dark);font-weight:600}
               <div class="fld"><label for="plan">план</label><div class="inp"><input id="plan" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
               <div class="fld"><label for="fact">факт</label><div class="inp"><input id="fact" inputmode="decimal" placeholder="—"><span class="u">лотов/мес</span></div></div>
             </div>
-            <div class="fld"><label for="rate">ставка проектного финансирования</label><div class="inp"><input id="rate" inputmode="decimal" placeholder="14"><span class="u">%</span></div><div class="hint">рынок 12–16% <b>(Коммерсантъ)</b>; пусто — 14%</div></div>
+            <div class="fld"><label for="rate">ставка проектного финансирования</label><div class="inp"><input id="rate" inputmode="decimal" placeholder="14"><span class="u">%</span></div><div class="hint">рынок 12–16%; пусто — 14%</div></div>
             <div class="fld"><label for="sol">стоимость решения бюро <span class="opt">необязательно</span></label><div class="inp"><input id="sol" inputmode="decimal" placeholder="—"><span class="u">млн ₽</span></div></div>
           </div>
           <div class="res" aria-live="polite">
@@ -320,13 +321,13 @@ footer b{color:var(--gray-dark);font-weight:600}
       <div class="trumps">
         <h3>козыри рынка</h3>
         <div class="sub">верифицированные цифры — всегда под рукой.</div>
-        <div class="argrow"><p class="txt">Только <b>27%</b> девелоперов выполнили план продаж в I кв. 2026 (ДОМ.РФ).</p><button class="cp" type="button">копир.</button></div>
-        <div class="argrow"><p class="txt">Распроданность строящегося жилья — <b>69%</b>, срок продажи остатков — <b>3,2 года</b> (ДОМ.РФ, май 2026).</p><button class="cp" type="button">копир.</button></div>
-        <div class="argrow"><p class="txt">Конверсия в целевой лид упала с <b>44% до 32%</b> после отмены льготной ипотеки (Artsofte, форум «Движение» 2026).</p><button class="cp" type="button">копир.</button></div>
-        <div class="argrow"><p class="txt">Целевой лид — <b>12–20 тыс ₽</b>; сделка в холодных каналах — <b>160–220 тыс ₽</b> (Dviga / Новостройкино, 2026).</p><button class="cp" type="button">копир.</button></div>
-        <div class="argrow"><p class="txt"><b>89%</b> застройщиков не перезвонили по заявке (Яндекс Недвижимость, 382 тестовых звонка).</p><button class="cp" type="button">копир.</button></div>
-        <div class="argrow"><p class="txt">«Каждая четвёртая продажа — <b>эффект бренда</b>» (Тихомирова, ORO, форум «Движение» 2026).</p><button class="cp" type="button">копир.</button></div>
-        <div class="argrow"><p class="txt">Средний проект Москвы продаёт <b>≈16</b> лотов/мес в массе, <b>≈12</b> в бизнесе, <b>≈5–6</b> в премиуме; лидеры — в <b>6–9 раз</b> быстрее (расчёт по Метриум, I–II кв. 2026).</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt">Только <b>27%</b> девелоперов выполнили план продаж в I кв. 2026.</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt">Распроданность строящегося жилья — <b>69%</b>, срок продажи остатков — <b>3,2 года</b> (май 2026).</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt">Конверсия в целевой лид упала с <b>44% до 32%</b> после отмены льготной ипотеки.</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt">Целевой лид — <b>12–20 тыс ₽</b>; сделка в холодных каналах — <b>160–220 тыс ₽</b> (2026).</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt"><b>89%</b> застройщиков не перезвонили по заявке (замер по 382 тестовым звонкам, 2026).</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt">Каждая четвёртая продажа — <b>эффект бренда</b>.</p><button class="cp" type="button">копир.</button></div>
+        <div class="argrow"><p class="txt">Средний проект Москвы продаёт <b>≈16</b> лотов/мес в массе, <b>≈12</b> в бизнесе, <b>≈5–6</b> в премиуме; лидеры — в <b>6–9 раз</b> быстрее (I–II кв. 2026).</p><button class="cp" type="button">копир.</button></div>
       </div>
     </aside>
 
@@ -423,7 +424,7 @@ function calc(){
   if(isFinite(pace)){
     var hot = pace > B.pace[1];
     cmp.className = 'box cmp' + (hot?' hot':'');
-    cmp.innerHTML = 'требуемый темп <b>'+count(pace)+' '+nform(pace,'лот','лота','лотов')+'/мес</b> против московского ориентира <b>'+rng(B.pace)+'</b> для класса «'+B.label+'» (Метриум, 2026; по регионам публичной статистики нет)'
+    cmp.innerHTML = 'требуемый темп <b>'+count(pace)+' '+nform(pace,'лот','лота','лотов')+'/мес</b> против московского ориентира <b>'+rng(B.pace)+'</b> для класса «'+B.label+'» (по регионам публичной статистики нет)'
       + (hot ? ' <span class="flag">· план агрессивнее московского темпа</span>' : '');
   } else {
     cmp.className = 'box cmp';
@@ -491,7 +492,7 @@ function calc(){
   phrase('pCom1', isFinite(leads),
     'Чтобы получить '+count(tgt,0)+' '+plur(tgt,'бронь','брони','броней')+' при конверсии '+count(c1)+'%, нужно '+count(Math.round(leads),0)+' '+plur(Math.round(leads),'лид','лида','лидов')+' — бюджет порядка '+money(budget)+'.');
   phrase('pCom2', isFinite(pace),
-    'Ваш требуемый темп '+count(pace)+' '+nform(pace,'лот','лота','лотов')+'/мес; московский ориентир для класса «'+B.label+'» — '+rng(B.pace)+' (Метриум, 2026), по регионам публичной статистики темпов нет.');
+    'Ваш требуемый темп '+count(pace)+' '+nform(pace,'лот','лота','лотов')+'/мес; московский ориентир для класса «'+B.label+'» — '+rng(B.pace)+', по регионам публичной статистики темпов нет.');
   phrase('pMkt1', isFinite(drr),
     'ДРР выходит '+pct(drr)+' при норме '+rng(B.drr)+'% для вашего класса.');
 
@@ -569,9 +570,8 @@ function fallbackCopy(text, ok){
 }
 
 // ---- init ----
-$('benchNote').innerHTML = '<b>Источники бенчмарков.</b> Темп продаж — средний проект Москвы, расчёт по данным Метриум за I–II кв. 2026 (ДДУ сегмента ÷ число проектов; эконом/комфорт = масс-маркет); лидеры рейтингов в 6–9 раз быстрее среднего. Публичных рейтингов темпа по регионам не существует — московский средний используется как ориентир, не как норма вашего города. '
-  + 'CPL целевого лида: эконом/комфорт 12–20 тыс ₽ (Новостройкино, 03.2026; кейс Dviga — данные 2025), премиум 58,4 тыс ₽ (United Partners / Media Instinct, 03.2026, Москва) — рыночные данные. '
-  + 'Конверсии лид→бронь и бронь→сделка, нормы ДРР и CPL бизнес-класса — экспертная оценка Бюро Сучкова: публичных данных нет и за 2026 год (проверено deep-research, 07.2026). '
+$('benchNote').innerHTML = '<b>Как считается.</b> Темп продаж — средний проект Москвы за I–II кв. 2026 (сделки сегмента ÷ число проектов; эконом/комфорт = масс-сегмент); лидеры рынка в 6–9 раз быстрее среднего. Публичных рейтингов темпа по регионам не существует — московский средний используется как ориентир, не как норма вашего города. '
+  + 'CPL целевого лида для эконом/комфорт и премиума — рыночные данные 2026 года; конверсии, нормы ДРР и CPL бизнес-класса — экспертная оценка Бюро Сучкова (июль 2026). '
   + 'Пустое поле считается по бенчмарку выбранного класса; введённое значение важнее и переживает смену класса.';
 
 applyQuery();
