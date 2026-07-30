@@ -118,7 +118,7 @@ input{font-family:inherit}
 
 /* панель аргументов */
 .args{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;overscroll-behavior:contain}
-@media(max-width:1000px){.args{position:static}}
+@media(max-width:1000px){.args{position:static;max-height:none;overflow:visible;overscroll-behavior:auto}}
 .argbox{background:var(--gray);border-radius:var(--r-xl);padding:20px 20px 8px}
 .argbox h3{font-size:19px;margin:0 0 4px;letter-spacing:-.5px;font-weight:600}
 .argbox .sub{font-size:12px;color:var(--b60);margin-bottom:14px;line-height:1.3}
