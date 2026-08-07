@@ -178,11 +178,6 @@ h1{font-size:clamp(27px,4.3vw,42px);line-height:1.08;font-weight:600;letter-spac
 .b-leak{background:rgba(252,87,65,.12);color:var(--coral-text)}
 .b-frz{background:var(--amber-9);color:var(--amber-text)}
 .b-pot{background:rgba(23,26,217,.10);color:var(--blue)}
-.gtodo{margin-top:16px;background:var(--white);border:2px solid var(--black);border-radius:var(--r-md);padding:15px 18px;font-size:14.5px;line-height:1.55}
-.gcard .mkh~.gtodo{margin-top:auto;padding-top:15px}
-.gcard .mklist{margin-bottom:16px}
-.gtodo b{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--coral-text);margin-bottom:6px}
-.gtodo b::after{content:"";flex:1;height:1px;background:var(--coral-16)}
 @media(max-width:560px){.gsub{grid-template-columns:1fr}.gsub .sm{justify-self:start;white-space:normal}.gh{flex-direction:column}.gh-r{text-align:left}.gm{white-space:normal}}
 .endcard{background:var(--white);border-radius:var(--r-xl);box-shadow:var(--sh-card),var(--hair);padding:26px 26px 24px;margin-top:24px}
 .endflex{display:flex;gap:22px;align-items:flex-start;margin-top:12px}
@@ -831,7 +826,6 @@ if(typeof module!=='undefined')module.exports=KARTA;
         +'<div class="gyou '+(TINT[g.cls]||'pot')+'"><span class="gyl">ваш ответ</span>'+g.you.replace(/^у вас: /,'')+'</div>'
         +subs
         +'<div class="mkh">цифры рынка</div><ul class="mklist">'+g.mk.split(' · ').map(function(x){return '<li>'+x.replace(/\s*\([^)]*\)/g,'')+'</li>';}).join('')+'</ul>'
-        +'<div class="gtodo"><b>проверьте сами</b>'+g.fix+'</div>'
         +'</div>';
     }).join('');
   }
