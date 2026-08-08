@@ -22,6 +22,8 @@
 :root{
   --blue:#171AD9;--blue-hover:#2F32F2;--blue-6:rgba(23,26,217,.06);--blue-12:rgba(23,26,217,.1);
   --coral:#FC5741;--coral-hover:#FF7967;--coral-9:rgba(252,87,65,.09);
+  /* коралл на синем даёт 3:1 — нечитаемо для мелкого текста; светлый вариант держит 5,6:1 */
+  --coral-on-blue:#FFB3A8;
   --black:#000;--white:#fff;--gray:#F0F0F0;--gray-hover:#E3E3E3;--gray-dark:#6E6E6E;
   --b10:rgba(0,0,0,.1);--b20:rgba(0,0,0,.2);--b40:rgba(0,0,0,.4);--b60:rgba(0,0,0,.6);
   --r-sm:12px;--r-md:16px;--r-lg:20px;--r-xl:24px;--pill:999px;
@@ -65,13 +67,21 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .objs{display:flex;flex-direction:column;gap:14px}
 .obj{border-radius:var(--r-xl);box-shadow:var(--hair);padding:20px 22px;break-inside:avoid;page-break-inside:avoid}
 .oh{display:flex;gap:12px;align-items:baseline;margin-bottom:12px}
-.oh .n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--black);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:600;transform:translateY(6px)}
+.oh .n{flex:none;min-width:30px;height:30px;padding:0 10px;border-radius:15px;white-space:nowrap;background:var(--black);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:600;transform:translateY(6px)}
 .oh .q{font-size:clamp(17px,2.2vw,21px);font-weight:600;letter-spacing:-.7px;line-height:1.15}
 .oh .aud{flex:none;margin-left:auto;font-size:11px;color:var(--b60);background:var(--gray);border-radius:var(--pill);padding:4px 11px;white-space:nowrap;transform:translateY(4px)}
 @media(max-width:600px){.oh{flex-wrap:wrap}.oh .aud{flex:0 1 auto;white-space:normal;margin-left:0;transform:none}}
 .behind{font-size:12.5px;color:var(--b60);line-height:1.4;margin-bottom:12px;max-width:880px}
 .behind b{color:var(--black)}
 .script{background:var(--blue-6);border-left:3px solid var(--blue);border-radius:0 var(--r-md) var(--r-md) 0;padding:14px 17px;font-size:14.5px;line-height:1.45;margin-bottom:10px}
+.script p{margin:0 0 9px}
+.script p:last-child{margin-bottom:0}
+.script p.more{font-size:13.5px;color:var(--b60)}
+.lead-note{margin:8px 0 0;font-size:13px;color:var(--gray-dark);max-width:840px;line-height:1.4}
+.teaser{margin:10px 0 0;font-size:13px;color:var(--gray-dark);line-height:1.4}
+.teaser a{color:var(--blue);font-weight:600}
+.lk li.lk-h{display:block;margin-top:14px;font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--coral-on-blue);text-transform:none}
+.lk li.lk-h:first-child{margin-top:0}
 .script .lb{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--blue);margin-bottom:5px}
 .orow{display:grid;grid-template-columns:1.5fr 1fr;gap:10px}
 @media(max-width:760px){.orow{grid-template-columns:1fr}}
@@ -84,13 +94,15 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 /* оффер + форма */
 .offer{margin-top:16px;background:var(--blue);color:#fff;border-radius:var(--r-xl);padding:26px 28px;display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:start}
 @media(max-width:820px){.offer{grid-template-columns:1fr}}
-.offer .l{font-size:12.5px;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:7px}
+.offer .l{font-size:12.5px;color:rgba(255,255,255,.78);font-weight:600;margin-bottom:7px}
 .offer .t{font-size:clamp(18px,2.4vw,24px);font-weight:600;letter-spacing:-.8px;line-height:1.12;margin-bottom:10px}
 .offer .s{font-size:13.5px;color:rgba(255,255,255,.78);line-height:1.4;max-width:520px}
 .lk{margin:14px 0 0;padding:0;list-style:none}
 .lk li{display:flex;gap:10px;align-items:baseline;margin-top:8px}
-.lk li span{flex:none;font-size:11px;color:var(--coral);font-weight:600}
-.lk li i{flex:1 1 0;min-width:0;font-style:normal;font-size:14.5px;font-weight:600;letter-spacing:-.4px;line-height:1.3;color:#fff}
+.lk li span{flex:none;font-size:11px;color:var(--coral-on-blue);font-weight:600}
+.lk-b{flex:1 1 0;min-width:0}
+.lk-b em{display:block;margin-top:2px;font-style:normal;font-size:12.5px;font-weight:400;letter-spacing:0;color:rgba(255,255,255,.72)}
+.lk li i{display:block;font-style:normal;font-size:14.5px;font-weight:600;letter-spacing:-.4px;line-height:1.3;color:#fff}
 .offer .s{margin-top:14px}
 .of-case{margin-top:14px;background:rgba(255,255,255,.1);border-radius:var(--r-md);padding:11px 14px;font-size:12.5px;line-height:1.4;color:rgba(255,255,255,.8)}
 .of-case b{color:#fff}
@@ -105,7 +117,7 @@ h1{font-size:clamp(30px,4.4vw,46px);line-height:.98;letter-spacing:-2px;margin:0
 .of-form .consent{display:flex;gap:8px;align-items:flex-start;margin:2px 0 12px;font-size:11.5px;color:var(--b60);line-height:1.4;cursor:pointer}
 .of-form .consent input{display:inline-block;flex:0 0 auto;width:16px;height:16px;margin:0;padding:0;border-radius:3px;background:none;accent-color:var(--blue)}
 .of-form .consent a{color:var(--blue);text-decoration:underline}
-.of-form .fn{margin-top:10px;font-size:11.5px;color:var(--b40);line-height:1.4}
+.of-form .fn{margin-top:10px;font-size:11.5px;color:var(--b60);line-height:1.4}
 .of-form .fn a{color:var(--blue);text-decoration:none}
 .printc{display:none}
 .disc{margin-top:20px;background:var(--gray);border-radius:var(--r-lg);padding:14px 18px;font-size:12.5px;color:var(--b60);line-height:1.45}
@@ -147,46 +159,41 @@ footer a{color:var(--blue);text-decoration:none}
 
   <div class="kicker">для коммерческих директоров, РОП, менеджеров ОП и агентов</div>
   <h1>возражения-2026: что отвечать покупателю</h1>
-  <p class="lead"><b>сделки сейчас умирают не на цене — на возражениях:</b> «подожду ставку», «вторичка дешевле», «вдруг не достроите». менеджер, у которого нет ответа с цифрой, теряет клиента молча. мы разобрали 10 возражений, которые звучат в 2026-м чаще всего: скрипт-заготовка, цифры-опоры из свежих исследований, типовые ошибки. <b>три самых горячих — по одному из каждого раздела — открыты ниже.</b> остальные семь пришлём лично: <a href="#zayavka" style="color:var(--blue);text-decoration:underline;font-weight:600">форма в конце страницы</a>. каждая карточка — <b>слышите → что за этим → ответ → опора → чего не делать</b>.</p>
+  <p class="lead"><b>сделки сейчас умирают не на цене — на возражениях:</b> «подожду ставку», «вторичка дешевле», «вдруг не достроите». менеджер, у которого нет ответа с цифрой, теряет клиента молча. мы разобрали 10 возражений, которые звучат в 2026-м чаще всего. <b>три самых горячих — №1, №4 и №7, по одному из каждого раздела — открыты ниже.</b> остальные семь откроются сразу после заявки, форма в конце страницы. каждая карточка — <b>возражение → что за этим → ответ → опора → чего не делать</b>.</p>
+  <p class="lead-note">скрипты — заготовки, а не дословные тексты: ничего не гарантируйте клиенту, формулировки о сроках, платежах и эскроу сверьте с юристом.</p>
 
   <div class="shift">
     <div class="l">главный сдвиг 2026</div>
-    <p>у покупателя дефицит <span class="u">не денег и не объектов — уверенности</span> в правильности выбора. возражение — запрос на опору: спор его не снимает, снимают цифра и следующий шаг.</p>
+    <p>покупателю не хватает <span class="u">не денег и не вариантов — уверенности</span>, что он не ошибается. возражение — просьба дать, за что зацепиться: спор её не закрывает, закрывают цифра и следующий шаг.</p>
   </div>
 
   <div class="stats">
-    <div class="stat dn"><div class="n">90%</div><div class="l">покупателей сталкиваются со страхами при покупке</div></div>
-    <div class="stat dn"><div class="n">62%</div><div class="l">боятся обмана застройщиком, 50% — задержки сроков</div></div>
-    <div class="stat dn"><div class="n">60%</div><div class="l">отказов по рыночной ипотеке; одобряют ⅓ заявок</div></div>
-    <div class="stat dn"><div class="n">51</div><div class="l">касание до сделки; 67% выбирают дольше 90 дней</div></div>
-    <div class="stat up"><div class="n">+85%</div><div class="l">к записи на встречу даёт сильный ToV в разговоре</div></div>
+    <div class="stat dn"><div class="n">62%</div><div class="l">боятся обмана застройщиком — страх №1 рынка</div></div>
+    <div class="stat dn"><div class="n">60%</div><div class="l">отказов по рыночной ипотеке</div></div>
+    <div class="stat dn"><div class="n">51 касание</div><div class="l">в среднем проходит покупатель до сделки; 67% выбирают дольше 90 дней</div></div>
+    <div class="stat up"><div class="n">+85%</div><div class="l">к записи на встречу даёт то, как звучит менеджер в разговоре</div></div>
   </div>
   <div class="src">данные апрель–июнь 2026 · исследования покупателей, Циан × Smartis, Яндекс Недвижимость, Нмаркет.ПРО, ELEMENT, ВЦИОМ, ORO · форум «Движение»</div>
-
-  <div class="section">
-    <div class="sec-h"><span class="num">★</span><h2>пять правил до скриптов</h2></div>
-    <div class="rules">
-      <div class="rule"><div class="t"><span>1</span>возражение — запрос на уверенность</div><div class="d">дайте опору: процедуру, цифру, документ. «дефицит не объектов, а уверенности».</div></div>
-      <div class="rule"><div class="t"><span>2</span>цифра + сценарий, не спор</div><div class="d">«вы не правы» не работает. работает конкретная цифра + пересчёт на ситуацию клиента.</div></div>
-      <div class="rule"><div class="t"><span>3</span>закрывайте шагом, не точкой</div><div class="d">каждый ответ заканчивается микрообязательством: расчёт, подбор 3 лотов, бронь. сильный CTA → <b>96% записей</b>.</div></div>
-      <div class="rule"><div class="t"><span>4</span>скорость — тоже аргумент</div><div class="d">перезвон в 10 минут: <b>89% застройщиков не перезванивают вовсе</b> — будьте исключением, это дешевле любой скидки.</div></div>
-      <div class="rule"><div class="t"><span>5</span>фиксируйте возражения в CRM</div><div class="d">частотная карта возражений вашего проекта = готовая программа обучения ОП и агентов на следующий квартал.</div></div>
-    </div>
-  </div>
 
   <div class="section">
     <div class="sec-h"><span class="num">01</span><h2>деньги и ставка</h2></div>
     <div class="objs">
 
       <div class="obj">
-        <div class="oh"><div class="n">1</div><div class="q">«подожду, пока ставка упадёт — тогда и куплю»</div><div class="aud">ОП + агент</div></div>
+        <div class="oh"><div class="n">1 / 10</div><div class="q">«подожду, пока ставка упадёт — тогда и куплю»</div></div>
         <div class="behind"><b>что за этим:</b> рациональный расчёт на дешёвую ипотеку. клиент прав, что ставка снижается, — и не видит второй половины картины: что произойдёт со спросом и предложением, когда она снизится.</div>
-        <div class="script"><div class="lb">ответ</div>«Ставка действительно идёт вниз. Но вместе с ней проснётся отложенный спрос — на депозитах у людей 5–13 трлн ₽, — а выбирать будет не из чего: застройщики отложили запуск почти 29 млн м². Давайте посчитаем наоборот: лот и цену фиксируем сейчас, а ипотеку сможете рефинансировать, когда ставка станет комфортной. Так вы забираете и сегодняшнюю цену, и завтрашнюю ставку. Сделать расчёт под ваш лот?»</div>
+        <div class="script"><div class="lb">ответ</div>
+          <p>«Ставка действительно идёт вниз, тут вы правы. Смотрите, что будет, когда она упадёт: по оценкам, минимум 5 триллионов с вкладов могут выйти в жильё — и ждёте не вы один.»</p>
+          <p>«А выбирать будет уже не из чего: застройщики отложили почти четверть того, что собирались начать строить. Меньше предложения, больше покупателей — что будет с ценой?»</p>
+          <p>«Поэтому предлагаю наоборот: квартиру и цену закрепляем сейчас, а ипотеку потом можно рефинансировать — ставка меняется, квартира остаётся ваша. Так вы забираете <b>и сегодняшнюю цену, и завтрашнюю ставку</b>. Посчитаю по конкретной квартире — покажу цифры?»</p>
+        </div>
         <div class="orow">
           <div class="proof"><div class="lb">опора</div>ставка ЦБ <b>14,25%</b>, тренд вниз (июнь 2026) · отложенный спрос на депозитах <b>5–13 трлн ₽</b> (Ostanin Group / ДОМ.РФ) · отложенные старты <b>28,7 млн м²</b> — 24% портфеля (ДОМ.РФ) · механика рефинансирования</div>
-          <div class="dont"><div class="lb">не делать</div><b>не обещать рост цен как гарантию</b> — это прогноз, а не факт. и не спорить с тем, что ставка высокая: клиент прав, соглашайтесь и переводите в расчёт.</div>
+          <div class="dont"><div class="lb">не делать</div><b>не обещать рост цен как гарантию</b> — это прогноз, а не факт. не спорить с тем, что ставка высокая: клиент прав, соглашайтесь и переводите в расчёт. не читать ответ одним куском — после каждого абзаца пауза, клиент должен успеть согласиться. и не обещать, что ипотеку точно переоформят дешевле: рефинансирование — это новая заявка и новое одобрение.</div>
         </div>
       </div>
+
+      <div class="teaser">ещё в разделе: №2 — «ипотеку мне всё равно не одобрят» · №3 — «рассрочка — это ловушка». ответы — <a href="#zayavka">в полной версии</a></div>
 
     </div>
   </div>
@@ -196,14 +203,20 @@ footer a{color:var(--blue);text-decoration:none}
     <div class="objs">
 
       <div class="obj">
-        <div class="oh"><div class="n">4</div><div class="q">«вторичка дешевле»</div><div class="aud">ОП + агент · главное возражение года</div></div>
-        <div class="behind"><b>что за этим:</b> заголовки объявлений. 88% ваших покупателей параллельно смотрят вторичку — это норма, а не измена. разрыв «в лоб» действительно большой, но сравниваются несравнимые дома.</div>
-        <div class="script"><div class="lb">ответ</div>«Смотря что с чем сравнивать. Если взять дома одного класса и возраста — сопоставимое с сопоставимым, — разница не 19%, а 3,6–6,1%. За эти проценты вы получаете дом без чужой истории: новые коммуникации, планировку без перепланировок и согласований, паркинг, гарантию застройщика и управляющую компанию с первого дня. Возьмём конкретную квартиру со вторички, которую вы смотрите, — и посчитаем честно, включая ремонт и первый год эксплуатации.»</div>
+        <div class="oh"><div class="n">4 / 10</div><div class="q">«вторичка дешевле»</div><div class="aud">главное возражение года</div></div>
+        <div class="behind"><b>что за этим:</b> заголовки объявлений. 88% покупателей новостроек параллельно смотрят вторичку — это норма, а не измена. разрыв «в лоб» действительно большой, но сравниваются несравнимые дома.</div>
+        <div class="script"><div class="lb">ответ</div>
+          <p>«По объявлениям — да, дешевле, тут вы правы. Вопрос, что с чем сравниваем: если взять <b>дома одного класса и возраста</b>, разница уже не 19%, а единицы процентов.»</p>
+          <p>«За эти проценты вы получаете дом без чужой истории: новые коммуникации, никаких чужих перепланировок, которые потом узаконивать, паркинг, гарантия застройщика и управляющая компания с первого дня.»</p>
+          <p>«По нашему рынку цифра своя, угадывать не буду. Назовите адрес квартиры, которую смотрите, — сведу обе в один расчёт, вместе с ремонтом и первым годом жизни. Сегодня вечером или завтра утром?»</p>
+        </div>
         <div class="orow">
           <div class="proof"><div class="lb">опора</div>разрыв «в лоб» <b>19,3%</b>, но like-for-like (дома 2000+, 15,5 тыс домов, Москва): <b>3,6%</b> комфорт / <b>5,1%</b> бизнес / <b>6,1%</b> премиум (Циан) · <b>88%</b> смотрят вторичку параллельно · «вы конкурируете не с соседним ЖК, а со вторичкой района» · выборка московская — для своего города пересчитайте по той же логике</div>
-          <div class="dont"><div class="lb">не делать</div><b>не ругать вторичку</b> — клиент, возможно, в ней живёт. и не игнорировать её: молчание продавца про вторичку читается как «ему есть что скрывать».</div>
+          <div class="dont"><div class="lb">не делать</div><b>не ругать вторичку</b> — клиент, возможно, в ней живёт. не игнорировать её: молчание продавца про вторичку читается как «ему есть что скрывать». и не выдавать московские 3,6–6,1% за цифру своего города — методика повторяемая (дома одного класса и года постройки), а разрыв в каждом городе свой.</div>
         </div>
       </div>
+
+      <div class="teaser">ещё в разделе: №5 — «в соседнем ЖК дешевле» · №6 — «пока поснимаю — аренда выгоднее». ответы — <a href="#zayavka">в полной версии</a></div>
 
     </div>
   </div>
@@ -213,14 +226,21 @@ footer a{color:var(--blue);text-decoration:none}
     <div class="objs">
 
       <div class="obj">
-        <div class="oh"><div class="n">7</div><div class="q">«боюсь, что не достроите / обманете»</div><div class="aud">ОП + агент · страх №1</div></div>
-        <div class="behind"><b>что за этим:</b> главный страх рынка — и самый разумный вопрос покупателя. страх уходит, когда клиент понимает механику защиты своих денег — голые уверения его только усиливают.</div>
-        <div class="script"><div class="lb">ответ</div>«Это самый правильный вопрос — отвечу процедурой, а не обещаниями. Ваши деньги идут не застройщику, а на эскроу-счёт в банке: мы не можем их тронуть, пока дом не введён. Не достроим — банк возвращает вам всю сумму. Стройку финансирует банк по проектному финансированию — он проверил проект до нас с вами. Вот ход стройки по камерам и ежемесячные отчёты, вот наши сданные очереди. И покажу, как проверить любого застройщика в ЕИСЖС за пять минут — включая нас.»</div>
+        <div class="oh"><div class="n">7 / 10</div><div class="q">«боюсь, что не достроите / обманете»</div><div class="aud">страх №1</div></div>
+        <div class="behind"><b>что за этим:</b> главный страх рынка — и самый разумный вопрос покупателя. страх уходит, когда клиент понимает, как именно защищены его деньги. обещания без механики страх только усиливают.</div>
+        <div class="script"><div class="lb">ответ</div>
+          <p>«Это самый правильный вопрос — отвечу процедурой, а не обещаниями. Ваши деньги идут не нам, а <b>на отдельный счёт в банке, эскроу</b>: тронуть их мы не можем, пока дом не введён.»</p>
+          <p>«Порядок такой: деньги → в банк, дом сдан → вам ключи, и только потом расчёт с нами. Не достроим — эти деньги не уйдут на долги застройщика: по закону дом либо достраивают, либо договор расторгается и банк возвращает деньги вам.»</p>
+          <p>«Вот дома, которые мы уже сдали. А это государственный сайт наш.дом.рф — там по любому застройщику видны все дома и сроки. Пройдём по шагам сейчас или скинуть инструкцию, чтобы проверили нас без меня?»</p>
+          <p class="more">· если дожимает: «Стройку кредитует банк по проектному финансированию — он проверил проект до нас с вами. Вот камеры на площадке и отчёты каждый месяц.»</p>
+        </div>
         <div class="orow">
-          <div class="proof"><div class="lb">опора</div><b>90%</b> покупателей сталкиваются со страхами, <b>62%</b> боятся обмана, <b>50%</b> — задержки сроков (исследование покупателей, форум) · механика эскроу по 214-ФЗ · открытые данные ЕИСЖС</div>
-          <div class="dont"><div class="lb">не делать</div><b>не отмахиваться «да всё будет хорошо»</b> — это усиливает страх. и не перегружать юридическими терминами: одна схема «деньги → банк → ключи → застройщик» работает лучше лекции.</div>
+          <div class="proof"><div class="lb">опора</div><b>90%</b> покупателей сталкиваются со страхами, <b>62%</b> боятся обмана, <b>50%</b> — задержки сроков (исследование покупателей, форум) · механика эскроу и проектного финансирования по 214-ФЗ · открытые данные ЕИСЖС (наш.дом.рф)</div>
+          <div class="dont"><div class="lb">не делать</div><b>не отмахиваться «да всё будет хорошо»</b> — это усиливает страх. не обещать «банк вернёт всю сумму»: возврат идёт через расторжение договора, у страхования эскроу есть предельная сумма — по дорогим лотам сверьте с юристом. не перегружать терминами: схема «ваши деньги в банке → дом сдан → у вас ключи → и только теперь застройщик получает деньги» работает лучше лекции. и не открывать ЕИСЖС вслепую — сначала посмотрите карточку своего объекта: если были переносы сроков, объяснение готовьте заранее, а не при клиенте.</div>
         </div>
       </div>
+
+      <div class="teaser">ещё в разделе: №8 — «а вдруг неликвид» · №9 — «мне не к спеху» · №10 — «куплю напрямую у застройщика». ответы — ниже на этой странице</div>
 
     </div>
   </div>
@@ -228,31 +248,44 @@ footer a{color:var(--blue);text-decoration:none}
   <div class="offer" id="zayavka">
     <div class="of-copy">
       <div class="l">остальные 7 ответов</div>
-      <div class="t">уже написаны — пришлём лично, сразу после заявки</div>
+      <div class="t">уже написаны — откроются сразу после заявки</div>
       <ul class="lk">
-        <li><span>02</span><i>«ипотеку мне всё равно не одобрят»</i></li>
-        <li><span>03</span><i>«рассрочка — это ловушка»</i></li>
-        <li><span>05</span><i>«в соседнем ЖК дешевле»</i></li>
-        <li><span>06</span><i>«пока поснимаю — аренда выгоднее»</i></li>
-        <li><span>08</span><i>«а вдруг это неликвид — потом не продам»</i></li>
-        <li><span>09</span><i>«мне не к спеху, ещё посмотрю»</i></li>
-        <li><span>10</span><i>«куплю напрямую у застройщика — выйдет дешевле»</i></li>
+        <li class="lk-h">деньги и ставка</li>
+        <li><span>№2</span><div class="lk-b"><i>«ипотеку мне всё равно не одобрят»</i><em>что чинится в заявке до подачи в банк</em></div></li>
+        <li><span>№3</span><div class="lk-b"><i>«рассрочка — это ловушка»</i><em>где ловушка на самом деле</em></div></li>
+        <li class="lk-h">альтернативы</li>
+        <li><span>№5</span><div class="lk-b"><i>«в соседнем ЖК дешевле»</i><em>на чём сравнивать вместо цены за метр</em></div></li>
+        <li><span>№6</span><div class="lk-b"><i>«пока поснимаю — аренда выгоднее»</i><em>что положить в расчёт кроме платежа</em></div></li>
+        <li class="lk-h">доверие и риск</li>
+        <li><span>№8</span><div class="lk-b"><i>«а вдруг это неликвид — потом не продам»</i><em>на какие признаки лота смотреть</em></div></li>
+        <li><span>№9</span><div class="lk-b"><i>«мне не к спеху, ещё посмотрю»</i><em>чем закрыть разговор вместо «ждём вас»</em></div></li>
+        <li><span>№10</span><div class="lk-b"><i>«куплю напрямую у застройщика»</i><em>что отвечает агент, когда идут мимо него</em></div></li>
       </ul>
-      <div class="s">каждый — в том же формате: что за возражением → скрипт ответа → цифры-опоры → чего не делать. пришлём в Telegram или туда, куда удобнее. и вторым шагом — <b>бесплатная экспресс-диагностика вашего отдела продаж:</b> где воронка теряет сделки и что поменять в первую очередь.</div>
-      <div class="of-case">эти скрипты мы тренируем с ОП и агентами застройщиков · кейс: конверсия лид→сделка <b>6,9% → 15,2%</b></div>
+      <div class="s">каждый — в том же формате: возражение → что за этим → ответ → опора → чего не делать. откроются на следующем экране, ссылку продублируем в Telegram — чтобы плейбук был под рукой в разговоре, а не в закладках. если попросите, пришлём и <b>экспресс-диагностику воронки</b>: где она теряет сделки и что поменять в первую очередь.</div>
+      <div class="of-case">эти скрипты мы отрабатываем с отделами продаж и агентами застройщиков · ориентир рынка, не наш кейс: конверсия лид→сделка <b>6,9% → 15,2%</b></div>
       <div class="printc">полная версия и диагностика — по заявке: aleksandr@bureausuchkov.com · Бюро Сучкова</div>
     </div>
     <form class="of-form" action="mailto:aleksandr@bureausuchkov.com" method="post" enctype="text/plain">
-      <div class="fh">куда прислать остальные 7 ответов?</div>
+      <div class="fh">открываем остальные 7 — куда продублировать ссылку?</div>
       <input type="text" name="Имя" placeholder="как вас зовут" required autocomplete="name" aria-label="имя">
-      <input type="text" name="Компания" placeholder="компания / проект, город" required autocomplete="organization" aria-label="компания, проект, город">
+      <input type="text" name="Компания" placeholder="компания и город — пересчитаем цифры под ваш рынок" required autocomplete="organization" aria-label="компания, проект, город">
       <input type="text" name="Телефон или Telegram" placeholder="телефон или @telegram" required autocomplete="tel" aria-label="телефон или telegram">
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <input type="hidden" name="_subject" value="Плейбук: прислать полную версию (7 ответов) + диагностика">
       <label class="consent"><input type="checkbox" name="consent" required><span>соглашаюсь на обработку персональных данных в соответствии с <a href="https://bureausuchkov.com/documents/policy" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
-      <button type="submit">получить остальные 7 ответов →</button>
-      <div class="fn" role="status" aria-live="polite">одно сообщение с ответами и предложение диагностики — никаких рассылок. отправляет Анастасия из Бюро — <a href="https://t.me/naxtena" target="_blank" rel="noopener">t.me/naxtena</a>.</div>
+      <button type="submit">открыть остальные 7 ответов →</button>
+      <div class="fn" role="status" aria-live="polite">плейбук откроется сразу, ссылку продублируем в Telegram — чтобы не потерялась. одно сообщение, никаких рассылок. пишет Анастасия из Бюро — t.me/naxtena</div>
     </form>
+  </div>
+
+  <div class="section">
+    <div class="sec-h"><span class="num">★</span><h2>четыре правила, чтобы скрипты сработали</h2></div>
+    <div class="rules">
+      <div class="rule"><div class="t"><span>1</span>опора вместо спора</div><div class="d">«вы не правы» не работает. работает опора: процедура, цифра, документ — и пересчёт на ситуацию клиента.</div></div>
+      <div class="rule"><div class="t"><span>2</span>закрывайте шагом, не точкой</div><div class="d">каждый ответ заканчивается маленьким шагом, на который легко согласиться: расчёт, подбор трёх квартир, бронь. из состоявшихся записей <b>96%</b> — после такого закрытия.</div></div>
+      <div class="rule"><div class="t"><span>3</span>скорость — тоже аргумент</div><div class="d">перезванивайте за 10 минут. <b>89% застройщиков не перезванивают вообще</b> — быть исключением дешевле любой скидки.</div></div>
+      <div class="rule"><div class="t"><span>4</span>фиксируйте возражения в CRM</div><div class="d">отмечайте, какое возражение сколько раз прозвучало за неделю. топ-3 за месяц — готовая программа обучения на следующий квартал.</div></div>
+    </div>
   </div>
 
   <div class="disc"><b>как пользоваться и что учесть:</b> скрипты — заготовки, а не дословные тексты: адаптируйте под ваш продукт, класс и город, прогоните через юриста формулировки о сроках, программах и платежах. ничего не гарантируйте клиенту — ни рост цен, ни доходность, ни дату снижения ставки. цифры в опорах — рынок Q2 2026, обновляйте вместе с рынком.</div>
@@ -290,13 +323,13 @@ document.addEventListener('DOMContentLoaded',function(){
       .then(function(r){if(t)clearTimeout(t);if(!r.ok)throw 0;return r.json();})
       .then(function(j){
         if(!(j&&j.success===true))throw 0;
-        f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">остальные 7 ответов пришлём в ближайшее время — и предложим время под диагностику вашего отдела продаж.<br>— Анастасия, Бюро Сучкова</div>';
+        f.innerHTML='<div class="fh" role="status" aria-live="polite">заявка получена ✓</div><div class="fs" style="margin:6px 0 0">открываем полную версию — 10 возражений целиком. ссылку продублируем в Telegram.<br>— Анастасия, Бюро Сучкова</div>';
         location.href=fullUrl;
       })
       .catch(function(){
         if(t)clearTimeout(t);
         var body=encodeURIComponent('Здравствуйте! Пришлите, пожалуйста, остальные 7 ответов плейбука «возражения-2026».\n\nИмя: '+(data.get('Имя')||'')+'\nКомпания: '+(data.get('Компания')||'')+'\nТелефон/Telegram: '+(data.get('Телефон или Telegram')||''));
-        btn.disabled=false;btn.textContent='получить остальные 7 ответов →';
+        btn.disabled=false;btn.textContent='открыть остальные 7 ответов →';
         var n=f.querySelector('.fn');
         if(n)n.innerHTML='<b style="color:#FC5741">сервис форм сейчас недоступен</b> — открываю письмо в вашей почте с уже заполненной заявкой. если не открылось: <a href="mailto:aleksandr@bureausuchkov.com">aleksandr@bureausuchkov.com</a>';
         location.href='mailto:aleksandr@bureausuchkov.com?subject='+encodeURIComponent('Плейбук: пришлите остальные 7 ответов')+'&body='+body;
