@@ -320,16 +320,17 @@ summary{transition:color .15s}
     <div class="t">сколько из этих потерь можно вернуть — покажет экспресс-диагностика Бюро</div>
     <div class="s">за две недели разложим вашу цену простоя на две части: рыночную, которую не изменить, и управляемые утечки — воронку, каналы, ценообразование, агентские продажи. на выходе — карта потерь с цифрами и точный расчёт по вашему графику эскроу и траншам. <span id="vDiagWrap">стоимость — <span id="vDiag">меньше двух дней</span> вашего простоя.</span></div>
     <form id="leadForm">
-      <input type="text" name="name" placeholder="имя" autocomplete="name" required aria-label="имя">
-      <input type="tel" name="phone" placeholder="телефон" autocomplete="tel" required aria-label="телефон">
-      <input type="text" name="company" placeholder="компания" autocomplete="organization" required aria-label="компания">
+      <input type="text" name="name" placeholder="имя" autocomplete="name" required maxlength="60" aria-label="имя">
+      <input type="text" name="phone" placeholder="+7 (900) 000-00-00 или @ник" autocomplete="tel" inputmode="text" required maxlength="33" aria-label="телефон или telegram">
+      <input type="text" name="company" placeholder="компания / ЖК" autocomplete="organization" required maxlength="80" aria-label="компания">
       <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent"><input type="checkbox" name="consent" required><span>соглашаюсь на обработку персональных данных в соответствии с <a href="https://bureausuchkov.com/documents/policy" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
       <button type="submit">обсудить диагностику →</button>
     </form>
-    <div class="fine" id="leadFine">к заявке автоматически приложится ваш расчёт из калькулятора</div>
+    <div class="fine" id="leadFine">к заявке автоматически приложится ваш расчёт из калькулятора · рассылок не будет — данные нужны только для разбора заявки</div>
+    <div class="ok" id="leadBad" role="status" hidden></div>
     <div class="ok" id="leadOk" role="status" hidden>заявка ушла. вернёмся в течение рабочего дня — с первичным разбором по вашим цифрам.</div>
-    <div class="ok" id="leadErr" role="status" hidden>не удалось отправить автоматически — открываем почту. или напишите на <b>aleksandr@bureausuchkov.com</b></div>
+    <div class="ok" id="leadErr" role="status" hidden>не удалось отправить — напишите напрямую: <a id="mgrBtn" href="https://t.me/" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline"></a> или на <b>aleksandr@bureausuchkov.com</b></div>
   </div>
 
   <div class="section">
@@ -511,19 +512,81 @@ document.querySelectorAll('.presets button').forEach(b => b.addEventListener('cl
 }));
 el('btnPdf').addEventListener('click', () => window.print());
 const LEAD_ENDPOINT = 'https://bureau-leads.useapps.ru/lead'; // приём заявок → Telegram Бюро (bureau-leads-bot)
+// второй канал: Google Таблица (общий Apps Script лид-магнитов; лист — по полю _sheet)
+const LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzw7Q31nA13OzM7udISFxPq6fGA4Vb4dTHL4deKTDcnCfbINfkNOv8VCw6s5TZxgclxZA/exec';
+const safe = x => { x = (x == null ? '' : String(x)); return /^[=+\-@]/.test(x) ? ("'" + x) : x; }; // защита от formula injection в Sheets
+
+// ротация менеджеров: закрепляется за посетителем при первом входе, ключ общий с остальными лид-магнитами
+const MANAGERS = [
+  {name:'Настя', dat:'Насте', user:'naxtena'},
+  {name:'Вика',  dat:'Вике',  user:'viktoria_kiselyova'},
+  {name:'Даша',  dat:'Даше',  user:'dar_kalaeva'}
+];
+const MGR = (() => {
+  const rnd = () => MANAGERS[Math.floor(Math.random() * MANAGERS.length)];
+  try {
+    const m = MANAGERS.filter(x => x.user === localStorage.getItem('bs_mgr'))[0];
+    if (m) return m;
+    const p = rnd(); localStorage.setItem('bs_mgr', p.user); return p;
+  } catch(e){ return rnd(); }
+})();
+const mgrLink = msg => 'https://t.me/' + MGR.user + '?text=' + encodeURIComponent(msg);
+el('mgrBtn').href = mgrLink('Привет! Считал(а) цену простоя в калькуляторе, хочу разбор по своим цифрам.');
+el('mgrBtn').textContent = 'написать ' + MGR.dat + ' в телеграм →';
+
+// маска телефона: цифры → +7 (900) 000-00-00, @ник оставляем как есть
+const phoneInp = el('leadForm').elements.phone;
+phoneInp.addEventListener('input', function(){
+  const v = this.value;
+  if (/^[@a-zA-Z]/.test(v.trim())) return; // telegram-ник — не маскируем
+  let d = v.replace(/\D/g, '');
+  if (!d){ this.value = ''; return; }
+  if (d[0] === '8') d = '7' + d.slice(1);
+  if (d[0] !== '7') d = '7' + d;
+  d = d.slice(0, 11);
+  let out = '+7';
+  if (d.length > 1) out += ' (' + d.slice(1,4);
+  if (d.length >= 4) out += ')';
+  if (d.length > 4) out += ' ' + d.slice(4,7);
+  if (d.length > 7) out += '-' + d.slice(7,9);
+  if (d.length > 9) out += '-' + d.slice(9,11);
+  this.value = out;
+});
+function validContact(v){
+  v = (v || '').trim();
+  if (/^@?[a-zA-Z][a-zA-Z0-9_]{4,31}$/.test(v)) return true;   // telegram
+  const d = v.replace(/\D/g, '');
+  return d.length === 11 && (d[0] === '7' || d[0] === '8');    // телефон РФ
+}
+const validName = v => (v || '').trim().length >= 2 && /[а-яА-ЯёЁa-zA-Z]/.test(v || '');
+const openedAt = Date.now();
 el('leadForm').addEventListener('submit', ev => {
   ev.preventDefault();
   const form = el('leadForm');
   const fd = new FormData(form);
   const done = () => { form.hidden = true; el('leadFine').hidden = true; el('leadOk').hidden = false; };
-  if (fd.get('website')){ done(); return; } /* honeypot: поле видят только боты */
+  if (fd.get('website')) { done(); return; }            /* honeypot: поле видят только боты */
+  if (Date.now() - openedAt < 3000) { done(); return; } /* автосабмит быстрее человека — тихо глотаем */
+  const bad = !validName(fd.get('name')) ? 'проверьте имя — минимум две буквы'
+    : !validContact(fd.get('phone')) ? 'проверьте контакт: телефон +7 (900) 000-00-00 или @ник в телеграм'
+    : !validName(fd.get('company')) ? 'укажите компанию или название ЖК'
+    : '';
+  const warn = el('leadBad');
+  warn.hidden = !bad; warn.textContent = bad;
+  if (bad) return;
   const btn = form.querySelector('button');
   btn.disabled = true; btn.textContent = 'отправляем…';
+  // Таблица: ответ не читаем (no-cors), заявку не блокирует
+  try{ fetch(LOG_ENDPOINT, {method:'POST', mode:'no-cors', keepalive:true, body: JSON.stringify({
+    _sheet:'калькулятор простоя', page: safe(pageURL()),
+    name: safe(fd.get('name')), phone: safe(fd.get('phone')), company: safe(fd.get('company')),
+    manager: safe(MGR.name), calc: safe(leadCalc)
+  })}); }catch(e){}
   const ctrl = new AbortController();
   const to = setTimeout(() => ctrl.abort(), 8000);
   fetch(LEAD_ENDPOINT, {method:'POST', signal: ctrl.signal, headers:{'Content-Type':'application/json'}, body: JSON.stringify({
-    '_source': 'калькулятор простоя продаж', '_page': pageURL(),
-    'Имя': fd.get('name'), 'Телефон': fd.get('phone'), 'Компания': fd.get('company'),
+    '_source': 'калькулятор простоя продаж', '_page': pageURL(), 'Менеджер на кнопке': MGR.name,
+    'Имя': fd.get('name'), 'Контакт': fd.get('phone'), 'Компания': fd.get('company'),
     'Расчёт': leadCalc
   })})
     .then(r => r.json()).then(j => { clearTimeout(to); if (!(j && j.success === true)) throw 0; done(); })
@@ -531,8 +594,6 @@ el('leadForm').addEventListener('submit', ev => {
       clearTimeout(to);
       btn.disabled = false; btn.textContent = 'обсудить диагностику →';
       el('leadErr').hidden = false;
-      location.href = 'mailto:aleksandr@bureausuchkov.com?subject=' + encodeURIComponent('Экспресс-диагностика: заявка с калькулятора') + '&body=' + encodeURIComponent(
-        'Имя: ' + fd.get('name') + '\nТелефон: ' + fd.get('phone') + '\nКомпания: ' + fd.get('company') + '\n\n' + leadCalc + '\n' + pageURL());
     });
 });
 applyQuery();
