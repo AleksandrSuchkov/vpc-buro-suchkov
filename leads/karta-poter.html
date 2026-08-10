@@ -220,6 +220,17 @@ h1{font-size:clamp(27px,4.3vw,42px);line-height:1.08;font-weight:600;letter-spac
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"карта потерь девелопера · пять разрывов · Бюро Сучкова","author":{"@type":"Person","@id":"https://suchkov.blog/#person","name":"Александр Сучков","alternateName":"Саша Сучков","url":"https://suchkov.blog"},"publisher":{"@type":"Organization","name":"Бюро Сучкова","url":"https://bureausuchkov.com"}}</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111454361', 'ym');
+   ym(111454361, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111454361" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
 <div class="wrap">
@@ -637,7 +648,9 @@ if(typeof module!=='undefined')module.exports=KARTA;
   var S={price:null,leads:null,deals:null,a2:null,a3:null,a5:null,a6:null,a7:null,agents:null,a9:null};
   var last=null;
   var STEP={price:1,leads:2,deals:3,a2:4,a3:5,a5:6,a6:7,a7:8,agents:9,a9:10}, tracked={};
-  function track(n){if(tracked[n])return;tracked[n]=1;try{(window.dataLayer=window.dataLayer||[]).push({event:n});}catch(e){}}
+  function track(n){if(tracked[n])return;tracked[n]=1;
+    try{(window.dataLayer=window.dataLayer||[]).push({event:n});}catch(e){}
+    try{if(window.ym)ym(111454361,'reachGoal',n);}catch(e){}}
 
   document.querySelectorAll('.qstep').forEach(function(st,i){
     var qt=st.querySelector('.qt'), g=st.querySelector('.qchips');
