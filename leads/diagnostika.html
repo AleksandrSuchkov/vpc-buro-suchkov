@@ -62,7 +62,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--blue);cursor:pointer;border:3px solid #fff}
 .hint{font-size:12px;color:var(--b40);margin-top:2px}
 select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;border-radius:var(--r-sm);border:none;box-shadow:var(--hair);background:var(--white);cursor:pointer}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-size:16px;font-weight:700;padding:14px 24px;border-radius:var(--pill);border:none;cursor:pointer;transition:background .15s,transform .15s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-size:16px;font-weight:700;padding:14px 24px;border-radius:var(--pill);border:none;cursor:pointer;transition:background 120ms var(--e-color)}
 .btn-primary{background:var(--coral);color:#fff}.btn-primary:hover{background:var(--coral-hover)}
 .btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-hover)}
 .btn-ghost{background:var(--white);color:var(--black);box-shadow:var(--hair)}.btn-ghost:hover{background:var(--gray)}
@@ -73,9 +73,9 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 @media(max-width:620px){.hero{grid-template-columns:1fr;text-align:center;justify-items:center}}
 .gauge{--p:0;width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--gc,var(--coral)) calc(var(--p)*1deg),var(--gray) 0);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .gauge .inner{width:114px;height:114px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.gauge .gv{font-size:34px;font-weight:800;line-height:1}
+.gauge .gv{font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
 .gauge .gl{font-size:11px;color:var(--b60);text-transform:lowercase;margin-top:3px}
-.hero .big{font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.hero .big{font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums}
 .hero .big .u{color:var(--coral)}
 .hero .sub{font-size:15px;color:var(--b60);margin-top:8px}
 .hero .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
@@ -130,8 +130,6 @@ select{width:100%;font-family:var(--font);font-size:14.5px;padding:9px 11px;bord
 .btn-ghost{background:none;border:none;font-family:var(--font);font-size:13.5px;font-weight:600;color:var(--blue);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;padding:4px 8px}
 .btn-ghost:hover{color:var(--blue-hover,#2F32F2);background:none}
 .veiled{display:none}
-.reveal{animation:vpcup .35s cubic-bezier(.4,0,.2,1)}
-@keyframes vpcup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .annot{margin-top:12px;font-size:14px;line-height:1.5;color:rgba(0,0,0,.72);background:var(--gray);border-radius:12px;padding:11px 14px}
 .gated{position:relative;margin-bottom:14px}
 .gated .gwrap{filter:blur(8px);pointer-events:none;user-select:none}
@@ -169,9 +167,20 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
   .form-card,.center,.capture,.eyebrow,.tag2min,#calcBtn,.no-print{display:none!important}
   .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
   .row{break-inside:avoid}
+  /* пустой PDF у сконвертившегося клиента = потерянная сделка. filter НЕ сбрасываем:
+     .glock помечен .no-print, и снятие блюра выдало бы платную часть тому, кто заявку не отправлял. */
+  html.js-anim [data-a],html.js-anim .an-pre,html.js-anim #fixes.pre>li{
+    opacity:1!important;transform:none!important;animation:none!important;transition:none!important;
+  }
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  /* существующее правило глушит duration, но НЕ delay — без этой строки пользователь
+     с reduced-motion досматривал бы секунды размытой платной таблицы */
+  *,*::before,*::after{animation-delay:0s!important;transition-delay:0s!important}
+  /* сознательно возвращённая длительность: полное отсутствие движения на смене
+     «я заплатил контактом — вот что получил» читается как сбой, а не как уважение к настройке */
+  .gated .gwrap{transition-duration:200ms!important}
 }
 .brandrow{display:flex;align-items:center;gap:11px;margin-bottom:20px}
 .brandrow .mk{width:30px;height:30px}.brandrow .wm{font-size:18px;font-weight:600;letter-spacing:-.6px}
@@ -187,8 +196,46 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
 @media(max-width:680px){.tgme-txt span,.tgme-sub{display:none}}
 @media print{.tgrow{display:none}}
 .brandlink{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit}
-.btn:active{transform:scale(.97)}
+.btn:active{filter:brightness(.94)}
+/* ——— хореография: токены движения ——— */
+:root{
+  --e-enter:cubic-bezier(.455,.03,.515,.955);
+  --e-panel:cubic-bezier(.66,0,.1,1);
+  --e-exit:cubic-bezier(.55,.085,.68,.53);
+  --e-color:cubic-bezier(.28,.11,.32,1);
+}
+/* акт I — оседание заголовка. Только transform: LCP не засчитывает отрисованное
+   с opacity:0, а h1 здесь почти наверняка LCP-элемент. */
+@keyframes vpcsettle{from{transform:translateY(14px)}to{transform:none}}
+html.js-anim [data-a="up"]{animation:vpcsettle 560ms var(--e-enter) both}
+html.js-anim .dek[data-a="up"]{animation-delay:80ms}
+/* пре-состояние узлов, которые дальше ведёт Motion. Живёт только под .js-anim:
+   нет JS — нет класса — нет ни одного opacity:0 на странице. */
+html.js-anim .an-pre{opacity:0}
+html.js-anim #fixes.pre>li{opacity:0}
+/* акт IV — снятие блюра. Владеет каскад, а не WAAPI: анимация с fill перебила бы
+   .gated.open .gwrap{filter:none} и оставила бы оплаченную таблицу размытой. */
+.gated .gwrap{transition:filter 520ms var(--e-panel)}
+.gated.open .glock{pointer-events:none}
+@supports (transition-behavior:allow-discrete){
+  .glock{transition:opacity 240ms var(--e-exit),display 240ms allow-discrete}
+  .gated.open .glock{opacity:0}
+}
+/* акт V — индикатор отправки привязан к DOM-свойству: забыть отмену нельзя, отменять нечего */
+.btn:disabled{opacity:.72;animation:vpcpulse 1200ms linear infinite}
+@keyframes vpcpulse{0%,100%{opacity:.72}50%{opacity:.95}}
 </style>
+<script>/* бутстрап анимации: класс ставит только JS и только под feature-detect.
+   Нет JS, старый браузер или «уменьшить движение» — класса нет, на странице
+   не остаётся ни одного opacity:0, страница выглядит ровно как раньше. */
+try{
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+    var d=document.documentElement; d.className+=' js-anim';
+    var t=setTimeout(function(){d.classList.remove('js-anim');},2500); /* сторож: главный скрипт не дошёл */
+    window.__animOk=function(){clearTimeout(t);};
+    addEventListener('error',function(){clearTimeout(t);d.classList.remove('js-anim');});
+  }
+}catch(e){}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"экспресс-диагностика воронки продаж девелопера · 2026 · Бюро Сучкова","author":{"@type":"Person","@id":"https://suchkov.blog/#person","name":"Александр Сучков","alternateName":"Саша Сучков","url":"https://suchkov.blog"},"publisher":{"@type":"Organization","name":"Бюро Сучкова","url":"https://bureausuchkov.com"}}</script>
 </head>
 <body>
@@ -201,8 +248,8 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
 
   <header>
     <span class="eyebrow">● экспресс-диагностика воронки · 2026</span>
-    <h1>где ваша воронка продаж теряет деньги</h1>
-    <p class="dek">2 минуты по вашим цифрам — и вы видите, сколько воронка недобирает в год. внесите данные проекта — все поля обязательны (не знаете точную цифру — нажмите «заполнить рыночными средними» и поправьте под себя).</p>
+    <h1 data-a="up">где ваша воронка продаж теряет деньги</h1>
+    <p class="dek" data-a="up">2 минуты по вашим цифрам — и вы видите, сколько воронка недобирает в год. внесите данные проекта — все поля обязательны (не знаете точную цифру — нажмите «заполнить рыночными средними» и поправьте под себя).</p>
     <span class="tag2min">⚡ 2 минуты · ваши цифры против бенчмарков 2026 · первые 3 рекомендации — сразу</span>
   </header>
 
@@ -349,11 +396,86 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
 
 </div>
 
+<script>/* Motion 13.0.0 — animate (сборка mini, на WAAPI) + inView + stagger.
+   Собрано esbuild с tree-shaking: 10 КБ против 139 КБ у готового UMD-билда.
+   Инлайн, как и шрифты — страница остаётся самодостаточной, без CDN. */
+var Motion=(()=>{var F=Object.defineProperty;var be=Object.getOwnPropertyDescriptor;var Ee=Object.getOwnPropertyNames;var Se=Object.prototype.hasOwnProperty;var Ae=(t,e)=>{for(var r in e)F(t,r,{get:e[r],enumerable:!0})},ve=(t,e,r,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let i of Ee(e))!Se.call(t,i)&&i!==r&&F(t,i,{get:()=>e[i],enumerable:!(o=be(e,i))||o.enumerable});return t};var Me=t=>ve(F({},"__esModule",{value:!0}),t);var Fe={};Ae(Fe,{animate:()=>H,inView:()=>_,stagger:()=>$});var x=()=>{};function C(t){let e;return()=>(e===void 0&&(e=t()),e)}var g=t=>t;var y=t=>t*1e3,T=t=>t/1e3;var X=(t,e,r)=>(((1-3*r+3*e)*t+(3*r-6*e))*t+3*e)*t,Ie=1e-7,De=12;function Be(t,e,r,o,i){let n,p,c=0;do p=e+(r-e)/2,n=X(p,o,i)-t,n>0?r=p:e=p;while(Math.abs(n)>Ie&&++c<De);return p}function d(t,e,r,o){if(t===e&&r===o)return g;let i=n=>Be(n,0,1,t,r);return n=>n===0||n===1?n:X(i(n),e,o)}var v=t=>e=>e<=.5?t(2*e)/2:(2-t(2*(1-e)))/2;var M=t=>e=>1-t(1-e);var R=d(.33,1.53,.69,.99),V=M(R),Q=v(V);var Y=t=>t>=1?1:(t*=2)<1?.5*V(t):.5*(2-Math.pow(2,-10*(t-1)));var I=t=>1-Math.sin(Math.acos(t)),ee=M(I),te=v(I);var re=d(.42,0,1,1),oe=d(0,0,.58,1),ie=d(.42,0,.58,1);var b=t=>Array.isArray(t)&&typeof t[0]=="number";var ne={linear:g,easeIn:re,easeInOut:ie,easeOut:oe,circIn:I,circInOut:te,circOut:ee,backIn:V,backInOut:Q,backOut:R,anticipate:Y},Pe=t=>typeof t=="string",N=t=>{if(b(t)){x(t.length===4,"Cubic bezier arrays must contain four numerical values.","cubic-bezier-length");let[e,r,o,i]=t;return d(e,r,o,i)}else if(Pe(t))return x(ne[t]!==void 0,`Invalid easing type '${t}'`,"invalid-easing-type"),ne[t];return t};var ae=(t,e,r=10)=>{let o="",i=Math.max(Math.round(e/r),2);for(let n=0;n<i;n++)o+=Math.round(t(n/(i-1))*1e4)/1e4+", ";return`linear(${o.substring(0,o.length-2)})`};var we=t=>t!==null;function se(t,{repeat:e,repeatType:r="loop"},o,i=1){let n=t.filter(we),c=i<0||e&&r!=="loop"&&e%2===1?0:n.length-1;return!c||o===void 0?n[c]:o}var D=class{constructor(){this.updateFinished()}get finished(){return this._finished}updateFinished(){this._finished=new Promise(e=>{this.resolve=e})}notifyFinished(){this.resolve()}then(e,r){return this.finished.then(e,r)}};function L(t){for(let e=1;e<t.length;e++)t[e]??(t[e]=t[e-1])}var B=t=>t.startsWith("--");function me(t,e,r){B(e)?t.style.setProperty(e,r):t.style[e]=r}var pe={};function P(t,e){let r=C(t);return()=>pe[e]??r()}var le=P(()=>window.ScrollTimeline!==void 0,"scrollTimeline");var w=P(()=>{try{document.createElement("div").animate({opacity:0},{easing:"linear(0, 1)"})}catch{return!1}return!0},"linearEasing");var h=([t,e,r,o])=>`cubic-bezier(${t}, ${e}, ${r}, ${o})`;var W={linear:"linear",ease:"ease",easeIn:"ease-in",easeOut:"ease-out",easeInOut:"ease-in-out",circIn:h([0,.65,.55,1]),circOut:h([.55,0,1,.45]),backIn:h([.31,.01,.66,-.59]),backOut:h([.33,1.53,.69,.99])};function z(t,e){if(t)return typeof t=="function"?w()?ae(t,e):"ease-out":b(t)?h(t):Array.isArray(t)?t.map(r=>z(r,e)||W.easeOut):W[t]}function fe(t,e,r,{delay:o=0,duration:i=300,repeat:n=0,repeatType:p="loop",ease:c="easeOut",times:m}={},s=void 0){let a={[e]:r};m&&(a.offset=m);let l=z(c,i);Array.isArray(l)&&(a.easing=l);let f={delay:o,duration:i,easing:Array.isArray(l)?"linear":l,fill:"both",iterations:n+1,direction:p==="reverse"?"alternate":"normal"};return s&&(f.pseudoElement=s),t.animate(a,f)}function ce(t){return typeof t=="function"&&"applyToOptions"in t}function ue({type:t,...e}){return ce(t)&&w()?t.applyToOptions(e):(e.duration??(e.duration=300),e.ease??(e.ease="easeOut"),e)}var E=class extends D{constructor(e){if(super(),this.finishedTime=null,this.isStopped=!1,this.manualStartTime=null,!e)return;let{element:r,name:o,keyframes:i,pseudoElement:n,allowFlatten:p=!1,finalKeyframe:c,onComplete:m}=e;this.isPseudoElement=!!n,this.allowFlatten=p,this.options=e,x(typeof e.type!="string",`Mini animate() doesn't support "type" as a string.`,"mini-spring");let s=ue(e);this.animation=fe(r,o,i,s,n),s.autoplay===!1&&this.animation.pause(),this.animation.onfinish=()=>{if(this.finishedTime=this.time,!n){let a=se(i,this.options,c,this.speed);this.updateMotionValue&&this.updateMotionValue(a),me(r,o,a),this.animation.cancel()}m?.(),this.notifyFinished()}}play(){this.isStopped||(this.manualStartTime=null,this.animation.play(),this.state==="finished"&&this.updateFinished())}pause(){this.animation.pause()}complete(){this.animation.finish?.()}cancel(){try{this.animation.cancel()}catch{}}stop(){if(this.isStopped)return;this.isStopped=!0;let{state:e}=this;e==="idle"||e==="finished"||(this.updateMotionValue?this.updateMotionValue():this.commitStyles(),this.isPseudoElement||this.cancel())}commitStyles(){let e=this.options?.element;!this.isPseudoElement&&e?.isConnected&&this.animation.commitStyles?.()}get duration(){let e=this.animation.effect?.getComputedTiming?.().duration||0;return T(Number(e))}get iterationDuration(){let{delay:e=0}=this.options||{};return this.duration+T(e)}get time(){return T(Number(this.animation.currentTime)||0)}set time(e){let r=this.finishedTime!==null;this.manualStartTime=null,this.finishedTime=null,this.animation.currentTime=y(e),r&&this.animation.pause()}get speed(){return this.animation.playbackRate}set speed(e){e<0&&(this.finishedTime=null),this.animation.playbackRate=e}get state(){return this.finishedTime!==null?"finished":this.animation.playState}get startTime(){return this.manualStartTime??Number(this.animation.startTime)}set startTime(e){this.manualStartTime=this.animation.startTime=e}attachTimeline({timeline:e,rangeStart:r,rangeEnd:o,observe:i}){return this.allowFlatten&&this.animation.effect?.updateTiming({easing:"linear"}),this.animation.onfinish=null,e&&le()?(this.animation.timeline=e,r&&(this.animation.rangeStart=r),o&&(this.animation.rangeEnd=o),g):i(this)}};var O=class{constructor(e){this.stop=()=>this.runAll("stop"),this.animations=e.filter(Boolean)}get finished(){return Promise.all(this.animations.map(e=>e.finished))}getAll(e){return this.animations[0][e]}setAll(e,r){for(let o=0;o<this.animations.length;o++)this.animations[o][e]=r}attachTimeline(e){let r=this.animations.map(o=>o.attachTimeline(e));return()=>{r.forEach((o,i)=>{o&&o(),this.animations[i].stop()})}}get time(){return this.getAll("time")}set time(e){this.setAll("time",e)}get speed(){return this.getAll("speed")}set speed(e){this.setAll("speed",e)}get state(){return this.getAll("state")}get startTime(){return this.getAll("startTime")}get duration(){return xe(this.animations,"duration")}get iterationDuration(){return xe(this.animations,"iterationDuration")}runAll(e){this.animations.forEach(r=>r[e]())}play(){this.runAll("play")}pause(){this.runAll("pause")}cancel(){this.runAll("cancel")}complete(){this.runAll("complete")}};function xe(t,e){let r=0;for(let o=0;o<t.length;o++){let i=t[o][e];i!==null&&i>r&&(r=i)}return r}var S=class extends O{then(e,r){return this.finished.finally(e).then(()=>{})}};var de=new WeakMap,G=(t,e="")=>`${t}:${e}`;function K(t){let e=de.get(t);return e||(e=new Map,de.set(t,e)),e}function ge(t,e){if(t?.inherit&&e){let{inherit:r,...o}=t;return{...e,...o}}return t}function j(t,e){let r=t?.[e]??t?.default??t;return r!==t?ge(r,t):r}var he=["borderTopLeftRadius","borderTopRightRadius","borderBottomRightRadius","borderBottomLeftRadius"];var ye=new Set(["borderWidth","borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth","borderRadius",...he,"width","maxWidth","height","maxHeight","top","right","bottom","left","inset","insetBlock","insetBlockStart","insetBlockEnd","insetInline","insetInlineStart","insetInlineEnd","padding","paddingTop","paddingRight","paddingBottom","paddingLeft","paddingBlock","paddingBlockStart","paddingBlockEnd","paddingInline","paddingInlineStart","paddingInlineEnd","margin","marginTop","marginRight","marginBottom","marginLeft","marginBlock","marginBlockStart","marginBlockEnd","marginInline","marginInlineStart","marginInlineEnd","fontSize","backgroundPositionX","backgroundPositionY"]);function q(t,e){for(let r=0;r<t.length;r++)typeof t[r]=="number"&&ye.has(e)&&(t[r]=t[r]+"px")}function A(t,e,r){if(t==null)return[];if(t instanceof EventTarget)return[t];if(typeof t=="string"){let o=document;e&&(o=e.current);let i=r?.[t]??o.querySelectorAll(t);return i?Array.from(i):[]}return Array.from(t).filter(o=>o!=null)}function k(t,e){let r=window.getComputedStyle(t);return B(e)?r.getPropertyValue(e):r[e]}function Te(t,e){if(t==="first")return 0;{let r=e-1;return t==="last"?r:r/2}}function $(t=.1,{startDelay:e=0,from:r=0,ease:o}={}){return(i,n)=>{let p=typeof r=="number"?r:Te(r,n),c=Math.abs(p-i),m=t*c;if(o){let s=n*t;m=N(o)(m/s)*s}return e+m}}function Ve(t,e,r,o){if(t==null)return[];let i=A(t,o),n=i.length;x(!!n,"No valid elements provided.","no-valid-elements");let p=[];for(let m=0;m<n;m++){let s=i[m],a={...r};typeof a.delay=="function"&&(a.delay=a.delay(m,n));for(let l in e){let f=e[l];Array.isArray(f)||(f=[f]);let u={...j(a,l)};u.duration&&(u.duration=y(u.duration)),u.delay&&(u.delay=y(u.delay));let U=K(s),Z=G(l,u.pseudoElement||""),J=U.get(Z);J&&J.stop(),p.push({map:U,key:Z,unresolvedKeyframes:f,options:{...u,element:s,name:l,allowFlatten:!a.type&&!a.ease}})}}for(let m=0;m<p.length;m++){let{unresolvedKeyframes:s,options:a}=p[m],{element:l,name:f,pseudoElement:u}=a;!u&&s[0]===null&&(s[0]=k(l,f)),L(s),q(s,f),!u&&s.length<2&&s.unshift(k(l,f)),a.keyframes=s}let c=[];for(let m=0;m<p.length;m++){let{map:s,key:a,options:l}=p[m],f=new E(l);s.set(a,f),f.finished.finally(()=>s.delete(a)),c.push(f)}return c}var Oe=t=>{function e(r,o,i){return new S(Ve(r,o,i,t))}return e},H=Oe();var ke={some:0,all:1};function _(t,e,{root:r,margin:o,amount:i="some"}={}){let n=A(t),p=new WeakMap,c=s=>{s.forEach(a=>{let l=p.get(a.target);if(a.isIntersecting!==!!l)if(a.isIntersecting){let f=e(a.target,a);typeof f=="function"?p.set(a.target,f):m.unobserve(a.target)}else typeof l=="function"&&(l(a),p.delete(a.target))})},m=new IntersectionObserver(c,{root:r,rootMargin:o,threshold:typeof i=="number"?i:ke[i]});return n.forEach(s=>m.observe(s)),()=>m.disconnect()}return Me(Fe);})();
+</script>
 <script>
 (function(){
   "use strict";
   var $=function(id){return document.getElementById(id);};
   function rm(){return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);}
+  // ——— хореография (Motion 13) ———
+  // Motion ведёт JS-часть: таймлайн раскрытия, лесенку починок, каскад благодарности.
+  // Снятие блюра, :active и пульс кнопки остаются на CSS: этими свойствами должен
+  // владеть каскад, иначе анимация с fill перебьёт .gated.open .gwrap{filter:none}
+  // и оплаченная таблица останется размытой навсегда.
+  if(window.__animOk)window.__animOk();            // сторож в <head> снят: скрипт дошёл
+  var MO=window.Motion||{};
+  var AN=document.documentElement.classList.contains('js-anim')&&!!MO.animate;
+  var M={
+    ease:{enter:[.455,.03,.515,.955],panel:[.66,0,.1,1]},
+    dur:{panel:414,text:400,sum:640,arc:700,arcRe:320,catchup:240,err:300},
+    y:{card:16,sum:20,text:12,item:14},
+    t:{secH:0,card:90,gauge:430,arc:620,sum:1320,sub:1860,chips:1940,annot:2020},
+    st:{fix:.09,nx:.08},
+    fallback:{scroll:620,blur:700}
+  };
+  var RES=['#results > .sec-h','#results .card','.hero .big','.hero .sub','.hero .chips'];
+  function armResults(){
+    if(!AN)return;
+    RES.forEach(function(s){var e=document.querySelector(s);if(e)e.classList.add('an-pre');});
+    [$('gauge'),$('annot')].forEach(function(e){if(e)e.classList.add('an-pre');});
+  }
+  // fill:'both' держит нулевой кадр с момента создания анимации, поэтому .an-pre
+  // снимается сразу следующей строкой — непокрытого зазора между ними нет
+  function play(el,y,dur,delay,ease){
+    if(!AN||!el)return null;
+    var kf=y?{opacity:[0,1],transform:['translateY('+y+'px)','none']}:{opacity:[0,1]};
+    var a=MO.animate(el,kf,{duration:dur/1000,delay:(delay||0)/1000,ease:ease||M.ease.enter,fill:'both'});
+    el.classList.remove('an-pre');
+    return a;
+  }
+  // таймлайн обязан стартовать после посадки скролла: иначе свип дуги и приезд
+  // суммы отыграют за нижней кромкой экрана — это не падает в консоль, просто теряется
+  function afterScroll(fn){
+    if(!AN){fn();return;}
+    var done=false,t=setTimeout(go,M.fallback.scroll);
+    function go(){if(done)return;done=true;clearTimeout(t);removeEventListener('scrollend',go);fn();}
+    addEventListener('scrollend',go,{once:true});
+  }
+  function startResults(){
+    setGauge(last.gp,last.gc,M.dur.arc,M.t.arc);   // ПЕРВАЯ строка: индекс не должен остаться на «—»
+    if(!AN)return;
+    var q=function(s){return document.querySelector(s);};
+    play(q('#results > .sec-h'),M.y.text,M.dur.text,M.t.secH,M.ease.panel);
+    play(q('#results .card'),M.y.card,M.dur.panel,M.t.card,M.ease.panel);
+    play($('gauge'),0,M.dur.text,M.t.gauge,M.ease.panel); // только opacity: кольцо появляется пустым…
+    play(q('.hero .big'),M.y.sum,M.dur.sum,M.t.sum);      // …держит паузу, снимает показание — и лишь потом сумма
+    play(q('.hero .sub'),M.y.text,M.dur.text,M.t.sub);
+    play(q('.hero .chips'),M.y.text,M.dur.text,M.t.chips); // целиком, не цепочкой: #heroWasteChip умеет прятаться
+    play($('annot'),M.y.text,M.dur.text,M.t.annot);
+    var card2=$('fixes').parentNode,fired=false,stop=null;
+    stop=MO.inView(card2,function(){
+      if(fired)return; fired=true;
+      setTimeout(function(){if(stop)stop();},0);     // однократно, без переигрывания при обратном скролле
+      // догоняющий режим: контент не должен доезжать под уже читающим взглядом
+      var fast=card2.getBoundingClientRect().top<innerHeight*0.35;
+      play(card2,fast?0:M.y.card,fast?M.dur.catchup:M.dur.panel,0,M.ease.panel);
+      var lis=$('fixes').children;
+      if(lis.length)MO.animate(lis,{opacity:[0,1],transform:['translateY('+M.y.item+'px)','none']},
+        {duration:M.dur.text/1000,delay:fast?0:MO.stagger(M.st.fix,{startDelay:.2}),
+         ease:M.ease.enter,fill:'both'});
+      $('fixes').classList.remove('pre');
+    },{margin:'0px 0px -8% 0px'});
+  }
+  // печать посреди таймлайна не должна попасть в PDF полупрозрачной
+  addEventListener('beforeprint',function(){
+    document.documentElement.classList.remove('js-anim');
+    var f=$('fixes'); if(f)f.classList.remove('pre');
+    try{document.getAnimations().forEach(function(a){try{a.finish();}catch(e){}});}catch(e){}
+  });
   // === логирование в Google Sheets (через Apps Script Web App) ===
   var LOG_ENDPOINT='https://script.google.com/macros/s/AKfycbzw7Q31nA13OzM7udISFxPq6fGA4Vb4dTHL4deKTDcnCfbINfkNOv8VCw6s5TZxgclxZA/exec';
   function safe(s){s=(s==null?'':String(s));return /^[=+\-@]/.test(s)?("'"+s):s;} // защита от formula injection в Sheets
@@ -528,22 +650,28 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
             waste:waste,overpay:overpay,botBurn:botBurn,doublePay:doublePay,
             lostReach:Math.max(0,(1-reach)*qLeads),lostQual:Math.max(0,(0.38-qual)*L)};
   }
-  var revealed=false, unlocked=false, gaugeRAF=null, lead=null;
-  var last={health:0,moneyStr:'—',wasteStr:'—'};
-  function setGauge(pDeg,gc){
-    var g=$('gauge');
-    g.style.setProperty('--gc',gc);
+  var revealed=false, unlocked=false, gaugeRAF=null, gaugeTimer=null, lead=null;
+  var last={health:0,moneyStr:'—',wasteStr:'—',gp:0,gc:'var(--coral)'};
+  // единственный владелец и дуги (--p), и её показания (#healthVal): раньше стрелка
+  // ехала 700 мс, а число ставилось мгновенно — прибор расходился с показанием.
+  // mini-animate работает только с элементами, «просто число» им не анимировать —
+  // поэтому здесь остаётся rAF, тот же паттерн, что был в файле изначально.
+  function setGauge(pDeg,gc,dur,delay){
+    var g=$('gauge'),hv=$('healthVal'),to=Math.round(pDeg/3.6);
+    g.style.setProperty('--gc',gc); hv.style.color=gc;
     if(gaugeRAF)cancelAnimationFrame(gaugeRAF);
-    if(rm()){g.style.setProperty('--p',pDeg);return;}
-    var from=parseFloat(g.style.getPropertyValue('--p'))||0, t0=null;
+    if(gaugeTimer)clearTimeout(gaugeTimer);
+    if(rm()||!AN){g.style.setProperty('--p',pDeg);hv.textContent=to;return;}
+    var from=parseFloat(g.style.getPropertyValue('--p'))||0, fromV=Math.round(from/3.6), t0=null;
     function step(ts){
       if(t0===null)t0=ts;
-      var k=Math.min(1,(ts-t0)/700);
+      var k=Math.min(1,(ts-t0)/(dur||M.dur.arc));
       k=1-Math.pow(1-k,3);
       g.style.setProperty('--p',from+(pDeg-from)*k);
-      if(k<1)gaugeRAF=requestAnimationFrame(step);
+      hv.textContent=Math.round(fromV+(to-fromV)*k);
+      if(k<1)gaugeRAF=requestAnimationFrame(step); else hv.textContent=to;
     }
-    gaugeRAF=requestAnimationFrame(step);
+    gaugeTimer=setTimeout(function(){gaugeRAF=requestAnimationFrame(step);},delay||0);
   }
   var order=['callback','reach','qual','through','bots','agent','cpl','mort'];
   function pstr(n){return String(n).replace('.',',');}
@@ -600,8 +728,11 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     r.rows.forEach(function(x){var ww=w[x.key]||1;tot+=sc[x.c]*ww;wsum+=ww;});
     var health=Math.round(tot/wsum);
     var gc = health>=70?'var(--green)':(health>=45?'var(--amber)':'var(--coral)');
-    setGauge(health*3.6,gc);
-    $('healthVal').textContent=health; $('healthVal').style.color=gc;
+    // на первом раскрытии дугу пускает startResults() после посадки скролла;
+    // дальше render() зовётся на каждое нажатие клавиши — 320 мс от текущего
+    // значения к новому, без сброса в ноль и без мигания
+    last.gp=health*3.6; last.gc=gc;
+    if(revealed)setGauge(last.gp,gc,M.dur.arcRe,0);
     var hb=document.querySelector('.hero .big');
     if(r.lostRevHigh<=0){
       hb.innerHTML='по сквозной конверсии крупных потерь не видно';
@@ -673,21 +804,38 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
     $('fixes').innerHTML=top.map(function(x){return '<li>'+fixText[x.key](fctx)+'</li>';}).join('');
   }
   function reveal(){
+    var first=!revealed;
+    // гасим ДО render(): узлы ещё внутри display:none, вспышка невозможна физически
+    if(first&&AN){$('fixes').classList.add('pre');armResults();}
     render();
     if(!$('cCompany').value)$('cCompany').value=$('devName').value.trim();
     if(!revealed){
       revealed=true;
       var rs=$('results');
       rs.classList.remove('veiled');
-      rs.classList.add('reveal');
       $('calcBtn').textContent='обновить оценку ↻';
     }
-    setTimeout(function(){$('results').scrollIntoView({behavior:rm()?'auto':'smooth'});},60);
+    setTimeout(function(){
+      $('results').scrollIntoView({behavior:rm()?'auto':'smooth'});
+      if(first)afterScroll(startResults);
+    },60);
   }
   function unlock(){
     if(unlocked)return;
     unlocked=true;
-    $('gated').classList.add('open');
+    var g=$('gated'), w=g.querySelector('.gwrap');
+    // will-change только на время перехода: постоянный композитный слой на
+    // TT Travels 800 даёт размытые глифы на не-retina
+    if(AN&&w){
+      w.style.willChange='filter';
+      var off=function(){w.style.willChange='';};
+      w.addEventListener('transitionend',function h(e){
+        if(e.propertyName!=='filter')return;
+        w.removeEventListener('transitionend',h); off();
+      });
+      setTimeout(off,M.fallback.blur);
+    }
+    g.classList.add('open');   // источник истины для платного контента — класс, не таймер и не промис
   }
   function shake(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
   // связка
@@ -733,7 +881,7 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
   });
   $('unlockBtn').addEventListener('click',function(){
     document.querySelector('.capture').scrollIntoView({behavior:rm()?'auto':'smooth',block:'center'});
-    setTimeout(function(){$('cPhone').focus();},450);
+    setTimeout(function(){$('cPhone').focus({preventScroll:true});},450); // фокус не обрывает незавершённый smooth-скролл строкой выше
   });
   var CBTXT={'':'не указана','15':'≤15 минут','day':'в тот же день','later':'на следующий день и позже','never':'часто не перезваниваем'};
   var FLBL={price:'средняя цена лота',leads:'обращений в месяц',budget:'бюджет в месяц',cpl:'CPL целевого',bots:'боты и фрод, %',qual:'обращение→целевой, %',reach:'лид→разговор, %',through:'сквозная (целевой лид→сделка), %',agent:'доля агентов, %',comm:'комиссия агентам, %',mort:'доля ипотеки, %'};
@@ -762,13 +910,22 @@ select.inp-err{box-shadow:inset 0 0 0 1.5px var(--coral)!important}
       $('capStage1').classList.add('hidden');
       var s2=$('capStage2');
       s2.classList.remove('hidden');
-      s2.classList.add('reveal');
+      // анимации создаются синхронно сразу после снятия .hidden — кадр между ними не рисуется
+      play(s2,M.y.card,M.dur.panel,0,M.ease.panel);
+      play($('capThanks'),M.y.text,M.dur.text,M.dur.panel-70);
+      var nx=s2.querySelectorAll('.nx li');
+      if(AN&&nx.length)MO.animate(nx,{opacity:[0,1],transform:['translateY('+M.y.text+'px)','none']},
+        {duration:M.dur.text/1000,delay:MO.stagger(M.st.nx,{startDelay:.52}),ease:M.ease.enter,fill:'both'});
       $('capThanks').textContent=(name?name+', ':'')+'готово ✓ полный разбор открыт выше ↑, заявка на диагностику принята — Бюро свяжется по '+phone+'.';
       var tgMsg='Здравствуйте! Прошёл экспресс-диагностику воронки на сайте Бюро — индекс '+last.health+'/100, недобор '+last.moneyStr+'. Хочу разбор.';
       $('ctaBtn').setAttribute('href','https://t.me/naxtena?text='+encodeURIComponent(tgMsg));
     }).catch(function(){                       // офлайн/ошибка эндпоинта — не теряем лид молча
       if(btn){btn.disabled=false;btn.textContent=btnTxt;}
-      if(er){er.innerHTML='не удалось отправить заявку — проверьте соединение и попробуйте ещё раз или <a href="https://t.me/naxtena" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">напишите менеджеру в Telegram</a>.';er.hidden=false;}
+      if(er){er.innerHTML='не удалось отправить заявку — проверьте соединение и попробуйте ещё раз или <a href="https://t.me/naxtena" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">напишите менеджеру в Telegram</a>.';er.hidden=false;
+        // сабмит уходит на сторонний эндпоинт: молча провалившаяся отправка внизу блока = потерянный лид
+        play(er,6,M.dur.err,0);
+        er.scrollIntoView({block:'nearest',behavior:rm()?'auto':'smooth'});
+      }
     });
   });
   $('ctaBtn').addEventListener('click',function(){ logLead('написал'); }); // переход по t.me — нативный, в новой вкладке

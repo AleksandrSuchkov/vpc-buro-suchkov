@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>экспресс-диагностика воронки · ролик · Бюро Сучкова</title>
+<meta name="description" content="Ролик о том, как экспресс-диагностика Бюро Сучкова за две минуты показывает, где воронка продаж девелопера теряет деньги.">
+<meta property="og:title" content="две минуты — и видно, где воронка теряет деньги">
+<meta property="og:description" content="Ролик об экспресс-диагностике воронки продаж девелопера.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://marketing.bureausuchkov.com/leads/diagnostika-promo">
+<link rel="canonical" href="https://marketing.bureausuchkov.com/leads/diagnostika-promo">
+<meta name="theme-color" content="#F0F0F0">
+<!-- тестовая страница: ниоткуда не линкуется и не должна попадать в поиск -->
+<meta name="robots" content="noindex, nofollow">
+<style>
+/*__FONTS__*/
+:root{
+  --blue:#171AD9;--coral:#FC5741;--green:#1B9E5A;--amber:#E39A00;
+  --gray:#F0F0F0;--white:#fff;--black:#000;
+  --sh:0 8px 24px rgba(0,0,0,.06);--hair:inset 0 0 0 1px rgba(0,0,0,.2);
+  --font:'TT Travels',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  /* токены движения из сценария */
+  --e-in:cubic-bezier(.16,1,.30,1);--e-out:cubic-bezier(.50,0,.75,0);
+  --e-cut:cubic-bezier(.83,0,.17,1);--e-hit:cubic-bezier(.19,1,.22,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--gray);color:var(--black);font-family:var(--font);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* ——— сцена: фиксированная логическая композиция, масштабируется целиком ——— */
+#stage{position:relative;width:1200px;height:675px;background:var(--gray);
+  transform-origin:center center;overflow:hidden;flex:none}
+#stage.port{width:720px;height:1280px}
+/* #stage владеет только масштабом вписывания. Всё содержимое — во внутреннем слое:
+   «удар кадра» в кульминации анимирует transform, и на #stage он затирал бы scale(k) */
+#inner{position:absolute;inset:0;transform-origin:center center}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:0 96px;pointer-events:none}
+#stage.port .scene{padding:0 48px}
+/* базовое погашение: ставит только JS, чтобы без него страница не была пустой */
+.js .an{opacity:0}
+/* сцены гасятся целиком: единственная гарантия, что соседняя сцена не протечёт
+   в кадр, если у какого-то узла забыли класс .an. visibility не мешает
+   дочерним анимациям opacity, в отличие от opacity на контейнере */
+.js .scene{visibility:hidden}
+.js .scene.live,#stage.static .scene.on{visibility:visible}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.lower{text-transform:lowercase}
+
+/* ——— постоянные элементы ——— */
+#timer{position:absolute;right:40px;top:40px;font-size:34px;font-weight:800;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em;z-index:40;
+  transform-origin:center center;will-change:transform;
+  /* цвет переезжает вместе с наплывом чёрного полотна: при мгновенной смене
+     таймер и знак 0,28 с висят белыми на светлом фоне, то есть пропадают */
+  transition:color .28s linear}
+#timer.hero{font-size:82px;color:#fff}
+#stage.port #timer{right:48px;top:40px}
+#mark{position:absolute;left:96px;bottom:44px;width:44px;height:44px;opacity:.35;z-index:40}
+#stage.port #mark{left:48px;bottom:40px}
+#mark svg{width:100%;height:100%;display:block}
+#mark svg path{transition:fill .28s linear}
+#mark.onblack svg path{fill:#fff}
+#bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--blue);
+  transform:scaleX(0);transform-origin:left center;z-index:50}
+/* полосу ведёт сам таймлайн, а не отдельная CSS-анимация: два источника времени
+   расходятся при троттлинге вкладки, и полоса начинает врать о положении в ролике */
+/* чёрное полотно кульминации — отдельный слой поверх, фон сцены не трогаем */
+#black{position:absolute;inset:0;background:#0A0A0A;opacity:0;z-index:30;
+  transform-origin:center bottom;pointer-events:none}
+
+/* ——— типографика сцен ——— */
+.big{font-size:148px;font-weight:800;line-height:.94;letter-spacing:-.04em}
+.cap{font-size:24px;font-weight:600;opacity:.60;margin-top:22px;text-align:center;max-width:820px}
+.kicker{font-size:26px;font-weight:700;color:var(--blue);margin-top:14px}
+.h2{font-size:34px;font-weight:800;letter-spacing:-.02em;align-self:flex-start;margin-bottom:26px}
+#stage.port .big{font-size:104px}
+#stage.port .cap{font-size:20px}
+#stage.port .h2{font-size:26px}
+
+/* s1 — цена входа */
+#s1 .wrapn{position:relative;display:flex;align-items:baseline;gap:26px}
+#s1 .x2{font-size:44px;font-weight:800;color:var(--coral)}
+/* цвет переключаем классом с CSS-переходом, а не наложенным дублем:
+   дубль обязан совпадать пиксель в пиксель, и при переносе строки разъезжается */
+.big{white-space:nowrap;transition:color .26s var(--e-in)}
+.big.alarm{color:var(--coral)}
+#s7 .sum{transition:color .8s var(--e-in)}
+#s1 .caps{position:relative;height:34px;width:100%;display:flex;justify-content:center}
+#s1 .caps>span{position:absolute;top:0}
+
+/* s2 — рынок */
+.rows{display:flex;flex-direction:column;gap:20px;width:1008px}
+#stage.port .rows{width:100%}
+.rrow{display:flex;align-items:center;gap:28px;background:var(--white);border-radius:20px;
+  box-shadow:var(--sh);padding:0 32px;height:96px}
+.lite .rrow{box-shadow:var(--hair)}
+.rval{font-size:52px;font-weight:800;letter-spacing:-.03em;flex:none;min-width:250px}
+#stage.port .rval{font-size:34px;min-width:150px}
+.rval .dim{opacity:.38}
+.rtxt{font-size:22px;font-weight:600;opacity:.70;line-height:1.3}
+#stage.port .rtxt{font-size:16px}
+.scale{position:relative;height:6px;border-radius:999px;background:#E3E3E3;width:200px;flex:none}
+.scale i{position:absolute;top:0;bottom:0;border-radius:999px;display:block}
+.scale .norm{left:45%;width:10%;background:var(--green)}
+.scale .bad{left:65%;width:25%;background:var(--coral);transform:scaleX(0);transform-origin:left center}
+.turn{font-size:40px;font-weight:800;letter-spacing:-.02em;text-align:center}
+#stage.port .turn{font-size:26px}
+/* строка-поворот центрируется абсолютно: погашенные карточки остаются в потоке
+   и иначе выдавливают её к нижней кромке кадра */
+.turnwrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:0 96px;pointer-events:none}
+/* в статичном режиме карточки не уходят, поэтому строка-поворот легла бы прямо на них */
+#stage.static #s2turn{display:none}
+
+/* s4 — карточка с 13 полями */
+/* размеры подобраны так, чтобы карточка с 13 полями и подпись целиком
+   помещались в кадр 1200×675 — иначе тринадцатое поле уезжает за кромку */
+.card{background:var(--white);border-radius:24px;box-shadow:var(--hair),var(--sh);padding:24px 30px;width:960px}
+.lite .card{box-shadow:var(--hair)}
+#stage.port .card{width:100%;padding:20px}
+.card .lbl{font-size:17px;font-weight:700;opacity:.55;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px}
+#stage.port .grid{grid-template-columns:repeat(2,1fr);gap:12px 16px}
+.cell .k{font-size:14px;font-weight:600;opacity:.55;margin-bottom:4px;line-height:1.2;min-height:30px}
+#stage.port .cell .k{font-size:12px;min-height:32px}
+.cell .vwrap{position:relative;height:38px;overflow:hidden;display:flex;align-items:center}
+#stage.port .cell .vwrap{height:34px}
+.cell .v{font-size:21px;font-weight:800;transform:translateY(100%);white-space:nowrap}
+.cell.hero .v{font-size:30px}
+#stage.port .cell .v{font-size:19px}
+#stage.port .cell.hero .v{font-size:28px}
+.cell .caret{position:absolute;left:0;bottom:6px;height:2px;width:100%;background:var(--blue);
+  opacity:.25;transform-origin:left center}
+.btnrow{grid-column:2 / span 2;display:flex;align-items:flex-end;justify-content:flex-end}
+#stage.port .btnrow{grid-column:1 / span 2;justify-content:center}
+.gobtn{background:var(--blue);color:#fff;border-radius:999px;border:0;font-family:var(--font);
+  font-size:22px;font-weight:700;width:212px;height:54px;position:relative;overflow:hidden}
+.gobtn .wave{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;
+  border-radius:50%;background:#fff;opacity:0;transform:scale(0)}
+#cursor{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue);
+  opacity:0;z-index:35;pointer-events:none}
+
+/* s6 — прибор */
+.gauge{--p:0deg;width:280px;height:280px;border-radius:50%;flex:none;
+  background:conic-gradient(var(--gc,var(--amber)) var(--p),#E3E3E3 0);
+  display:flex;align-items:center;justify-content:center;position:relative}
+.gauge .in{width:236px;height:236px;border-radius:50%;background:var(--gray);
+  display:flex;align-items:center;justify-content:center}
+.gauge .gv{font-size:96px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--amber)}
+#stage.port .gauge{width:200px;height:200px}
+#stage.port .gauge .in{width:166px;height:166px}
+#stage.port .gauge .gv{font-size:68px}
+.gnote{font-size:22px;font-weight:700;margin-top:8px}
+
+/* s7 — обмен */
+#s7{z-index:32;color:#fff}
+/* кегль суммы считается от ширины: «940 000 000 ₽» — 13 знаков, переносить нельзя,
+   поэтому композиция асимметричная: узкая колонка времени, широкая — денег */
+#s7 .split{display:flex;align-items:center;justify-content:center;gap:38px;width:100%}
+#s7 .half{display:flex;flex-direction:column;gap:12px}
+#s7 .half.left{flex:0 0 232px;align-items:center}
+#s7 .half.right{flex:1 1 auto;align-items:center;min-width:0}
+#s7 .slot{height:96px;display:flex;align-items:center;justify-content:center}
+/* в статичном режиме перелёта нет — таймер стоит в левой колонке сразу */
+.statictimer{display:none;font-size:82px;font-weight:800;font-variant-numeric:tabular-nums;color:#fff}
+#stage.static .statictimer{display:inline}
+#stage.port .statictimer{font-size:56px}
+#s7 .rule{width:1px;height:300px;background:#fff;opacity:.35;transform:scaleY(0);flex:none}
+#s7 .sum{font-size:96px;font-weight:800;letter-spacing:-.045em;
+  font-variant-numeric:tabular-nums;color:var(--coral);white-space:nowrap}
+#s7 .lab{font-size:26px;font-weight:600;opacity:0}
+#s7 .src{font-size:20px;font-weight:600;opacity:0;margin-top:48px}
+#stage.port #s7 .split{flex-direction:column;gap:20px}
+#stage.port #s7 .half.left,#stage.port #s7 .half.right{flex:0 0 auto}
+#stage.port #s7 .rule{width:300px;height:1px;transform:scaleX(0)}
+#stage.port #s7 .sum{font-size:clamp(40px,9.4vw,68px)}
+#stage.port #s7 .slot{height:80px}
+#gaugemini{position:absolute;left:88px;top:52px;z-index:34;opacity:0;display:flex;
+  align-items:center;gap:12px;color:#fff}
+#gaugemini .ring{width:56px;height:56px;border-radius:50%;
+  background:conic-gradient(var(--amber) 180deg,rgba(255,255,255,.22) 0);
+  display:flex;align-items:center;justify-content:center}
+#gaugemini .ring b{width:42px;height:42px;border-radius:50%;background:#0A0A0A;color:var(--amber);
+  font-size:19px;font-weight:800;display:flex;align-items:center;justify-content:center}
+#gaugemini span{font-size:16px;font-weight:600;opacity:.55}
+
+/* s8 — карта потерь */
+#s8{flex-direction:row;gap:32px;align-items:center;justify-content:center}
+#stage.port #s8{flex-direction:column;gap:18px}
+.map{background:var(--white);border-radius:20px;box-shadow:var(--sh);padding:24px 26px;width:760px}
+.lite .map{box-shadow:var(--hair)}
+#stage.port .map{width:100%;padding:16px}
+.mrow{display:grid;grid-template-columns:1fr 108px 132px 116px;align-items:center;gap:10px;
+  height:52px;position:relative;padding-left:14px}
+#stage.port .mrow{grid-template-columns:1fr 84px 96px;height:62px;font-size:13px}
+#stage.port .mrow .mnorm{display:none}
+.mrow .bar4{position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:2px;
+  background:var(--coral);transform:scaleY(0);transform-origin:top center}
+.mname{font-size:20px;font-weight:600}
+#stage.port .mname{font-size:14px}
+.mval{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+#stage.port .mval{font-size:16px}
+.mnorm{font-size:17px;font-weight:600;opacity:.50}
+.chip{border-radius:999px;font-size:15px;font-weight:700;padding:6px 12px;text-align:center;
+  transform:scale(.8)}
+#stage.port .chip{font-size:11px;padding:4px 8px}
+.chip.r{background:rgba(252,87,65,.13);color:var(--coral)}
+.chip.a{background:rgba(227,154,0,.15);color:var(--amber)}
+.chip.g{background:rgba(27,158,90,.13);color:var(--green)}
+.drop{position:absolute;left:2px;top:26px;width:6px;height:6px;border-radius:50%;
+  background:var(--coral);opacity:0}
+.playing .drop{animation:dropfall .9s cubic-bezier(.5,0,1,.5) infinite}
+.lite .drop,.static .drop{animation:none!important;opacity:.55}
+@keyframes dropfall{0%{transform:translate(0,0);opacity:.9}100%{transform:translate(56px,120px);opacity:0}}
+.totals{width:208px;display:flex;flex-direction:column;gap:18px}
+#stage.port .totals{width:100%;flex-direction:row;gap:12px}
+.tot .tn{font-size:34px;font-weight:800;color:var(--coral);font-variant-numeric:tabular-nums}
+.tot .tl{font-size:15px;font-weight:600;opacity:.55;line-height:1.3;margin-top:2px}
+#stage.port .tot .tn{font-size:22px}
+#stage.port .tot .tl{font-size:11px}
+.concl{font-size:18px;font-weight:700;line-height:1.35;margin-top:6px}
+#stage.port .concl{font-size:14px;margin-top:0}
+
+/* s9 — починки */
+.fixes{display:flex;gap:24px;width:1080px;justify-content:center}
+#stage.port .fixes{flex-direction:column;width:100%;gap:12px}
+.fix{background:var(--white);border-radius:20px;box-shadow:var(--sh);padding:26px;width:336px;
+  display:flex;flex-direction:column}
+.lite .fix{box-shadow:var(--hair)}
+#stage.port .fix{width:100%;padding:16px}
+.fix .n{font-size:15px;font-weight:800;color:var(--blue);opacity:.5}
+.fix .act{font-size:26px;font-weight:700;line-height:1.2;margin:12px 0 16px;flex:1}
+#stage.port .fix .act{font-size:18px;margin:8px 0 10px}
+.fix hr{border:0;border-top:1px solid rgba(0,0,0,.10)}
+.fix .cost{font-size:17px;font-weight:600;opacity:.55;margin-top:14px}
+.fix .goal{font-size:19px;font-weight:700;color:var(--green);margin-top:6px}
+#stage.port .fix .cost,#stage.port .fix .goal{font-size:14px;margin-top:6px}
+
+/* s11 — финал */
+.outro{display:flex;flex-direction:column;align-items:center}
+.sums{display:flex;gap:26px;font-size:22px;font-weight:700;opacity:.65;margin-top:16px}
+#stage.port .sums{flex-direction:column;gap:6px;font-size:16px;text-align:center}
+/* ширина от содержимого: «пройти диагностику» не влезало в фиксированные 236px и переносилось */
+.cta{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:#fff;
+  border-radius:999px;padding:0 36px;height:62px;font-size:24px;font-weight:700;text-decoration:none;
+  white-space:nowrap;margin-top:30px;pointer-events:auto}
+.cta:hover{background:#2F32F2}
+.url{font-size:19px;font-weight:600;opacity:0;margin-top:14px}
+#stage.port .cta{font-size:20px;height:56px;padding:0 28px}
+#stage.port .url{font-size:14px}
+
+/* ——— управление ——— */
+/* «смотреть заново» стоит справа внизу, на месте подсказки, а не поверх знака Бюро:
+   раньше у #ui и #mark были одинаковые координаты и текст печатался прямо на логотипе */
+#ui{position:absolute;right:72px;bottom:44px;z-index:60;display:flex;gap:18px;align-items:center;
+  pointer-events:auto}
+#again{font-family:var(--font);font-size:17px;font-weight:600;background:none;border:0;
+  cursor:pointer;color:inherit;opacity:0;text-decoration:underline;text-underline-offset:4px}
+#hint{position:absolute;right:72px;bottom:44px;z-index:60;font-size:15px;font-weight:600;
+  opacity:.30}
+/* ——— статичный режим для prefers-reduced-motion ——— */
+#stage.static .scene{display:none}
+#stage.static .scene.on{display:flex}
+#stage.static .an,#stage.static .cell .v,#stage.static .chip,
+#stage.static .bad,#stage.static .bar4,#stage.static #s7 .rule{opacity:1!important;transform:none!important}
+#stage.static .cell .v{transform:translateY(0)!important}
+#stage.static #bar{display:none}
+#dots{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);display:none;gap:9px;z-index:60}
+#stage.static ~ #dots,#stage.static #dots{display:flex}
+#dots i{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.22)}
+#dots i.on{background:var(--blue)}
+#stage.static #dots i.onblack{background:rgba(255,255,255,.28)}
+#stage.static #dots i.on.onblack{background:#fff}
+/* без JS — показываем осмысленную заглушку, а не пустой экран */
+.nojs{max-width:760px;text-align:center;padding:40px}
+.nojs h1{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.nojs p{font-size:20px;font-weight:600;opacity:.6;margin-top:16px}
+.js #nojs{display:none}
+</style>
+</head>
+<body>
+
+<div id="stage">
+<div id="inner">
+
+  <!-- ——— s1 · цена входа ——— -->
+  <div class="scene" id="s1">
+    <div class="wrapn">
+      <div class="big num an" id="s1big"><span id="s1v">12 000 ₽</span></div>
+      <span class="x2 an" id="s1x2">×2</span>
+    </div>
+    <div class="caps">
+      <span class="cap an" id="s1c1">столько стоил целевой лид два года назад</span>
+      <span class="cap an" id="s1c2">столько он стоит сейчас</span>
+    </div>
+  </div>
+
+  <!-- ——— s2 · рынок ——— -->
+  <div class="scene" id="s2">
+    <div class="rows">
+      <div class="h2 an" id="s2h">рынок девелопмента, 2026</div>
+      <div class="rrow an" id="s2r1">
+        <div class="rval num"><span class="dim" id="s2a">44</span> → <span class="an" id="s2b">32 %</span></div>
+        <div class="rtxt an" id="s2t1">конверсия в целевой лид после отмены льготной ипотеки</div>
+      </div>
+      <div class="rrow an" id="s2r2">
+        <div class="rval num" id="s2c">0 %</div>
+        <div class="rtxt an" id="s2t2">пропущенных обращений, по которым так и не перезвонили</div>
+      </div>
+      <div class="rrow an" id="s2r3">
+        <div class="rval num">65–90 %</div>
+        <div class="rtxt an" id="s2t3">сделок идёт через агентов. норма — 45–55</div>
+        <div class="scale"><i class="norm"></i><i class="bad" id="s2bad"></i></div>
+      </div>
+    </div>
+    <div class="turnwrap"><div class="turn an" id="s2turn">это цифры рынка. вопрос — в ваших</div></div>
+  </div>
+
+  <!-- ——— s3 · две минуты ——— -->
+  <div class="scene" id="s3">
+    <div class="big an" id="s3t">две минуты</div>
+    <div class="cap an" id="s3c1">столько занимает экспресс-диагностика воронки</div>
+    <div class="kicker an" id="s3c2">вы потратите больше, пока решаете, стоит ли</div>
+  </div>
+
+  <!-- ——— s4 + s5 · тринадцать цифр и нажатие ——— -->
+  <div class="scene" id="s4">
+    <div class="card an" id="s4card">
+      <div class="lbl an" id="s4lbl">тринадцать цифр из вашего проекта</div>
+      <div class="grid" id="s4grid"></div>
+    </div>
+    <div class="cap an" id="s4note" style="margin-top:26px">всё остальное инструмент считает сам</div>
+  </div>
+
+  <!-- ——— s6 · прибор ——— -->
+  <div class="scene" id="s6">
+    <div class="gauge an" id="gauge"><div class="in"><span class="gv num" id="gv">0</span></div></div>
+    <div class="cap an" id="s6c" style="margin-top:18px">индекс воронки</div>
+    <div class="gnote an" id="s6n">сильная воронка — от 70</div>
+  </div>
+
+  <!-- ——— s7 · обмен (кульминация) ——— -->
+  <div class="scene" id="s7">
+    <div class="split">
+      <div class="half left"><div class="slot" id="s7slot"><span class="statictimer num">1:41</span></div><div class="lab" id="s7lab1">вы потратили</div></div>
+      <div class="rule" id="s7rule"></div>
+      <div class="half right">
+        <div class="lab" id="s7lab2">вы теряете</div>
+        <div class="sum num an" id="s7sum" style="color:#fff">0 ₽</div>
+      </div>
+    </div>
+    <div class="src" id="s7src">расчёт на ваших тринадцати цифрах</div>
+  </div>
+
+  <!-- ——— s8 · карта потерь ——— -->
+  <div class="scene" id="s8">
+    <div>
+      <div class="h2 an" id="s8h">карта потерь по восьми стадиям</div>
+      <div class="map an" id="s8map"></div>
+    </div>
+    <div class="totals" id="s8tot"></div>
+  </div>
+
+  <!-- ——— s9 · три починки ——— -->
+  <div class="scene" id="s9">
+    <div class="h2 an" id="s9h" style="align-self:center">три самые дешёвые починки</div>
+    <div class="fixes" id="s9box"></div>
+  </div>
+
+  <!-- ——— s10 · поворот ——— -->
+  <div class="scene" id="s10">
+    <div class="turn an" id="s10a">мы не добавили ни рубля рекламы.</div>
+    <div class="turn an" id="s10b" style="margin-top:10px">мы просто показали, где течёт.</div>
+  </div>
+
+  <!-- ——— s11 · финал ——— -->
+  <div class="scene" id="s11">
+    <div class="outro" id="s11box">
+      <div class="big num an" id="s11timer" style="font-size:96px">1:41</div>
+      <div class="cap an" id="s11c" style="margin-top:14px">две минуты не понадобились</div>
+      <div class="sums an" id="s11s"><span>тринадцать цифр</span><span>одно нажатие</span><span>карта потерь</span></div>
+      <a class="cta an" id="s11cta" href="https://marketing.bureausuchkov.com/leads/diagnostika" style="pointer-events:none">пройти диагностику</a>
+      <div class="url" id="s11url">marketing.bureausuchkov.com/leads/diagnostika</div>
+    </div>
+  </div>
+
+  <!-- ——— постоянные слои ——— -->
+  <div id="black"></div>
+  <div id="gaugemini"><div class="ring"><b>50</b></div><span>индекс воронки</span></div>
+  <div id="cursor"></div>
+  <div id="timer" class="num">0:00</div>
+  <div id="mark">/*__MARK__*/</div>
+</div><!-- /#inner -->
+  <div id="bar"></div>
+  <div id="ui"><button id="again">смотреть заново</button></div>
+  <div id="hint">пробел — пауза</div>
+  <div id="dots"></div>
+
+  <div class="nojs" id="nojs">
+    <h1 class="lower">две минуты — и видно, где воронка теряет деньги</h1>
+    <p>ролик требует включённого JavaScript. сама экспресс-диагностика работает и без него:</p>
+    <p><a href="https://marketing.bureausuchkov.com/leads/diagnostika" style="color:#171AD9">пройти диагностику →</a></p>
+  </div>
+</div>
+
+<script>/*__MOTION__*/</script>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var MO=window.Motion||{}, HAS=!!MO.animate;
+var REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var stage=$('stage');
+document.documentElement.classList.add('js');
+
+/* ——— токены движения ——— */
+var E={in:[.16,1,.30,1],out:[.50,0,.75,0],cut:[.83,0,.17,1],hit:[.19,1,.22,1],soft:[.34,1.24,.64,1]};
+var D={flick:.12,micro:.18,tiny:.24,text:.30,lead:.36,body:.44,panel:.52,cut:.60,fly:.72,count:.85,gauge:1.10,big:2.20};
+var Y={hair:6,tiny:10,text:14,card:18,drop:28,panel:38};
+var ST={frame:.035,chip:.12,fix:.14,fade:.05};
+
+/* ——— данные ролика. Все цифры согласованы между собой:
+   595/1860=32 % · 280/595=47 % · 31/595=5,2 % · 12 400 000/595≈20 800 ₽ ——— */
+var FIELDS=[
+  {k:'бюджет на маркетинг, ₽/мес',v:'12 400 000',hero:1,t:13.90,tm:'0:08'},
+  {k:'обращений в месяц',v:'1 860',t:14.90,tm:'0:15'},
+  {k:'доля ботов и фрода',v:'38 %',hero:1,t:15.78,tm:'0:23'},
+  {k:'целевых лидов',v:'595',t:16.55,tm:'0:30'},
+  {k:'дозвонов',v:'280',t:17.23,tm:'0:38'},
+  {k:'первый перезвон, мин',v:'41',hero:1,t:17.83,tm:'0:45'},
+  {k:'встреч и показов',v:'96',t:18.36,tm:'0:53'},
+  {k:'сделок в месяц',v:'31',hero:1,t:18.82,tm:'1:00'},
+  {k:'средний чек, ₽',v:'11 900 000',t:19.23,tm:'1:08'},
+  {k:'сделок через агентов',v:'78 %',t:19.59,tm:'1:15'},
+  {k:'комиссия агенту',v:'3,5 %',t:19.91,tm:'1:23'},
+  {k:'доля ипотеки',v:'68 %',t:20.19,tm:'1:30'},
+  {k:'план продаж, шт/год',v:'520',t:20.43,tm:'1:38'}
+];
+var STAGES=[
+  ['стоимость целевого лида','20 800 ₽','12–20 тыс','a','зона риска'],
+  ['боты и фрод в бюджете','38 %','не выше 15 %','r','утечка'],
+  ['обращение → целевой лид','32 %','35–40 %','a','зона риска'],
+  ['лид → разговор (дозвон)','47 %','от 80 %','r','утечка'],
+  ['скорость первого перезвона','41 мин','до 15 мин','r','утечка'],
+  ['целевой лид → сделка','5,2 %','от 12 %','r','утечка'],
+  ['доля сделок через агентов','78 %','45–55 %','r','утечка'],
+  ['структура сделки: доля ипотеки','68 %','68 % и падает','g','норма']
+];
+var TOTALS=[[0,111,'сделок в год недобирает','',''],[0,1.7,'до сильной воронки','×',',1'],[0,24.4,'млн ₽ переплаты','',',1']];
+var FIXES=[
+  ['01','перезванивать за 15 минут, а не «в течение дня»','стоит: регламент','цель: стадия 5 — до 15 минут вместо 41'],
+  ['02','чистить бюджет от ботов и фрода','стоит: неделя настройки','цель: стадия 2 — не выше 15 % вместо 38 %'],
+  ['03','считать сквозную конверсию, а не количество заявок','стоит: ничего','цель: стадия 6 — от 12 % вместо 5,2 %']
+];
+
+/* ——— разметка, собираемая из данных ——— */
+// число и знак нельзя разрывать переносом: «15 / % вместо 38 %» читается как опечатка
+function nb(s){return String(s).replace(/ (%|₽|мин|тыс)/g,' $1');}
+var grid=$('s4grid');
+FIELDS.forEach(function(f,i){
+  var c=document.createElement('div');
+  c.className='cell'+(f.hero?' hero':'');
+  c.innerHTML='<div class="k an">'+f.k+'</div><div class="vwrap"><span class="v">'+nb(f.v)+'</span><i class="caret"></i></div>';
+  grid.appendChild(c); f.el=c;
+});
+var br=document.createElement('div'); br.className='btnrow';
+br.innerHTML='<button class="gobtn an" id="gobtn">посчитать<span class="wave"></span></button>';
+grid.appendChild(br);
+
+var map=$('s8map');
+STAGES.forEach(function(s){
+  var r=document.createElement('div'); r.className='mrow an';
+  // планка и капля — только у утечек: зона риска не течёт, врать вердиктом нельзя
+  r.innerHTML=(s[3]==='r'?'<i class="bar4"></i><i class="drop"></i>':'')+
+    '<div class="mname">'+s[0]+'</div><div class="mval num">'+nb(s[1])+'</div>'+
+    '<div class="mnorm">'+nb(s[2])+'</div><div class="chip '+s[3]+'">'+s[4]+'</div>';
+  map.appendChild(r); s.el=r;
+});
+// вывод живёт в колонке итогов, а не под картой: под картой он налезал на знак Бюро
+$('s8tot').insertAdjacentHTML('beforeend','<div class="concl an" id="s8concl">пять утечек, две зоны риска, одна норма</div>');
+var tot=$('s8tot');
+TOTALS.forEach(function(t){
+  var d=document.createElement('div'); d.className='tot an';
+  d.innerHTML='<div class="tn num">'+t[3]+'0</div><div class="tl">'+t[2]+'</div>';
+  tot.appendChild(d); t.el=d.firstChild;
+});
+FIXES.forEach(function(f){
+  var d=document.createElement('div'); d.className='fix an';
+  d.innerHTML='<div class="n">'+f[0]+'</div><div class="act">'+f[1]+'</div><hr>'+
+    '<div class="cost an">'+nb(f[2])+'</div><div class="goal an">'+nb(f[3])+'</div>';
+  $('s9box').appendChild(d); f.el=d;
+});
+
+/* ——— масштаб композиции. Выбирается один раз, при resize меняется только k ——— */
+var PORT=matchMedia('(max-width: 780px)').matches;
+if(PORT)stage.classList.add('port');
+var lastW=0,lastH=0;
+function fit(){
+  var w=PORT?720:1200, h=PORT?1280:675;
+  lastW=innerWidth; lastH=innerHeight;
+  stage.style.transform='scale('+Math.min(lastW/(w+40), lastH/(h+25))+')';
+}
+fit(); addEventListener('resize',fit);
+// событие resize приходит не во всех окружениях (встроенные вьюеры, панели предпросмотра),
+// а кадр обязан оставаться вписанным — сверяем размеры в основном цикле
+function fitIfChanged(){ if(innerWidth!==lastW||innerHeight!==lastH)fit(); }
+
+/* ——— хелперы ——— */
+function play(el,kf,opt){
+  if(!el||!HAS)return null;
+  return MO.animate(el,kf,opt||{});
+}
+// вход: opacity + сдвиг по Y. Motion ставит fill:'both' — конечное состояние совпадает с CSS-покоем
+// целевая прозрачность берётся из стилей, а не приравнивается к единице:
+// подписи и метки нарисованы на 55–70 %, и вход «в единицу» сплющивал иерархию —
+// второстепенный текст становился таким же плотным, как главный
+function target(el){
+  el.classList.remove('an');                 // класс снят до замера, кадр между строками не рисуется
+  var o=parseFloat(getComputedStyle(el).opacity);
+  return isNaN(o)||o===0?1:o;
+}
+function inn(el,y,dur,ease,extra){
+  if(!el)return;
+  var kf={opacity:[0,target(el)]};
+  if(y)kf.transform=['translateY('+y+'px)','none'];
+  if(extra)for(var k in extra)kf[k]=extra[k];
+  play(el,kf,{duration:dur||D.body,ease:ease||E.in,fill:'both'});
+}
+function outt(el,y,dur){
+  if(!el)return;
+  // одиночные значения — уход от текущего состояния, каким бы оно ни было
+  play(el,{opacity:0,transform:'translateY('+(-(y||16))+'px)'},
+    {duration:dur||D.text,ease:E.out,fill:'both'});
+}
+function group(els,y,dur,ease,step,delay,from){
+  if(!els.length||!HAS)return;
+  var to=target(els[0]);                     // группа однородна по стилю
+  [].forEach.call(els,function(e){e.classList.remove('an');});
+  var kf={opacity:[0,to]};
+  if(y)kf.transform=['translateY('+y+'px)','none'];
+  play(els,kf,{duration:dur||D.body,ease:ease||E.in,fill:'both',
+    delay:MO.stagger(step||ST.chip,{startDelay:delay||0,from:from||'first'})});
+}
+// счётчик: mini-animate числа не умеет, поэтому свой rAF
+var counters=[];
+function countTo(el,from,to,sec,fmt,instant){
+  if(!el)return;
+  if(instant||!HAS){el.textContent=fmt(to);return;}
+  var t0=null,ms=sec*1000,id={stop:false};counters.push(id);
+  requestAnimationFrame(function step(now){
+    if(id.stop)return;
+    if(t0===null)t0=now;
+    var k=Math.min(1,(now-t0)/ms);
+    el.textContent=fmt(from+(to-from)*(1-Math.pow(1-k,3)));
+    if(k<1)requestAnimationFrame(step); else el.textContent=fmt(to);
+  });
+}
+var sp=String.fromCharCode(8201); // тонкий пробел
+function rub(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,sp)+' ₽';}
+function intf(n){return String(Math.round(n));}
+function pct(n){return Math.round(n)+' %';}
+function one(n){return n.toFixed(1).replace('.',',');}
+// перелёт к центру другого элемента: координаты считаются из геометрии,
+// поэтому работает и в портретной композиции, и при любом масштабе сцены
+function centerOf(el){
+  var sr=stage.getBoundingClientRect(), k=sr.width/(PORT?720:1200), r=el.getBoundingClientRect();
+  return {x:(r.left-sr.left)/k+r.width/k/2, y:(r.top-sr.top)/k+r.height/k/2};
+}
+function flyToEl(el,target,scale,dur,ease){
+  if(!el||!target||!HAS)return;
+  var a=centerOf(el), b=centerOf(target);
+  play(el,{transform:['none','translate('+(b.x-a.x)+'px,'+(b.y-a.y)+'px) scale('+scale+')']},
+    {duration:dur||D.fly,ease:ease||E.cut,fill:'both'});
+}
+function flyHome(el,dur){
+  if(!el||!HAS)return;
+  play(el,{transform:['none']},{duration:dur||.55,ease:E.cut,fill:'both'});
+}
+function timerTo(v){
+  var t=$('timer');
+  if(!HAS){t.textContent=v;return;}
+  play(t,{opacity:[1,.15,1]},{duration:D.micro,ease:E.in});
+  setTimeout(function(){t.textContent=v;},70);
+}
+
+/* ——— реплики таймлайна: абсолютные тайм-коды, один отсортированный список ——— */
+var C=[];
+function cue(t,fn){C.push({t:t,fn:fn});}
+
+/* s1 · цена входа */
+cue(0.25,function(){ inn($('s1big'),Y.card,D.body,E.in,{filter:['blur(8px)','blur(0px)']}); });
+cue(0.55,function(){ inn($('s1c1'),Y.tiny,D.lead); });
+cue(1.85,function(i){ countTo($('s1v'),12000,24000,D.count,rub,i);
+                      play($('s1big').parentNode,{transform:['scale(1)','scale(1.05)']},{duration:D.count,ease:E.hit,fill:'both'});
+                      outt($('s1c1'),10,.20); });
+cue(2.05,function(){ inn($('s1c2'),Y.tiny,.28); });
+cue(2.30,function(){ $('s1big').classList.add('alarm'); }); // тревога опережает факт: цвет встаёт раньше, чем счётчик дойдёт
+cue(2.75,function(){ $('s1x2').classList.remove('an');
+                     play($('s1x2'),{opacity:[0,1],transform:['translateX(-8px)','none']},{duration:.28,ease:E.in,fill:'both'}); });
+cue(3.80,function(){ [$('s1c2'),$('s1big').parentNode,$('s1x2')].forEach(function(e,n){
+                       setTimeout(function(){outt(e,16,.30);},n*60); }); });
+
+/* s2 · рынок */
+// подсказка нужна только в начале: висеть все 54 секунды, в том числе поверх
+// чёрного кадра кульминации, — это интерфейс поверх кино
+cue(6.50,function(){ play($('hint'),{opacity:[.3,0]},{duration:.40,ease:E.out,fill:'both'}); });
+cue(4.20,function(){ inn($('s2h'),12,.40); });
+cue(4.55,function(){ inn($('s2r1'),Y.drop,.46,E.in,{transform:['translateY(28px) scale(.97)','none']}); });
+cue(4.69,function(){ inn($('s2t1'),0,.28); });
+cue(5.00,function(){ $('s2b').classList.remove('an');
+                     play($('s2b'),{opacity:[0,1],transform:['translateX(-10px)','none']},{duration:D.tiny,ease:E.in,fill:'both'});
+                     play($('s2a'),{opacity:[1,.38]},{duration:D.tiny,ease:E.in,fill:'both'}); });
+cue(5.65,function(){ inn($('s2r2'),Y.drop,.46,E.in,{transform:['translateY(28px) scale(.97)','none']}); inn($('s2t2'),0,.28); });
+cue(5.85,function(i){ countTo($('s2c'),0,89,.70,pct,i); });
+cue(6.70,function(){ inn($('s2r3'),Y.drop,.46,E.in,{transform:['translateY(28px) scale(.97)','none']}); inn($('s2t3'),0,.28); });
+cue(7.00,function(){ play($('s2bad'),{transform:['scaleX(0)','scaleX(1)']},{duration:D.cut,ease:E.in,fill:'both'}); });
+cue(7.15,function(){ play($('s2r3'),{transform:['scale(1)','scale(1.03)','scale(1)']},{duration:.70,ease:E.soft,fill:'both'}); });
+cue(7.75,function(){ [$('s2r3'),$('s2r2'),$('s2r1'),$('s2h')].forEach(function(e,n){
+                       setTimeout(function(){outt(e,18,.30);},n*50); }); });
+cue(7.90,function(){ inn($('s2turn'),0,.50,E.hit,{transform:['scale(1.04)','scale(1)']}); });
+cue(9.06,function(){ play($('s2turn'),{opacity:[1,0],transform:['scale(1)','scale(.94)']},{duration:.34,ease:E.out,fill:'both'}); });
+
+/* s3 · две минуты → рождение таймера */
+cue(9.40,function(){ inn($('s3t'),20,.55); });
+cue(9.95,function(){ inn($('s3c1'),12,D.lead); });
+cue(10.70,function(){ inn($('s3c2'),14,.40); });
+cue(11.60,function(){ outt($('s3c1'),10,.28); setTimeout(function(){outt($('s3c2'),10,.28);},60); });
+cue(11.85,function(){
+  var t=$('timer'); t.style.opacity='1';
+  flyToEl($('s3t'),t,.23,D.fly,E.cut);
+  play($('s3t'),{opacity:[1,0]},{duration:.40,delay:.18,ease:E.in,fill:'both'});
+  play(t,{opacity:[0,1]},{duration:.40,delay:.18,ease:E.in,fill:'both'});
+});
+cue(12.57,function(){ $('s3t').style.visibility='hidden'; });
+
+/* s4 · тринадцать цифр */
+// карточка входит сразу за приземлением таймера (12.57): при старте в 12.80
+// оставалось почти полсекунды пустого кадра с одним таймером в углу
+cue(12.55,function(){ inn($('s4card'),0,.50,E.hit,{transform:['scale(1.06)','scale(1)']});
+                      stage.classList.add('heavy'); });
+cue(13.05,function(){ inn($('s4lbl'),10,.34);
+                      group(document.querySelectorAll('#s4grid .k'),0,.28,E.in,ST.frame); });
+FIELDS.forEach(function(f){
+  cue(f.t,function(){
+    var v=f.el.querySelector('.v'), c=f.el.querySelector('.caret');
+    play(v,{transform:['translateY(100%)','translateY(0)']},{duration:f.hero?.42:.26,ease:E.hit,fill:'both'});
+    play(c,{transform:['scaleX(1)','scaleX(0)']},{duration:D.flick,delay:.05,ease:E.out,fill:'both'});
+    timerTo(f.tm);
+  });
+});
+cue(20.90,function(){ inn($('s4note'),8,.34);
+                      inn($('gobtn'),0,.34,E.in,{transform:['scale(.92)','scale(1)']}); }); // кнопка не должна возникать рывком под курсором
+
+/* s5 · одно нажатие */
+cue(21.40,function(){ var c=$('cursor'), b=$('gobtn'); b.classList.remove('an');
+  var sr=stage.getBoundingClientRect(), k=sr.width/(PORT?720:1200), r=b.getBoundingClientRect();
+  c.style.left=((r.left-sr.left)/k+r.width/k/2-9)+'px';
+  c.style.top=((r.top-sr.top)/k+r.height/k/2-9)+'px';
+  play(c,{opacity:[0,.8],transform:[PORT?'translate(0,120px)':'translate(240px,-60px)','none']},{duration:.62,ease:E.cut,fill:'both'});
+});
+cue(22.05,function(){ play($('gobtn'),{transform:['scale(1)','scale(.94)']},{duration:.09,ease:E.out,fill:'both'}); });
+cue(22.14,function(){ play($('gobtn'),{transform:['scale(.94)','scale(1)']},{type:'spring',bounce:.28,visualDuration:.34,fill:'both'}); });
+cue(22.09,function(){ play($('gobtn').querySelector('.wave'),{transform:['scale(0)','scale(14)'],opacity:[.35,0]},{duration:.62,ease:E.hit,fill:'both'}); });
+cue(22.15,function(){ timerTo('1:41'); });
+cue(22.30,function(){
+  var vs=document.querySelectorAll('#s4grid .v');
+  if(HAS)play(vs,{opacity:[1,0],transform:['none','translateY(10px)']},
+    {duration:.22,ease:E.out,fill:'both',delay:MO.stagger(.018,{from:'last'})});
+  play($('s4card'),{opacity:[1,0],transform:['none','translateY(38px) scale(.96)']},{duration:D.body,ease:E.out,fill:'both'});
+  outt($('s4note'),12,.24);
+});
+cue(22.75,function(){ play($('cursor'),{opacity:[.8,0]},{duration:D.micro,ease:E.out,fill:'both'});
+                      stage.classList.remove('heavy'); });
+/* 22.80–24.00 — полная остановка. Пустой кадр и есть склейка */
+
+/* s6 · прибор */
+cue(24.00,function(){ inn($('gauge'),0,.42,E.in,{transform:['scale(.94)','scale(1)']}); });
+cue(24.90,function(i){
+  countTo($('gv'),0,50,D.gauge,intf,i);
+  var g=$('gauge');
+  if(i||!HAS){g.style.setProperty('--p','180deg');return;}
+  var t0=null;
+  requestAnimationFrame(function step(now){
+    if(t0===null)t0=now;
+    var k=Math.min(1,(now-t0)/(D.gauge*1000));
+    g.style.setProperty('--p',(180*(1-Math.pow(1-k,3)))+'deg');
+    if(k<1)requestAnimationFrame(step);
+  });
+});
+cue(26.00,function(){ inn($('s6c'),0,.30); });
+cue(26.25,function(){ $('s6n').classList.remove('an');
+                      play($('s6n'),{opacity:[0,1],transform:['translateX(-10px)','none']},{duration:.40,ease:E.in,fill:'both'}); });
+cue(27.80,function(){ flyToEl($('gauge'),$('gaugemini'),.30,D.cut,E.cut);
+                      outt($('s6c'),0,.24); outt($('s6n'),0,.24); });
+
+/* s7 · обмен — кульминация */
+cue(28.20,function(){ play($('black'),{opacity:[0,1]},{duration:.26,ease:'easeInOut',fill:'both'});
+                      $('mark').classList.add('onblack');
+                      $('timer').style.color='#fff'; });
+cue(28.45,function(){ $('gauge').style.opacity='0';
+                      play($('gaugemini'),{opacity:[0,1]},{duration:.30,ease:E.in,fill:'both'}); });
+// сумма входит белой — она обязана появиться уже на плотном чёрном, иначе мигнёт
+// белым по светлому фону. Запас между концом заливки (28.46) и входом — 0,09 с
+cue(28.55,function(){ $('s7sum').classList.remove('an');
+                      play($('s7sum'),{opacity:[0,1],transform:['translateY(18px)','none'],filter:['blur(8px)','blur(0px)']},
+                      {duration:.44,ease:E.hit,fill:'both'}); });
+cue(28.80,function(i){
+  countTo($('s7sum'),0,940,D.big,function(n){return Math.round(n)+sp+'000'+sp+'000 ₽';},i);
+  play($('s7sum'),{transform:['scale(1)','scale(1.04)']},{duration:D.big,ease:E.hit,fill:'both'});
+});
+cue(29.60,function(){ play($('s7lab2'),{opacity:[0,.75]},{duration:.30,ease:E.in,fill:'both'}); }); // подпись входит посреди счёта
+cue(29.90,function(){ $('s7sum').style.color='var(--coral)'; }); // та же рифма, что в s1: цвет приходит раньше цифры
+cue(31.00,function(){ play($('inner'),{transform:['scale(1)','scale(1.012)','scale(1)']},{duration:.26,ease:E.hit});
+                      play($('s7sum'),{filter:['brightness(1)','brightness(1.35)','brightness(1)']},{duration:.24,ease:E.hit}); });
+cue(31.30,function(){ flyToEl($('timer'),$('s7slot'),2.4,.90,E.cut); }); // единственный раз, когда таймер срывается с места
+cue(31.90,function(){ play($('s7rule'),{transform:[PORT?'scaleX(0)':'scaleY(0)',PORT?'scaleX(1)':'scaleY(1)']},{duration:.50,ease:E.in,fill:'both'}); });
+cue(32.10,function(){ play($('s7lab1'),{opacity:[0,.75]},{duration:.30,ease:E.in,fill:'both'}); });
+/* класс .hero здесь НЕ вешаем: масштаб перелёта 2.4× от базовых 34px уже даёт
+   ровно те 82px, что нужны. Два увеличения подряд давали 197px и вынос за кадр */
+cue(33.60,function(){ play($('s7src'),{opacity:[0,.45]},{duration:.70,ease:E.in,fill:'both'}); });
+cue(34.60,function(){
+  play($('black'),{transform:['scaleY(1)','scaleY(0)']},{duration:.52,ease:E.cut,fill:'both'});
+  [$('s7sum'),$('s7lab1'),$('s7lab2'),$('s7rule'),$('s7src')].forEach(function(e){
+    play(e,{opacity:[1,0]},{duration:.30,ease:E.out,fill:'both'}); });
+  play($('gaugemini'),{opacity:[1,0]},{duration:.30,ease:E.out,fill:'both'});
+  $('mark').classList.remove('onblack');
+  $('timer').style.color='';
+  flyHome($('timer'),.55);
+});
+
+/* s8 · карта потерь */
+// заголовок и карта входят сразу за шторкой: между её уходом (35.12) и стартом сцены
+// иначе оставалось полсекунды пустого серого — на просмотре читается как провал
+cue(35.25,function(){ inn($('s8h'),14,D.body); });
+cue(35.40,function(){ inn($('s8map'),0,D.body); });
+cue(35.90,function(){
+  var d=[0,.30,.58,.83,1.06,1.26,1.44,1.60];
+  STAGES.forEach(function(s,n){ setTimeout(function(){ inn(s.el,16,.42); },d[n]*1000); });
+  stage.classList.add('heavy');
+});
+cue(38.00,function(){ group(document.querySelectorAll('#s8map .chip'),0,.30,E.in,ST.chip,0); });
+cue(38.10,function(){ var bars=document.querySelectorAll('#s8map .bar4');
+  [].forEach.call(bars,function(b,n){ setTimeout(function(){
+    play(b,{transform:['scaleY(0)','scaleY(1)']},{duration:.30,ease:E.in,fill:'both'}); },n*90); }); });
+cue(39.00,function(){ var dr=document.querySelectorAll('#s8map .drop');
+  [].forEach.call(dr,function(d,n){ d.style.animationDelay=(n*.18)+'s'; d.style.opacity=''; }); });
+cue(39.20,function(){ group(document.querySelectorAll('#s8tot .tot'),0,.50,E.hit,0,0);
+  if(HAS)play(document.querySelectorAll('#s8tot .tot'),{transform:['translateX(32px)','none']},{duration:.50,ease:E.hit,fill:'both'}); });
+cue(39.35,function(i){ countTo(TOTALS[0].el,0,111,.70,intf,i); });
+cue(39.70,function(i){ countTo(TOTALS[1].el,0,1.7,.70,function(n){return '×'+one(n);},i); });
+cue(40.05,function(i){ countTo(TOTALS[2].el,0,24.4,.70,one,i); });
+cue(40.90,function(){ inn($('s8concl'),12,.40); });
+cue(42.56,function(){ [$('s8h'),$('s8map'),$('s8concl'),$('s8tot')].forEach(function(e){
+    play(e,{opacity:[1,0],transform:['none','scale(.94)']},{duration:.34,ease:E.out,fill:'both'}); });
+  stage.classList.remove('heavy'); });
+
+/* s9 · три починки */
+cue(42.90,function(){ inn($('s9h'),14,D.body); });
+cue(43.25,function(){ FIXES.forEach(function(f,n){ setTimeout(function(){ inn(f.el,22,.46); },n*270); }); });
+cue(44.10,function(){ group(document.querySelectorAll('#s9box .cost'),0,.28,E.in,ST.chip,0); });
+cue(44.50,function(){ group(document.querySelectorAll('#s9box .goal'),8,.30,E.in,ST.chip,0); });
+cue(46.76,function(){ [$('s9h')].concat(FIXES.map(function(f){return f.el;})).forEach(function(e){
+    play(e,{opacity:[1,0],transform:['none','scale(.94)']},{duration:.34,ease:E.out,fill:'both'}); }); });
+
+/* s10 · поворот */
+cue(47.10,function(){ inn($('s10a'),10,D.lead); });
+cue(47.80,function(){ inn($('s10b'),10,D.lead); });
+cue(48.60,function(){ [$('s10a'),$('s10b')].forEach(function(e,n){ setTimeout(function(){
+    play(e,{opacity:[1,0],filter:['blur(0px)','blur(6px)']},{duration:.30,ease:E.out,fill:'both'}); },n*50); }); });
+
+/* s11 · финал */
+// в финале таймер не летит, а передаётся: угловой гаснет, крупный проявляется на его месте
+// по смыслу. Цепочка из двух трансформов на одном узле ломается о fill:'both'
+cue(49.10,function(){ play($('timer'),{opacity:[1,0]},{duration:.34,ease:E.out,fill:'both'});
+                      inn($('s11timer'),0,.55,E.hit,{transform:['scale(1.10)','scale(1)']}); });
+cue(49.90,function(){ inn($('s11c'),14,D.body); });
+cue(51.20,function(){ group(document.querySelectorAll('#s11s span'),12,.34,E.in,ST.fix,0); $('s11s').classList.remove('an'); });
+cue(51.90,function(){ $('s11cta').classList.remove('an');
+                      play($('s11cta'),{opacity:[0,1],transform:['scale(.92)','scale(1)']},{type:'spring',bounce:.28,visualDuration:.34,fill:'both'}); });
+cue(52.40,function(){ play($('s11url'),{opacity:[0,.55]},{duration:.35,ease:E.in,fill:'both'});
+                      $('s11cta').style.pointerEvents='auto'; });
+cue(52.60,function(){ play($('s11cta'),{transform:['scale(1)','scale(1.035)','scale(1)']},{duration:2.0,ease:'easeInOut'}); }); // единственный цикл, 2 повтора
+cue(52.75,function(){ play($('mark'),{opacity:[.35,1],transform:['scale(1)','scale(1.08)']},{duration:.40,ease:E.in,fill:'both'}); });
+cue(54.20,function(){ play($('again'),{opacity:[0,.5]},{duration:.40,ease:E.in,fill:'both'});
+                      $('again').style.pointerEvents='auto'; });
+
+/* ——— окна сцен: гарантия, что соседняя сцена не окажется в кадре ——— */
+var SCENES=[['s1',0,4.30],['s2',4.15,9.45],['s3',9.35,12.90],['s4',12.50,24.05],
+            ['s6',23.95,28.65],['s7',28.15,35.35],['s8',35.20,43.05],['s9',42.85,47.25],
+            ['s10',47.05,49.20],['s11',49.05,-1]];
+SCENES.forEach(function(s){
+  cue(s[1],function(){ $(s[0]).classList.add('live'); });
+  if(s[2]>0) cue(s[2],function(){ $(s[0]).classList.remove('live'); });
+});
+
+C.sort(function(a,b){return a.t-b.t;});
+
+/* ——— мастер-цикл: абсолютные тайм-коды, один rAF, без цепочек setTimeout ——— */
+var RUNTIME=54.6;
+var t=0,prev=0,idx=0,paused=false,started=false;
+function frame(now){
+  fitIfChanged();
+  if(!paused){
+    var dt=(now-prev)/1000; prev=now;
+    // таймлайн идёт по стенным часам: анимации Motion идут по ним же, и если
+    // ограничить шаг, ролик после каждой просадки отстаёт и уже не догоняет —
+    // хронометраж перестаёт быть 54,6 с, а он обещан предсказуемым для записи
+    var instant=dt>0.25;                 // заметная просадка: пропущенные реплики доводятся сразу
+    t+=Math.min(dt,1.0);                 // но одним скачком сквозь целую сцену не проносимся
+    while(idx<C.length && C[idx].t<=t){ try{C[idx].fn(instant);}catch(e){} idx++; }
+    $('bar').style.transform='scaleX('+Math.min(1,t/RUNTIME)+')';
+  } else prev=now;
+  requestAnimationFrame(frame);
+}
+function pause(){ paused=true; stage.classList.remove('playing');
+  try{document.getAnimations().forEach(function(a){a.pause();});}catch(e){} }
+function resume(){ paused=false; prev=performance.now(); stage.classList.add('playing');
+  try{document.getAnimations().forEach(function(a){a.play();});}catch(e){} }
+function restart(){
+  try{document.getAnimations().forEach(function(a){a.cancel();});}catch(e){}
+  counters.forEach(function(c){c.stop=true;}); counters.length=0;
+  location.reload();   // самый честный сброс: fill:'both' иначе тянет конечные состояния в новый прогон
+}
+$('again').addEventListener('click',restart);
+stage.addEventListener('click',function(e){
+  if(e.target.closest('a,button'))return;
+  paused?resume():pause();
+});
+addEventListener('keydown',function(e){
+  if(e.code==='Space'){e.preventDefault(); paused?resume():pause();}
+});
+document.addEventListener('visibilitychange',function(){ document.hidden?pause():(started&&resume()); });
+
+/* ——— статичный режим для prefers-reduced-motion: девять кадров вручную ——— */
+var FRAMES=[['s1',''],['s2',''],['s3','0:00'],['s4','1:38'],['s6','1:41'],['s7','1:41'],
+            ['s8','1:41'],['s9','1:41'],['s10','1:41'],['s11','1:41']];
+function staticMode(){
+  stage.classList.add('static');
+  $('hint').textContent='← → листать';
+  $('again').style.display='none';
+  FRAMES.forEach(function(){ $('dots').insertAdjacentHTML('beforeend','<i></i>'); });
+  $('gauge').style.setProperty('--p','180deg'); $('gv').textContent='50';
+  $('s1v').textContent=rub(24000); $('s1big').classList.add('alarm');
+  $('s1c1').style.display='none'; $('s2c').textContent='89 %';
+  $('s7sum').textContent='940'+sp+'000'+sp+'000 ₽'; $('s7sum').style.color='var(--coral)';
+  $('s7lab1').style.opacity='.75'; $('s7lab2').style.opacity='.75'; $('s7src').style.opacity='.45';
+  $('s11url').style.opacity='.55'; $('s11cta').style.pointerEvents='auto';
+  TOTALS[0].el.textContent='111'; TOTALS[1].el.textContent='×1,7'; TOTALS[2].el.textContent='24,4';
+  var n=0;
+  function show(i){
+    n=(i+FRAMES.length)%FRAMES.length;
+    [].forEach.call(document.querySelectorAll('.scene'),function(s){s.classList.remove('on');});
+    $(FRAMES[n][0]).classList.add('on');
+    $('timer').style.opacity=FRAMES[n][1]?'1':'0'; $('timer').textContent=FRAMES[n][1]||'';
+    var black=FRAMES[n][0]==='s7';
+    $('black').style.opacity=black?'1':'0';
+    $('gaugemini').style.opacity=black?'1':'0';
+    $('mark').classList.toggle('onblack',black);
+    // на кадре обмена таймер живёт в левой колонке, угловой прячем
+    if(black)$('timer').style.opacity='0';
+    $('hint').style.color=black?'#fff':'';
+    [].forEach.call($('dots').children,function(d,j){ d.className=(j===n?'on':'')+(black?' onblack':''); });
+  }
+  show(0);
+  addEventListener('keydown',function(e){
+    if(e.code==='ArrowRight'||e.code==='Space'){e.preventDefault();show(n+1);}
+    if(e.code==='ArrowLeft'){e.preventDefault();show(n-1);}
+  });
+  stage.addEventListener('click',function(e){
+    if(e.target.closest('a'))return;
+    var r=stage.getBoundingClientRect();
+    show(e.clientX-r.left > r.width/2 ? n+1 : n-1);
+  });
+}
+
+/* ——— fps-гейт: снимает только украшения, тайм-коды не трогает никогда ——— */
+function fpsGate(){
+  if(document.hidden)return;              // в фоне rAF душат — замер соврёт и снимет тени зря
+  var f=0,t0=performance.now();
+  (function tick(){ f++; if(performance.now()-t0<2000)requestAnimationFrame(tick);
+    else if(!document.hidden && f/2 < 40) stage.classList.add('lite'); })();
+}
+
+/* ——— старт ——— */
+// ?static=1 — те же девять кадров вручную: удобно снять постеры для соцсетей и презентации
+var FORCE=/[?&]static=1/.test(location.search);
+if(REDUCE||!HAS||FORCE){ staticMode(); }
+else {
+  $('timer').style.opacity='0';
+  stage.classList.add('playing');
+  started=true; prev=performance.now();
+  // Если вкладка скрыта уже на загрузке (ролик открыли в фоне, свернули окно),
+  // visibilitychange не сработает: rAF заморожен, а WAAPI идёт по стенным часам —
+  // таймлайн и анимации разъезжаются, и при возврате зритель видит кашу.
+  if(document.hidden)pause();
+  // #t=28 — начать с нужной секунды: удобно пересматривать сцену и переснимать её
+  var seek=parseFloat(((location.search+location.hash).match(/[?&#]t=([\d.]+)/)||[])[1]);
+  if(seek>0){
+    t=seek;
+    while(idx<C.length && C[idx].t<=t){ try{C[idx].fn(true);}catch(e){} idx++; }
+  }
+  requestAnimationFrame(frame); fpsGate();
+}
+})();
+</script>
+</body>
+</html>
