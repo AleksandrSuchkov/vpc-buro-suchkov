@@ -728,7 +728,10 @@ function sendLead(type){
   // Telegram-бот (@bureaumagnetbot): одна повторная попытка, ошибку отдаём наверх
   const body = JSON.stringify({
     _source: MARK[type] + ' · ' + MAGNET, _page: lead.page,
-    'Имя': lead.name, 'Компания': lead.company, 'Способ связи': lead.contact,
+    // ключ именно «Контакт»: приёмник ищет контакт по фиксированному списку имён
+    // ('Телефон или Telegram' | 'Телефон' | 'Контакт' | contact | phone | telegram | email),
+    // при незнакомом ключе buildLeadText возвращает null и заявка отлетает с 400
+    'Имя': lead.name, 'Компания': lead.company, 'Контакт': lead.contact,
     'Результат': lead.result, 'Ответы': lead.answers
   });
   const post = () => fetch(BOT_ENDPOINT, {method:'POST', keepalive:true,
